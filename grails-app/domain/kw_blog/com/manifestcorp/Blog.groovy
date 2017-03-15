@@ -1,4 +1,4 @@
-package kw_blog
+package kw_blog.com.manifestcorp
 
 class Blog {
     String title;

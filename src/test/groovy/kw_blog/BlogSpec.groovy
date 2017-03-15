@@ -1,6 +1,7 @@
 package kw_blog
 
 import grails.test.mixin.TestFor
+import kw_blog.com.manifestcorp.Blog
 import spock.lang.Specification
 
 /**

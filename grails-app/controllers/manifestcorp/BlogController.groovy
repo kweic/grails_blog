@@ -1,4 +1,6 @@
-package kw_blog
+package manifestcorp
+
+import kw_blog.com.manifestcorp.Blog
 
 class BlogController {
     static scaffold = Blog
