@@ -23,7 +23,9 @@ class BlogController {
 //        [blogInstanceList: blogList, blogInstanceTotal: blogList.totalCount]
 //    }
 //
-//    def remoteSearch = {
-//        def blogs = Blog.findAllByNameLike("${params.value}%") render(template: 'results', model: [value: params.value, blogs: blogs])
-//    }
+    def remoteSearch = {
+        print "remote search clicked"
+        def blogs = Blog.findAllByNameLike("${params.value}%") render(template: 'results', model: [value: params.value, blogs: blogs])
+    }
+    
 }
