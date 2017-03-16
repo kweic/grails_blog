@@ -8,37 +8,25 @@ class BlogController {
 //
 //    }
 
-//    def show() {
-//        def blog = Blog.get(params.id)
-//        log.error("{}", blog)
-//        [blogInstance : blog]
-//    }
-//    def list() {
-//        params.max = Math.min(params.max ? params.int('max') : 5, 100)
+//    def search = {
+//        println "search clicked"
+//       // def blogs = Blog.findAllByTitleLike("${params.value}%") render(view: 'search', model: [value: params.value, blogs: blogs])
+//        println "### params.value: ${params.value}"
 //
-//        def blogList = Blog.createCriteria().list (params) {
-//            if ( params.query ) {
-//                ilike("description", "%${params.query}%")
-//            }
-//        }
-//
-//        [blogInstanceList: blogList, blogInstanceTotal: blogList.totalCount]
+//      //  def blogs = Blog.findAllByTitleLike("${params.value}%")
+//        def blogs = Blog.findAll();
+//        render(view: 'search', model: [value: params.value, blogs: blogs])
 //    }
-//
-//    def remoteSearch = {
-//        print "remote search clicked"
-//        def blogs = Blog.findAllByNameLike("${params.value}%") render(template: 'results', model: [value: params.value, blogs: blogs])
-//    }
-    def search = {
-        print "search clicked"
-        def blogs = Blog.findAllByTitleLike("${params.value}%") render(view: 'search', model: [value: params.value, blogs: blogs])
+
+    def remoteSearch = {
+        println "remote search clicked"
+        def blogs = Blog.findAllByTitleLike("${params.value}%")
+        render(template: 'results', model: [value: params.value, blogs: blogs])
     }
 
 
     def search() {
         //  params.max = Math.min(params.max ? params.int('max') : 5, 100)
-
-        //  print "in list"
 
         def criteria = Blog.createCriteria()
 
@@ -51,7 +39,9 @@ class BlogController {
         println "##### list size: "+blogList.size()
 
         [blogInstanceList: blogList, blogInstanceTotal: blogList.totalCount]
-//        [blogInstanceIndex: blogList, blogInstanceTotal: blogList.totalCount]
+
+        render(view: "index", model: [blog: blogList])
+
     }
 
 }

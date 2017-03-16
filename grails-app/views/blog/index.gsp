@@ -3,6 +3,8 @@
     <head>
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'blog.label', default: 'Blog')}" />
+
+        <j:javascript src="application.js"/>
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
@@ -19,6 +21,8 @@
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
 
+
+
             <fieldset class="form">
                 <g:form action="search" method="GET">
                     <div class="fieldcontain">
@@ -28,7 +32,14 @@
                 </g:form>
             </fieldset>
 
-            <f:table collection="${blogList}" />
+
+
+
+            <div id="error"></div>
+            Results:
+            <div id="results"></div>
+
+            <f:table collection="${blog}" />
 
             <div class="pagination">
                 <g:paginate total="${blogCount ?: 0}" />

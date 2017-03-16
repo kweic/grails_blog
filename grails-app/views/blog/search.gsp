@@ -1,28 +1,42 @@
 <html>
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="layout" content="main" />
 <title>Todo Find</title>
+<j:javascript library="jquery" />
 </head>
-
 <body>
-<br/>
-<br/>
 
-<h2>Post Search</h2>
+<h2>Ajax Search</h2>
+<j:formRemote name="remoteSearch"
+url="[controller:'blog',action:'remoteSearch']"
+update="[success:'results', failure:'error']" >
 
-<g:form controller="blog" method="post" >
 <input type='text' name='value' value="${value}" />
-<g:actionSubmit value="Search" />
-</g:form>
+<j:submitButton name="search" value="Search" />
+</j:formRemote>
+<div id="error"></div>
 Results:
-<ol>
-<g:each var="todo" in="${todos}">
-<li>${todo?.name}
-<g:if test="${todo.note}">- </g:if>
-${todo?.note}
-</li>
-</g:each>
-</ol>
+<div id="results"></div>
+
+            <fieldset class="form">
+                <g:form action="search" method="GET">
+                    <div class="fieldcontain">
+                        <label for="query">Search:</label>
+                        <g:textField name="query" value="${params.query}"/>
+                    </div>
+                </g:form>
+            </fieldset>
+                ${blogsList}
+                 <ol>
+                     <g:each var="blog" in="${blogsList}">
+                        <li>${blog?.title}
+                             <g:if test="${blog.title}">- </g:if>
+                            ${blog?.title}
+                        </li>
+                     </g:each>
+                  </ol>
+
 </body>
 </html>
