@@ -1,22 +1,27 @@
+package kw_blog;
 
-import kw_blog.com.manifestcorp.*;
+import kw_blog.com.manifestcorp.Role;
+import kw_blog.com.manifestcorp.User;
+import kw_blog.com.manifestcorp.UserRole;
 
 class BootStrap {
     def springSecurityService
 
-    def init = {
-        //servletContext ->
-        def userRole = new Role('ROLE_ADMIN').save()
+    def init = { servletContext ->
 
-        def me = new User('user', 'password').save()
+        def userRole = new Role(authority: 'ROLE_USER').save()
 
+        def me = new User(username: 'user', password: 'password').save()
 
         UserRole.create me, userRole
 
-        User.withSession {
+        UserRole.withSession {
             it.flush()
+            it.clear()
         }
+
     }
+
     def destroy = {
     }
 }
