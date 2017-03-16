@@ -40,7 +40,7 @@ class BlogController {
 
         [blogInstanceList: blogList, blogInstanceTotal: blogList.totalCount]
 
-        render(view: "index", model: [blog: blogList])
+        render(view: "search", model: [blog: blogList])
 
     }
 

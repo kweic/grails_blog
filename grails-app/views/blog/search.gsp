@@ -1,24 +1,28 @@
+<!DOCTYPE html>
 <html>
-<head>
+    <head>
+        <meta name="layout" content="main" />
+        <g:set var="entityName" value="${message(code: 'blog.label', default: 'Blog')}" />
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<meta name="layout" content="main" />
-<title>Todo Find</title>
-<j:javascript library="jquery" />
-</head>
-<body>
+        <j:javascript src="application.js"/>
+        <title><g:message code="default.list.label" args="[entityName]" /></title>
+    </head>
+    <body>
+        <a href="#list-blog" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+        <div class="nav" role="navigation">
+            <ul>
+                <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
+                <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+                <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+            </ul>
+        </div>
+        <div id="list-blog" class="content scaffold-list" role="main">
+            <h1><g:message code="default.list.label" args="[entityName]" /></h1>
+            <g:if test="${flash.message}">
+                <div class="message" role="status">${flash.message}</div>
+            </g:if>
 
-<h2>Ajax Search</h2>
-<j:formRemote name="remoteSearch"
-url="[controller:'blog',action:'remoteSearch']"
-update="[success:'results', failure:'error']" >
 
-<input type='text' name='value' value="${value}" />
-<j:submitButton name="search" value="Search" />
-</j:formRemote>
-<div id="error"></div>
-Results:
-<div id="results"></div>
 
             <fieldset class="form">
                 <g:form action="search" method="GET">
@@ -28,15 +32,16 @@ Results:
                     </div>
                 </g:form>
             </fieldset>
-                ${blogsList}
-                 <ol>
-                     <g:each var="blog" in="${blogsList}">
-                        <li>${blog?.title}
-                             <g:if test="${blog.title}">- </g:if>
-                            ${blog?.title}
-                        </li>
-                     </g:each>
-                  </ol>
 
-</body>
+            <div id="error"></div>
+            Results:
+            <div id="results"></div>
+
+            <f:table collection="${blog}" />
+
+            <div class="pagination">
+                <g:paginate total="${blogCount ?: 0}" />
+            </div>
+        </div>
+    </body>
 </html>

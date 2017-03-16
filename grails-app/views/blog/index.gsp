@@ -13,6 +13,7 @@
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
                 <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+                <li><g:link class="search" action="search"><g:img dir="images" file="search-icon.png" width="20" height="20"/>Search</g:link></li>
             </ul>
         </div>
         <div id="list-blog" class="content scaffold-list" role="main">
@@ -20,20 +21,6 @@
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
-
-
-
-            <fieldset class="form">
-                <g:form action="search" method="GET">
-                    <div class="fieldcontain">
-                        <label for="query">Search:</label>
-                        <g:textField name="query" value="${params.query}"/>
-                    </div>
-                </g:form>
-            </fieldset>
-
-
-
 
             <div id="error"></div>
             Results:
