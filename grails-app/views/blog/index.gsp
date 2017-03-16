@@ -18,6 +18,16 @@
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
+
+            <fieldset class="form">
+                <g:form action="search" method="GET">
+                    <div class="fieldcontain">
+                        <label for="query">Search:</label>
+                        <g:textField name="query" value="${params.query}"/>
+                    </div>
+                </g:form>
+            </fieldset>
+
             <f:table collection="${blogList}" />
 
             <div class="pagination">
