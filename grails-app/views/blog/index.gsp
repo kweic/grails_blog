@@ -4,7 +4,6 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'blog.label', default: 'Blog')}" />
 
-        <j:javascript src="application.js"/>
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
@@ -21,10 +20,6 @@
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
-
-            <div id="error"></div>
-            Results:
-            <div id="results"></div>
 
             <f:table collection="${blog}" />
 

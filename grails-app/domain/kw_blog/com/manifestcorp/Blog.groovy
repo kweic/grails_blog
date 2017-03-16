@@ -12,6 +12,6 @@ class Blog {
     static constraints = {
         title(blank: false)
         blogEntry(maxSize: 1000, widget: 'textarea', nullable: true)
-        mood(inList:["Rocking out", "Feeling down", "Sleepy", "Busy", "Lazy", "Excited", "Pancakes and Waffles"])
+        mood(inList:["", "Rocking out", "Feeling down", "Sleepy", "Busy", "Lazy", "Excited", "Pancakes and Waffles"])
     }
 }
