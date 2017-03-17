@@ -26,16 +26,18 @@
 
 
               <g:each in="${blog}" var="item" status="i">
-              <div class="col-sm-12 posts-1">
-              <div class="panel panel-default">
-              <div class="panel-heading">
-                <div id="blog-${i}"><h2><strong>${item.title}</strong></h2></div>
-                <div>author: ${item.postBy}</div>
-                <div class="text-muted"><small>${item.dateCreated}</small></div>
-                <div class="text-info"><small> ${item.mood}</small></div>
-                </div>
-                    <div class="panel-body">${item.blogEntry}</div>
-                </div>
+                <div class="col-sm-12 posts-1">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a id="blog-link-${i}" href="/blog/show/${item?.id}">
+                                <div id="blog-${i}"><h2><strong>${item.title}</strong></h2></div>
+                            </a>
+                            <div>author: ${item.postBy}</div>
+                            <div class="text-muted"><small>${item.dateCreated}</small></div>
+                            <div class="text-info"><small> ${item.mood}</small></div>
+                        </div>
+                        <div class="panel-body">${item.blogEntry}</div>
+                    </div>
                 </div>
               </g:each>
 

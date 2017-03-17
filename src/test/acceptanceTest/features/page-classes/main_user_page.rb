@@ -12,4 +12,5 @@ class MainBlog
   link(:create, text: 'New Blog')
   div(:message, class: 'message')
   div(:firstBlog, id: 'blog-0')
+  link(:firstBlogLink, id: 'blog-link-0')
 end

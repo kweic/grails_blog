@@ -11,14 +11,15 @@ class BlogController {
         def blogs = getBlogs()
 
         println "### returning index, blog count: "+Blog.count()
-        //respond Blog.list(params), model: [blog: blogs, blogCount: Blog.count()] //this is the working one on larry's
+        respond Blog.list(params), model: [blog: blogs, blogCount: Blog.count()] //this is the working one on larry's
         //respond model: [blog: blogs, blogCount: Blog.count()]
-        render(view: "index", model: [blog: blogs, blogCount: Blog.count()])
+        //render(view: "index", model: [blog: blogs, blogCount: Blog.count()])
     }
 
     @Secured('ROLE_USER')
     def create(){
         render(view: "create", model: [blog: new Blog()])
+        //respond view: "create", model: [blog: new Blog()]
     }
 
     def getBlogs(){
@@ -33,13 +34,9 @@ class BlogController {
     }
 
     @Secured('ROLE_USER')
-    def show(Blog blog, String message) {
-        renderView("show");
+    def show(Blog blog){
+        respond blog
     }
-
-//    def list() {
-//        [blog: Blog.list(params), blogCount: Blog.count()]
-//    }
 
     @Secured('ROLE_USER')
     def save(Blog blog){
