@@ -5,7 +5,7 @@ module Navigation
   include PageObject::PageFactory
 
   def base_url
-    @url = 'http://localhost:8080/'
+    @url = 'localhost:8080/'
   end
   def goto_login_page
     visit_page(LoginPage)

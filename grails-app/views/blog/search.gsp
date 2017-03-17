@@ -33,9 +33,7 @@
                 </g:form>
             </fieldset>
 
-            <div id="error"></div>
-            Results:
-            <div id="results"></div>
+
 
             <f:table collection="${blog}" />
 

@@ -26,9 +26,13 @@
             </ul>
             </g:hasErrors>
             <g:form action="save">
-                <fieldset class="form">
-                    <f:all bean="blog"/>
-                </fieldset>
+
+                <f:with bean="blog">
+                    <f:field property="title"/>
+                    <f:field property="blogEntry"/>
+                    <f:field property="mood"/>
+                    <f:field property="postBy"/>
+                </f:with>
                 <fieldset class="buttons">
                     <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
                 </fieldset>
