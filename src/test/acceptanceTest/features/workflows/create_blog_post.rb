@@ -2,9 +2,9 @@ require 'page-object'
 
 module CreatePost
   include PageObject::PageFactory
-  def fill_post_fields
+  def fill_post_fields(specified_title)
     on_page(CreatePage) do |page|
-      page.title = 'hey'
+      page.title = specified_title
       page.blogEntry = '123 abc'
       #page.mood = 'Excited'
       @browser.select(:id => 'mood').click

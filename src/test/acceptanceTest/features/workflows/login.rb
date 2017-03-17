@@ -7,7 +7,6 @@ module Login
       page.username = user
       page.pswd = password
       on_page(LoginPage).login
-      #@browser.button(id: 'submit').click
     end
   end
 end

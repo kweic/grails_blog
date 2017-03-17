@@ -8,14 +8,7 @@ class BlogController {
 
     @Secured('ROLE_USER')
     def index() {
-        def criteria = Blog.createCriteria()
-
-        def blogs = criteria.list(params) {
-            if (params.query) {
-                ilike("title", "%%")
-            }
-        }
-        println("##### blogs size: "+blogs.size())
+        def blogs = getBlogs()
         render(view: "index", model: [blog: blogs])
     }
 
@@ -24,17 +17,7 @@ class BlogController {
         render(view: "create", model: [blog: new Blog()])
     }
 
-    @Secured('ROLE_USER')
-    def save(Blog blog){
-        blog.save();
-        println "##### blog save "+blog.title;
-        index();
-    }
-
-    @Secured('ROLE_USER')
-    def search() {
-        //  params.max = Math.min(params.max ? params.int('max') : 5, 100)
-
+    def getBlogs(){
         def criteria = Blog.createCriteria()
 
         def blogs = criteria.list(params) {
@@ -42,6 +25,32 @@ class BlogController {
                 ilike("title", "%${params.query}%")
             }
         }
+        blogs
+    }
+
+    @Secured('ROLE_USER')
+    def show(Blog blog, String message) {
+        render(view: "show", model: [blog: blog])
+    }
+
+    def list() {
+        [blogs: Blog.list(params), blogCount: Blog.count()]
+    }
+
+    @Secured('ROLE_USER')
+    def save(Blog blog){
+        blog.save();
+        println "##### blog save "+blog.title;
+        def note = "New post added."
+       // render(view: "index", model: [blog: getBlogs(), notification: note])
+        flash.message = "New post added."
+        render(view: "show", model: [blog: blog])
+    }
+
+    @Secured('ROLE_USER')
+    def search() {
+
+        def blogs = getBlogs()
 
         [blogInstanceList: blogs, blogInstanceTotal: blogs.totalCount]
 

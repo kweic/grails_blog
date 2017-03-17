@@ -5,6 +5,6 @@ module PageInteractions
   include PageObject::PageFactory
 
   def click_create_new_blog
-    @browser.li(:text => 'New Blog').click
+    on_page(MainBlog).create
   end
 end

@@ -15,6 +15,7 @@
                 <li><g:link class="search" action="search"><g:img dir="images" file="search-icon.png" width="20" height="20"/>Search</g:link></li>
             </ul>
         </div>
+        <h2 id="note">${notification}</h2></div>
         <div id="list-blog" class="content scaffold-list" role="main">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
