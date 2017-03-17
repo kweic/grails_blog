@@ -9,8 +9,11 @@ class BlogController {
     @Secured('ROLE_USER')
     def index() {
         def blogs = getBlogs()
-       // render(view: "index", model: [blog: blogs, blogCount: Blog.count()])
-        respond Blog.list(params), model: [blog: blogs, blogCount: Blog.count()] //this is the working one on larry's
+
+        println "### returning index, blog count: "+Blog.count()
+        //respond Blog.list(params), model: [blog: blogs, blogCount: Blog.count()] //this is the working one on larry's
+        //respond model: [blog: blogs, blogCount: Blog.count()]
+        render(view: "index", model: [blog: blogs, blogCount: Blog.count()])
     }
 
     @Secured('ROLE_USER')
@@ -31,32 +34,32 @@ class BlogController {
 
     @Secured('ROLE_USER')
     def show(Blog blog, String message) {
-        render(view: "show", model: [blog: blog])
+        renderView("show");
     }
 
-    def list() {
-        [blogs: Blog.list(params), blogCount: Blog.count()]
-    }
+//    def list() {
+//        [blog: Blog.list(params), blogCount: Blog.count()]
+//    }
 
     @Secured('ROLE_USER')
     def save(Blog blog){
         blog.save();
-        println "##### blog save "+blog.title;
         def note = "New post added."
-       // render(view: "index", model: [blog: getBlogs(), notification: note])
+
         flash.message = "New post added."
-        render(view: "index", model: [blog: getBlogs()])
+        renderView("index");
     }
 
     @Secured('ROLE_USER')
     def search() {
-
-        def blogs = getBlogs()
-
       //  [blogInstanceList: blogs, blogInstanceTotal: blogs.totalCount]
 
-        render(view: "search", model: [blog: blogs])
+        renderView("search")
+    }
 
+    private renderView(String view){
+        def blogs = getBlogs();
+        render(view: view, model: [blog: blogs])
     }
 
 }

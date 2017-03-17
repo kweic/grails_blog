@@ -24,7 +24,7 @@
 
             <!-- <f:table collection="${blog}" /> -->
 
-            <table>
+
               <g:each in="${blog}" var="item" status="i">
               <div class="col-sm-12 posts-1">
               <div class="panel panel-default">
@@ -38,7 +38,7 @@
                 </div>
                 </div>
               </g:each>
-            </table>
+
 
             <div class="pagination">
                 <g:paginate total="${blogCount ?: 0}" />

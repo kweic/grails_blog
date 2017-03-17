@@ -3,6 +3,9 @@ require_relative '../../features/workflows/visit_and_login'
 require_relative '../../features/workflows/page_interactions'
 require_relative '../../features/workflows/create_blog_post'
 require_relative '../../features/workflows/main_page_elements'
+require_relative '../../features/workflows/generate_randoms'
+
+include RandomStrings
 include Navigation
 include VisitAndLogin
 include PageInteractions
@@ -16,7 +19,7 @@ end
 
 When(/^I publish a new blog post$/) do
   click_create_new_blog
-  @my_post_title = 'Test Title'
+  @my_post_title = generate_random_words(rand(2..7)).strip
   fill_post_fields(@my_post_title)
   click_save_blog
 end
