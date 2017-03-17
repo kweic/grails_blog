@@ -15,17 +15,33 @@
                 <li><g:link class="search" action="search"><g:img dir="images" file="search-icon.png" width="20" height="20"/>Search</g:link></li>
             </ul>
         </div>
-        <h2 id="note">${notification}</h2></div>
+
         <div id="list-blog" class="content scaffold-list" role="main">
             <h1><g:message code="default.list.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
 
-            <f:table collection="${blog}" />
+            <!-- <f:table collection="${blog}" /> -->
+
+            <table>
+              <g:each in="${blog}" var="item" status="i">
+              <div class="col-sm-12 posts-1">
+              <div class="panel panel-default">
+              <div class="panel-heading">
+                <div id="blog-${i}"><h2><strong>${item.title}</strong></h2></div>
+                <div>author: ${item.postBy}</div>
+                <div class="text-muted"><small>${item.dateCreated}</small></div>
+                <div class="text-info"><small> ${item.mood}</small></div>
+                </div>
+                    <div class="panel-body">${item.blogEntry}</div>
+                </div>
+                </div>
+              </g:each>
+            </table>
 
             <div class="pagination">
-                <g:paginate total="${blogCount ?: 0}" />
+                <g:paginate total="${blogCount}" />
             </div>
         </div>
     </body>

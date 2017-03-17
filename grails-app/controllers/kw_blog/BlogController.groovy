@@ -9,7 +9,8 @@ class BlogController {
     @Secured('ROLE_USER')
     def index() {
         def blogs = getBlogs()
-        render(view: "index", model: [blog: blogs])
+        render(view: "index", model: [blog: blogs, blogCount: Blog.count()])
+      //  respond Blog.list(params), model: [blogCount: Blog.count()] //this is the working one on larry's
     }
 
     @Secured('ROLE_USER')
@@ -25,7 +26,7 @@ class BlogController {
                 ilike("title", "%${params.query}%")
             }
         }
-        blogs
+        blogs.reverse()
     }
 
     @Secured('ROLE_USER')
@@ -44,7 +45,7 @@ class BlogController {
         def note = "New post added."
        // render(view: "index", model: [blog: getBlogs(), notification: note])
         flash.message = "New post added."
-        render(view: "show", model: [blog: blog])
+        render(view: "index", model: [blog: getBlogs()])
     }
 
     @Secured('ROLE_USER')
@@ -52,7 +53,7 @@ class BlogController {
 
         def blogs = getBlogs()
 
-        [blogInstanceList: blogs, blogInstanceTotal: blogs.totalCount]
+      //  [blogInstanceList: blogs, blogInstanceTotal: blogs.totalCount]
 
         render(view: "search", model: [blog: blogs])
 

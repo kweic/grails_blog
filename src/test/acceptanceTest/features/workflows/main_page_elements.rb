@@ -7,6 +7,6 @@ module MainPage
   end
 
   def first_post_on_page
-    "test first post"
+    on_page(MainBlog).firstBlog
   end
 end
