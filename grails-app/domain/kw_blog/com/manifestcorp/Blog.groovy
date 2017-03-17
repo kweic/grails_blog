@@ -16,4 +16,8 @@ class Blog {
         mood(inList:["", "Rocking out", "Feeling down", "Sleepy", "Busy", "Lazy", "Excited", "Pancakes and Waffles"], nullable: true)
     }
 
+    static mapping = {
+        sort dateCreated: 'desc'
+    }
+
 }

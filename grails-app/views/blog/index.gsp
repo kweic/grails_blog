@@ -41,7 +41,7 @@
             </table>
 
             <div class="pagination">
-                <g:paginate total="${blogCount}" />
+                <g:paginate total="${blogCount ?: 0}" />
             </div>
         </div>
     </body>

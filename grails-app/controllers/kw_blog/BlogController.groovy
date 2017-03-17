@@ -9,8 +9,8 @@ class BlogController {
     @Secured('ROLE_USER')
     def index() {
         def blogs = getBlogs()
-        render(view: "index", model: [blog: blogs, blogCount: Blog.count()])
-      //  respond Blog.list(params), model: [blogCount: Blog.count()] //this is the working one on larry's
+       // render(view: "index", model: [blog: blogs, blogCount: Blog.count()])
+        respond Blog.list(params), model: [blog: blogs, blogCount: Blog.count()] //this is the working one on larry's
     }
 
     @Secured('ROLE_USER')
@@ -26,7 +26,7 @@ class BlogController {
                 ilike("title", "%${params.query}%")
             }
         }
-        blogs.reverse()
+        blogs
     }
 
     @Secured('ROLE_USER')
