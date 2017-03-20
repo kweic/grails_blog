@@ -10,6 +10,7 @@ class MainBlog
   # select_list(:mood, id: 'mood')
   # text_field(:postBy, id: 'postBy')
   link(:create, text: 'New Blog')
+  link(:home, text: 'Home')
   div(:message, class: 'message')
   div(:firstBlog, id: 'blog-0')
   link(:firstBlogLink, id: 'blog-link-0')

@@ -18,10 +18,7 @@ Given(/^I am logged in as a blogger$/) do
 end
 
 When(/^I publish a new blog post$/) do
-  click_create_new_blog
-  @my_post_title = generate_random_words(rand(2..7)).strip
-  fill_post_fields(@my_post_title)
-  click_save_blog
+  @my_post_title = create_and_save_post
 end
 
 Then(/^I am notified that the blog post was successfully added$/) do
@@ -29,5 +26,6 @@ Then(/^I am notified that the blog post was successfully added$/) do
 end
 
 And (/^the newly added blog post is at the top of the recent posts list$/) do
+  click_home
   expect(first_post_on_page).to eq(@my_post_title)
 end
