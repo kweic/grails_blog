@@ -41,17 +41,35 @@ class BlogController {
     @Secured('ROLE_USER')
     def save(Blog blog){
         blog.save();
-        def note = "New post added."
 
         flash.message = "New post added."
         renderView("index");
     }
 
     @Secured('ROLE_USER')
-    def search() {
-        //  [blogInstanceList: blogs, blogInstanceTotal: blogs.totalCount]
+    def delete(Blog blog){
+        blog.delete(flush: true);
+        renderView("index");
+    }
 
-        renderView("search")
+    @Secured('ROLE_USER')
+    def edit(Blog blog){
+        render(view: "edit", model: [blog: blog]);
+    }
+
+    @Secured('ROLE_USER')
+    def update(Blog blog){
+        blog.save();
+
+        flash.message = "Post updated."
+        renderView("index");
+    }
+
+    @Secured('ROLE_USER')
+    def search() {
+        def blogs = Blog.findAllByTitleLike("%${params.query}%")
+
+        render(view:"search", model: [value: params.value, blog: blogs])
     }
 
     private renderView(String view){
