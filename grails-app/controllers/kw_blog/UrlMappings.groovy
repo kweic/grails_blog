@@ -9,6 +9,13 @@ class UrlMappings {
             }
         }
 
+        name blogLink: "/blog/show/$id/$date/$title?" {
+//            controller = "Show"
+//            action = "show"
+            controller = "blog"
+            action = "show"
+        }
+
         "/"(controller:"Blog")
         "500"(view:'/error')
         "404"(view:'/notFound')

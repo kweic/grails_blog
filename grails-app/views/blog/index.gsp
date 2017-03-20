@@ -22,7 +22,11 @@
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
 
+
               <g:each var="item" in="${blogList}" status="i">
+                                          <g:link  mapping="blogLink" params="[id: item.id, date: item.dateCreated,title: item.title]">
+                                          link
+                                          </g:link>
                 <div class="col-sm-12 posts-1">
                     <div class="panel panel-default">
                         <div class="panel-heading">
