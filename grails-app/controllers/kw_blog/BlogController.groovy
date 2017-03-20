@@ -43,7 +43,7 @@ class BlogController {
         blog.save();
 
         flash.message = "New post added."
-        renderView("index");
+        render(view: "show", model: [blog: blog]);
     }
 
     @Secured('ROLE_USER')
@@ -59,10 +59,10 @@ class BlogController {
 
     @Secured('ROLE_USER')
     def update(Blog blog){
-        blog.save();
+        blog.save(flush: true);
 
         flash.message = "Post updated."
-        renderView("index");
+        render(view: "show", model: [blog: blog]);
     }
 
     @Secured('ROLE_USER')
