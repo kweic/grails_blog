@@ -7,13 +7,13 @@ class BlogController {
     static scaffold = Blog
 
     @Secured('ROLE_USER')
-    def index() {
-        def blogs = getBlogs()
+    def index(Integer max) {
+//        def blogs = getBlogs()
+//
+//        println "### returning index, blog count: "+Blog.count()
 
-        println "### returning index, blog count: "+Blog.count()
-        respond Blog.list(params), model: [blog: blogs, blogCount: Blog.count()] //this is the working one on larry's
-        //respond model: [blog: blogs, blogCount: Blog.count()]
-        //render(view: "index", model: [blog: blogs, blogCount: Blog.count()])
+        params.max = Math.min(max ?: 10, 100)
+        respond Blog.list(params), model: [blogCount: Blog.count()]
     }
 
     @Secured('ROLE_USER')

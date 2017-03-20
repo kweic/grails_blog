@@ -22,7 +22,7 @@
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
 
-              <g:each var="item" in="${blog}" status="i">
+              <g:each var="item" in="${blogList}" status="i">
                 <div class="col-sm-12 posts-1">
                     <div class="panel panel-default">
                         <div class="panel-heading">
