@@ -1,6 +1,7 @@
 package kw_blog.com.manifestcorp
 
 import grails.test.mixin.*
+import kw_blog.BlogController
 import spock.lang.*
 
 @TestFor(BlogController)

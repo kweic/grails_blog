@@ -22,10 +22,7 @@
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
 
-            <!-- <f:table collection="${blog}" /> -->
-
-
-              <g:each in="${blog}" var="item" status="i">
+              <g:each var="item" in="${blog}" status="i">
                 <div class="col-sm-12 posts-1">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -45,6 +42,9 @@
             <div class="pagination">
                 <g:paginate total="${blogCount ?: 0}" />
             </div>
+
+                        size: ${blogCount}
+                        list: ${blogList}
         </div>
     </body>
 </html>

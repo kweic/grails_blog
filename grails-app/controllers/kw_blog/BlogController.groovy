@@ -49,7 +49,7 @@ class BlogController {
 
     @Secured('ROLE_USER')
     def search() {
-      //  [blogInstanceList: blogs, blogInstanceTotal: blogs.totalCount]
+        //  [blogInstanceList: blogs, blogInstanceTotal: blogs.totalCount]
 
         renderView("search")
     }
