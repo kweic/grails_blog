@@ -5,7 +5,7 @@ import kw_blog.com.manifestcorp.User;
 import kw_blog.com.manifestcorp.UserRole;
 
 class BootStrap {
-    def springSecurityService
+    //def springSecurityService
 
     def init = { servletContext ->
 
