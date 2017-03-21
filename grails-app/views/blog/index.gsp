@@ -24,15 +24,13 @@
 
 
               <g:each var="item" in="${blogList}" status="i">
-                                          <g:link  mapping="blogLink" params="[id: item.id, date: item.dateCreated,title: item.title]">
-                                          link
-                                          </g:link>
+
                 <div class="col-sm-12 posts-1">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a id="blog-link-${i}" href="/blog/show/${item?.id}">
+                            <g:link  mapping="blogLink" params="[id: item.id, date: item.dateCreated,title: item.title]">
                                 <div id="blog-${i}"><h2><strong>${item.title}</strong></h2></div>
-                            </a>
+                            </g:link>
                             <div>author: ${item.postBy}</div>
                             <div class="text-muted"><small>${item.dateCreated}</small></div>
                             <div class="text-info"><small> ${item.mood}</small></div>
@@ -46,9 +44,6 @@
             <div class="pagination">
                 <g:paginate total="${blogCount ?: 0}" />
             </div>
-
-                        size: ${blogCount}
-                        list: ${blogList}
         </div>
     </body>
 </html>
