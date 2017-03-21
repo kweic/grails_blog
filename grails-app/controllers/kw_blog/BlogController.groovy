@@ -18,7 +18,7 @@ class BlogController {
 
     @Secured('ROLE_USER')
     def create(){
-        render(view: "create", model: [blog: new Blog()])
+        render(view: "edit", model: [blog: new Blog()])
         //respond view: "create", model: [blog: new Blog()]
     }
 

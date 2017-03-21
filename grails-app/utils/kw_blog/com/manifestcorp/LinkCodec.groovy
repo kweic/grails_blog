@@ -1,4 +1,4 @@
-package com.manifestcorp.kw_blog;
+package kw_blog.com.manifestcorp;
 
 
 class LinkCodec {

@@ -28,9 +28,10 @@
                 <div class="col-sm-12 posts-1">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <g:link  mapping="blogLink" params="[id: item.id, date: item.dateCreated,title: item.title]">
-                                <div id="blog-${i}"><h2><strong>${item.title}</strong></h2></div>
-                            </g:link>
+                        <g:link  mapping="blogLink" params="[id: item.id,title: seo.convert(value:item.title)]">
+                          <div id="blog-${i}">${item.title}</div>
+                        </g:link>
+
                             <div>author: ${item.postBy}</div>
                             <div class="text-muted"><small>${item.dateCreated}</small></div>
                             <div class="text-info"><small> ${item.mood}</small></div>

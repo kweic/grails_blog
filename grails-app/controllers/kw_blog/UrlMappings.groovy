@@ -9,12 +9,11 @@ class UrlMappings {
             }
         }
 
-        name blogLink: "/blog/show/$id/$date/$title?" {
-//            controller = "Show"
-//            action = "show"
+        name blogLink: "/blog/show/$id/$title?" {
             controller = "blog"
             action = "show"
         }
+
 
         "/"(controller:"Blog")
         "500"(view:'/error')

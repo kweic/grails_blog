@@ -1,9 +1,6 @@
-package com.manifestcorp.kw_blog
+package kw_blog.com.manifestcorp
 
-import grails.test.mixin.TestFor
 import spock.lang.Specification
-import com.manifestcorp.kw_blog.*
-
 
 class LinkCodecSpec extends Specification {
 
