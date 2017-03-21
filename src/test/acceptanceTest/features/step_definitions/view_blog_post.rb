@@ -29,5 +29,5 @@ Then(/^the url should contain information about the post$/) do
 end
 
 Then(/^I should see the blog post$/) do
-  pending
+  expect(@browser.text.include?(@selected_title)).to be true
 end

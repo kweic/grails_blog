@@ -14,4 +14,6 @@ class MainBlog
   div(:message, class: 'message')
   div(:firstBlog, id: 'blog-0')
   link(:firstBlogLink, id: 'blog-0')
+  text_field(:searchInput, id: 'query')
+  button(:search, id: 'search')
 end

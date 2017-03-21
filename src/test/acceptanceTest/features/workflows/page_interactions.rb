@@ -10,6 +10,14 @@ module PageInteractions
     on_page(MainBlog).create
   end
 
+  def search_for_post(searched)
+    # on_page(MainBlog) do |page|
+    #   page.searchInput = searched
+    # end
+    on_page(MainBlog).searchInput = searched;
+    @browser.send_keys :enter
+  end
+
   def click_first_blog
     @browser.div(:id => 'blog-0').click
   end

@@ -1,8 +1,6 @@
 package kw_blog.com.manifestcorp
 
-/**
- * Created by Manifest on 3/21/2017.
- */
+
 class SeoTagLib {
 
     static namespace = "seo"
