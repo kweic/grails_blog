@@ -11,7 +11,6 @@
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
                 <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-                <li><g:link class="search" action="search"><g:img dir="images" file="search-icon.png" width="20" height="20"/>Search</g:link></li>
             </ul>
         </div>
         <div id="create-blog" class="content scaffold-create" role="main">
@@ -26,6 +25,8 @@
                 </g:eachError>
             </ul>
             </g:hasErrors>
+
+            <div class="create-form">
             <g:form action="save">
 
                 <f:with bean="blog">
@@ -38,6 +39,7 @@
                     <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
                 </fieldset>
             </g:form>
+            </div>
         </div>
     </body>
 </html>
