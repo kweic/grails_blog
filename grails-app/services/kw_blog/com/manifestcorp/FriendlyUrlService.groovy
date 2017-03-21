@@ -14,7 +14,6 @@ class FriendlyUrlService {
      * http://core.svn.wordpress.org/trunk/wp-includes/formatting.php
      */
     def sanitizeWithDashes(text) {
-        println "text is: "+text
         if(!text) return ""
 
         // Preserve escaped octets
