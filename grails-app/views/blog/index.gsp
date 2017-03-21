@@ -22,16 +22,18 @@
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
 
-            <fieldset class="form">
-                <g:form action="search" method="GET">
-                    <div class="fieldcontain">
-                        <label for="query">Search:</label>
-                        <g:textField name="query" value="${params.query}"/>
-                    </div>
-                </g:form>
-            </fieldset>
+                        <fieldset class="form">
+                            <g:form action="search" method="GET">
+                                <div class="fieldcontain">
+                                    <label for="query">Search:</label>
+                                    <g:textField name="query" value="${params.query}"/>
+                                </div>
+                            </g:form>
+                       </fieldset>
 
-              <g:each var="item" in="${blogList}" status="i">
+
+
+              <g:each var="item" in="${blogsFound}" status="i">
 
                 <div class="blogPost col-sm-12 posts-1">
                     <div class="panel panel-default">

@@ -5,15 +5,13 @@ import grails.plugin.springsecurity.annotation.Secured
 
 class BlogController {
     static scaffold = Blog
+    def query = ""
 
     @Secured('ROLE_USER')
     def index(Integer max) {
-//        def blogs = getBlogs()
-//
-//        println "### returning index, blog count: "+Blog.count()
-
         params.max = Math.min(max ?: 10, 100)
-        respond Blog.list(params), model: [blogCount: Blog.count()]
+        def blogs = getBlogs()
+        respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query]
     }
 
     @Secured('ROLE_USER')
@@ -49,7 +47,9 @@ class BlogController {
     @Secured('ROLE_USER')
     def delete(Blog blog){
         blog.delete(flush: true);
-        renderView("index");
+        def blogs = getBlogs();
+        flash.message = "Your post was deleted."
+        render(view: "index", model: [blog: blogs])
     }
 
     @Secured('ROLE_USER')
@@ -67,14 +67,14 @@ class BlogController {
 
     @Secured('ROLE_USER')
     def search() {
-        def blogs = Blog.findAllByTitleLike("%${params.query}%")
+        def blogs = Blog.findAllByTitleLike("%${params.query}%", params)
+        flash.message = "Found "+blogs.size+" results."
+        query = params.query
+        //return index(10);
+        //render view:"index", model: [value: params.value, blogList: blogs, blogCount: Blog.count()]
 
-        render(view:"search", model: [value: params.value, blog: blogs])
+        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: query]
     }
 
-    private renderView(String view){
-        def blogs = getBlogs();
-        render(view: view, model: [blog: blogs])
-    }
 
 }
