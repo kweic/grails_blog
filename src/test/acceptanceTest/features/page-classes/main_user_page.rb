@@ -13,5 +13,5 @@ class MainBlog
   link(:home, text: 'Home')
   div(:message, class: 'message')
   div(:firstBlog, id: 'blog-0')
-  link(:firstBlogLink, id: 'blog-link-0')
+  link(:firstBlogLink, id: 'blog-0')
 end
