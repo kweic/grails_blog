@@ -19,7 +19,9 @@ When(/^I choose a blog post$/) do
 end
 
 Then(/^I should see comments left by other readers$/) do
-
+  my_comment = generate_random_words(5)
+  comment_on_blog(my_comment)
+  expect(@browser.text.include?(my_comment)).to be true
 end
 
 Then(/^the url should contain information about the post$/) do
