@@ -46,7 +46,11 @@ class FriendlyUrlService {
         text = text.replaceAll('-+', '-')
 
         // It must end in a letter or digit, otherwise we strip the last char
-        if (!text[-1].charAt(0).isLetterOrDigit()) text = text[0..-2]
+        try {
+            if (!text[-1].charAt(0).isLetterOrDigit()) text = text[0..-2]
+        }catch(Exception e){
+
+        }
 
         return text
     }

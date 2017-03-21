@@ -31,8 +31,6 @@
                             </g:form>
                        </fieldset>
 
-
-
               <g:each var="item" in="${blogsFound}" status="i">
 
                 <div class="blogPost col-sm-12 posts-1">
