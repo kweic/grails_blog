@@ -38,6 +38,7 @@ class BlogControllerSpec extends Specification {
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'POST'
+            request.format = 'form'
             def blog = new Blog()
             blog.validate()
             controller.save(blog)
@@ -128,6 +129,7 @@ class BlogControllerSpec extends Specification {
         when:"The delete action is called for a null instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'DELETE'
+            request.format = 'form'
             controller.delete(null)
 
         then:"A 404 is returned"
