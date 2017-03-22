@@ -12,9 +12,7 @@ class BlogControllerSpec extends Specification {
     def populateValidParams(params) {
         assert params != null
 
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
-        assert false, "TODO: Provide a populateValidParams() implementation for this generated test suite"
+        params.title = "hey";
     }
 
     void "Test the index action returns the correct model"() {
@@ -97,6 +95,7 @@ class BlogControllerSpec extends Specification {
         when:"Update is called for a domain instance that doesn't exist"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'PUT'
+            request.format = 'form'
             controller.update(null)
 
         then:"A 404 error is returned"

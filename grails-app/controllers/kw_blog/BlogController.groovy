@@ -1,7 +1,9 @@
 package kw_blog
 
 import kw_blog.com.manifestcorp.Blog
+import kw_blog.com.manifestcorp.Comment
 import grails.plugin.springsecurity.annotation.Secured
+import grails.transaction.Transactional;
 
 class BlogController {
     static scaffold = Blog
@@ -37,32 +39,86 @@ class BlogController {
     }
 
     @Secured('ROLE_USER')
-    def save(Blog blog){
-        blog.save();
+    @Transactional
+    def save(Blog blog) {
+        if (blog == null) {
+            transactionStatus.setRollbackOnly()
+            notFound()
+            return
+        }
 
-        flash.message = "New post added."
-        render(view: "show", model: [blog: blog]);
+        if (blog.hasErrors()) {
+            transactionStatus.setRollbackOnly()
+            respond blog.errors, view:'create'
+            return
+        }
+
+        blog.save flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'blog.label', default: 'Blog'), blog.id])
+                redirect blog
+                }
+            '*' { respond blog, [status: CREATED] }
+        }
     }
 
     @Secured('ROLE_USER')
+    @Transactional
     def delete(Blog blog){
-        blog.delete(flush: true);
-        def blogs = getBlogs();
-        flash.message = "Your post was deleted."
-        render(view: "index", model: [blog: blogs])
+        if (blog == null) {
+            transactionStatus.setRollbackOnly()
+            notFound()
+            return
+        }
+
+        blog.delete(flush: true)
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'blog.label', default: 'Blog'), blog.id])
+                redirect action:"index", method:"GET"
+                }
+            '*'{ render status: NO_CONTENT }
+            }
+
+//        blog.delete(flush: true);
+//        def blogs = getBlogs();
+//        flash.message = "Your post was deleted."
+//        render(view: "index", model: [blog: blogs])
     }
 
     @Secured('ROLE_USER')
     def edit(Blog blog){
-        render(view: "edit", model: [blog: blog]);
+        //render(view: "edit", model: [blog: blog, newComment: new Comment()]);
+        respond blog
     }
 
     @Secured('ROLE_USER')
-    def update(Blog blog){
-        blog.save(flush: true);
+    @Transactional
+    def update(Blog blog) {
+        if (blog == null) {
+            transactionStatus.setRollbackOnly()
+            notFound()
+            return
+        }
 
-        flash.message = "Post updated."
-        render(view: "show", model: [blog: blog]);
+        if (blog.hasErrors()) {
+            transactionStatus.setRollbackOnly()
+            respond blog.errors, view: 'edit'
+            return
+        }
+
+        blog.save flush: true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'post.label', default: 'Post'), blog.id])
+                redirect blog
+            }
+            '*' { respond blog, [status: OK] }
+        }
     }
 
     @Secured('ROLE_USER')
