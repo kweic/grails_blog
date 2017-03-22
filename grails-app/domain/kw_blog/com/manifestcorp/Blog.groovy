@@ -2,11 +2,12 @@ package kw_blog.com.manifestcorp
 
 
 class Blog {
-    String title;
-    String blogEntry;
-    String mood;
-    String postBy = "Kevin";
-    Date dateCreated;
+    String title
+    String blogEntry
+    String mood
+    String postBy
+    Date dateCreated
+    SortedSet comments
 
 //    static belongsTo = [user: User]
 
