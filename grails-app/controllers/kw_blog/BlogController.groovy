@@ -11,6 +11,7 @@ class BlogController {
     //static scaffold = Blog
     def query = ""
 
+
     @Secured('ROLE_USER')
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -84,11 +85,6 @@ class BlogController {
                 }
             '*'{ render status: NO_CONTENT }
             }
-
-//        blog.delete(flush: true);
-//        def blogs = getBlogs();
-//        flash.message = "Your post was deleted."
-//        render(view: "index", model: [blog: blogs])
     }
 
     @Secured('ROLE_USER')

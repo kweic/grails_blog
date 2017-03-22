@@ -8,7 +8,9 @@ class Blog {
     String postBy = "Kevin";
     Date dateCreated;
 
-//    static belongsTo = [group: Group]
+//    static belongsTo = [user: User]
+
+    static hasMany = [comments:Comment]
 
     static constraints = {
         title(blank: false)

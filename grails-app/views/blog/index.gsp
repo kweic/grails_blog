@@ -43,11 +43,13 @@
                             <div class="text-muted"><small>${item.dateCreated}</small></div>
                             <div class="text-info"><small> ${item.mood}</small></div>
                         </div>
+
                         <div class="panel-body">
                             <div class="truncate">
                                 ${item.blogEntry}
                             </div>
                         </div>
+
                     </div>
                 </div>
               </g:each>

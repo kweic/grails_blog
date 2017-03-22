@@ -208,21 +208,43 @@
             </g:form>
 
 
-            comments here
-                        <g:form action="save" controller="Comment">
-                            <f:with bean="comment">
-                                <f:field property="user"/>
-                                <f:field property="comment"/>
-                               <!-- <g:hiddenField name="id" property="blogId" value="${this.blog.id}"/>-->
-                               <g:hiddenField name="blogId" property="blogId" value="${blog.id}"/>
-                            </f:with>
-                            <fieldset class="buttons">
-                                <g:submitButton name="create" class="save" value="${message(code: 'default.button.comment.label', default: 'Comment')}" />
-                            </fieldset>
-                        </g:form>
 
 
 
+            <g:form action="save" controller="Comment">
+                <f:with bean="comment">
+                    <f:field property="user"/>
+                    <f:field property="comment"/>
+                   <!-- <g:hiddenField name="id" property="blogId" value="${this.blog.id}"/>-->
+                    <g:hiddenField name="blog.id" value="${blog.id}"/>
+                </f:with>
+                <fieldset class="buttons">
+                    <g:submitButton name="create" class="save" value="${message(code: 'default.button.comment.label', default: 'Comment')}" />
+                </fieldset>
+            </g:form>
+
+            </br>
+
+
+
+
+            <div class="col-sm-12 posts-1">
+            <g:each var="item" in="${blog.comments}" status="i">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div id="comment-author-${i}">Post by: ${item.user}</div>
+                            <div id="comment-date-${i}">${item.dateCreated}</div>
+                        </div>
+
+                        <div class="panel-body">
+                            <div id="comment-${i}">
+                                 ${item.comment}
+                            </div>
+                        </div>
+                    </div>
+            </g:each>
+            </div>
 
 
         </div>

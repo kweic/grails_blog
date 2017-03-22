@@ -6,12 +6,10 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
+@Secured('ROLE_USER')
 class CommentController {
     static scaffold = Comment
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-    static{
-        println "comment controller created"
-    }
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -27,13 +25,10 @@ class CommentController {
         respond new Comment(params)
     }
 
+
     @Secured('ROLE_USER')
     @Transactional
     def save(Comment comment) {
-
-        println "save in comment controller called"
-        println "name is: "+comment.user
-        println "id is: "+comment.blogId
 
         if (comment == null) {
             transactionStatus.setRollbackOnly()

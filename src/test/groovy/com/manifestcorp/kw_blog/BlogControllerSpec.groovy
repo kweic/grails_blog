@@ -3,6 +3,7 @@ package com.manifestcorp.kw_blog
 import grails.test.mixin.*
 import spock.lang.*
 import kw_blog.com.manifestcorp.*
+import org.apache.tools.ant.taskdefs.optional.extension.Specification
 import kw_blog.*
 
 @TestFor(BlogController)
