@@ -1,18 +1,24 @@
 package kw_blog.com.manifestcorp
 
+import grails.plugin.springsecurity.annotation.Secured
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class CommentController {
-
+    static scaffold = Comment
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static{
+        println "comment controller created"
+    }
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Comment.list(params), model:[commentCount: Comment.count()]
     }
 
+    @Secured('ROLE_USER')
     def show(Comment comment) {
         respond comment
     }
@@ -21,8 +27,10 @@ class CommentController {
         respond new Comment(params)
     }
 
+    @Secured('ROLE_USER')
     @Transactional
     def save(Comment comment) {
+        println "save in comment controller called"
         if (comment == null) {
             transactionStatus.setRollbackOnly()
             notFound()

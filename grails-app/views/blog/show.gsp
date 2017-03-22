@@ -209,7 +209,7 @@
 
 
             comments here
-                        <g:form action="save" controller="comment">
+                        <g:form action="save" controller="Comment">
 
                             <f:with bean="comment">
                                 <f:field property="user"/>

@@ -8,7 +8,7 @@ import static org.springframework.http.HttpStatus.*
 
 
 class BlogController {
-    static scaffold = Blog
+    //static scaffold = Blog
     def query = ""
 
     @Secured('ROLE_USER')
