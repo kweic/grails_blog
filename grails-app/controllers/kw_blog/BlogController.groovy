@@ -37,7 +37,7 @@ class BlogController {
 
     @Secured('ROLE_USER')
     def show(Blog blog){
-        respond blog
+        respond blog, model: [comment: new Comment()]
     }
 
     @Secured('ROLE_USER')

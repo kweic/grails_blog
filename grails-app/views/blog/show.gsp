@@ -206,6 +206,21 @@
                     <input class="delete" type="submit" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                 </fieldset>
             </g:form>
+
+
+            comments here
+                        <g:form action="save" controller="comment">
+
+                            <f:with bean="comment">
+                                <f:field property="user"/>
+                                <f:field property="comment"/>
+                            </f:with>
+                            <fieldset class="buttons">
+                                <g:submitButton name="create" class="save" value="${message(code: 'default.button.comment.label', default: 'Comment')}" />
+                            </fieldset>
+                        </g:form>
+
+
         </div>
     </body>
 </html>
