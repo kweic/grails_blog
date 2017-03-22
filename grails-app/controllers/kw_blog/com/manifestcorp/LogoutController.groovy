@@ -2,6 +2,8 @@ package kw_blog.com.manifestcorp
 
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.web.RedirectStrategy
+import grails.plugin.springsecurity.SpringSecurityUtils
+import grails.plugin.springsecurity.SecurityFilterPosition
 
 import javax.servlet.http.HttpServletResponse
 

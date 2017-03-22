@@ -29,7 +29,7 @@ class CommentController {
     @Secured('ROLE_USER')
     @Transactional
     def save(Comment comment) {
-
+        println "this is the new comment I added to save in comment controller"
         if (comment == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -44,13 +44,7 @@ class CommentController {
 
         comment.save flush:true
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'comment.label', default: 'Comment'), comment.id])
-                redirect comment
-            }
-            '*' { respond comment, [status: CREATED] }
-        }
+        redirect controller: "blog", action: "show", id: comment.blog.id
     }
 
     def edit(Comment comment) {

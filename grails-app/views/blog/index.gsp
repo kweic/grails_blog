@@ -29,10 +29,6 @@
 
 
 
-
-
-
-
                         <fieldset class="form">
                             <g:form action="search" method="GET">
                                 <div class="fieldcontain">
@@ -41,6 +37,8 @@
                                 </div>
                             </g:form>
                        </fieldset>
+
+
 
               <g:each var="item" in="${blogsFound}" status="i">
 

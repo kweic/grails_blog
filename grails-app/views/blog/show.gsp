@@ -195,16 +195,21 @@
             </ul>
         </div>
         <div id="show-blog" class="content scaffold-show" role="main">
-            <h1><g:message code="default.show.label" args="[entityName]" /></h1>
+            <!--<h1><g:message code="default.show.label" args="[entityName]" /></h1>-->
             <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
             </g:if>
 
 
-            <f:display bean="blog" />
+            <!--<f:display bean="blog" />-->
+            <div class="well well-lg">
+            <div class="blog-title"><h1>${this.blog.title}</h1></div>
+            <div class="blog-mood text-info">Mood: ${this.blog.mood}</div>
+            <div class="blog-blogEntry">${this.blog.blogEntry}</div>
+            <div class="blog-date text-muted"><small>${this.blog.dateCreated}</small></div>
+            </div>
 
 
-           
             <g:form resource="${this.blog}" method="DELETE">
                 <fieldset class="buttons">
                     <g:link class="edit" action="edit" resource="${this.blog}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
@@ -222,9 +227,10 @@
                     <f:field property="comment"/>
                    <!-- <g:hiddenField name="id" property="blogId" value="${this.blog.id}"/>-->
                     <g:hiddenField name="blog.id" value="${blog.id}"/>
+                    <g:hiddenField name="params.page" value="1"/>
                 </f:with>
                 <fieldset class="buttons">
-                    <g:submitButton name="create" class="save" value="${message(code: 'default.button.comment.label', default: 'Comment')}" />
+                    <g:submitButton params="${[page: 1]}" name="create" class="save" value="${message(code: 'default.button.comment.label', default: 'Comment')}" />
                 </fieldset>
             </g:form>
 
