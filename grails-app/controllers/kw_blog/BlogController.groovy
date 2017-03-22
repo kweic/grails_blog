@@ -4,6 +4,8 @@ import kw_blog.com.manifestcorp.Blog
 import kw_blog.com.manifestcorp.Comment
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional;
+import static org.springframework.http.HttpStatus.*
+
 
 class BlogController {
     static scaffold = Blog
@@ -60,7 +62,7 @@ class BlogController {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'blog.label', default: 'Blog'), blog.id])
                 redirect blog
                 }
-            '*' { respond blog, [status: CREATED] }
+            '*' { respond blog, [status: CREATED] } //[status: 201]
         }
     }
 
