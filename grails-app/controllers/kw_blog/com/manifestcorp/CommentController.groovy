@@ -30,7 +30,11 @@ class CommentController {
     @Secured('ROLE_USER')
     @Transactional
     def save(Comment comment) {
+
         println "save in comment controller called"
+        println "name is: "+comment.user
+        println "id is: "+comment.blogId
+
         if (comment == null) {
             transactionStatus.setRollbackOnly()
             notFound()

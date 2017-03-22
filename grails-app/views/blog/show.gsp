@@ -210,15 +210,19 @@
 
             comments here
                         <g:form action="save" controller="Comment">
-
                             <f:with bean="comment">
                                 <f:field property="user"/>
                                 <f:field property="comment"/>
+                               <!-- <g:hiddenField name="id" property="blogId" value="${this.blog.id}"/>-->
+                               <g:hiddenField name="blogId" property="blogId" value="${blog.id}"/>
                             </f:with>
                             <fieldset class="buttons">
                                 <g:submitButton name="create" class="save" value="${message(code: 'default.button.comment.label', default: 'Comment')}" />
                             </fieldset>
                         </g:form>
+
+
+
 
 
         </div>

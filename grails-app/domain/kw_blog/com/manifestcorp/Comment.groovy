@@ -6,6 +6,7 @@ package kw_blog.com.manifestcorp
 class Comment {
     String user;
     String comment;
+    String blogId;
 
     static constraints = {
         user(blank: false)
