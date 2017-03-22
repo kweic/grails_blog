@@ -60,7 +60,7 @@ class BlogController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'blog.label', default: 'Blog'), blog.id])
+                flash.message = message(code: 'default.created.message')
                 redirect blog
                 }
             '*' { respond blog, [status: CREATED] } //[status: 201]
@@ -112,7 +112,7 @@ class BlogController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'post.label', default: 'Post'), blog.id])
+                flash.message = message(code: 'default.updated.message')
                 redirect blog
             }
             '*' { respond blog, [status: OK] }

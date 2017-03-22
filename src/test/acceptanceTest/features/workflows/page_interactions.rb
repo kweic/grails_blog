@@ -10,6 +10,10 @@ module PageInteractions
     on_page(MainBlog).create
   end
 
+  def click_logout
+    @browser.input(:id => 'logout').click
+  end
+
   def search_for_post(searched)
     # on_page(MainBlog) do |page|
     #   page.searchInput = searched
@@ -28,10 +32,6 @@ module PageInteractions
 
   def click_update_button
     @browser.input(:class => 'save').click
-  end
-
-  def fill_comment_field(comment)
-    @browser.text_area(id: 'comment-area').text = comment;
   end
 
   def click_home

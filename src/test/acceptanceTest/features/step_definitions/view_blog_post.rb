@@ -14,12 +14,11 @@ end
 
 When(/^I choose a blog post$/) do
   @selected_title =first_post_on_page
-  puts 'selected title is: '+@selected_title
   click_first_blog
 end
 
 Then(/^I should see comments left by other readers$/) do
-  my_comment = generate_random_words(5)
+  my_comment = generate_random_words(5).strip
   comment_on_blog(my_comment)
   expect(@browser.text.include?(my_comment)).to be true
 end

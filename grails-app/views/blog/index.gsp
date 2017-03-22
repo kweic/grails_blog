@@ -15,7 +15,7 @@
                 <li>
                     <div>
                         <form name="logout" method="POST" action="${createLink(controller:'logout') }">
-                        <input type="submit" value="Logout"></form>
+                        <input id="logout" type="submit" value="Logout"></form>
                     </div>
                 </li>
             </ul>
