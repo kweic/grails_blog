@@ -11,7 +11,7 @@ module PageInteractions
   end
 
   def click_logout
-    @browser.input(:id => 'logout').click
+    @browser.input(:class => 'logout-button').click
   end
 
   def search_for_post(searched)

@@ -26,7 +26,7 @@ end
 Then(/^the url should contain information about the post$/) do
   url_from_page = get_page_url
   converted_title = make_text_link_friendly(@selected_title)
-  url_from_page.should match(converted_title)
+  expect(url_from_page).to match(converted_title)
 end
 
 Then(/^I should see the blog post$/) do
