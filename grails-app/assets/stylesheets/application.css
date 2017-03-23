@@ -26,3 +26,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.blog-logo {
+    margin-top: -20px;
+    height: 60px;
+    width: 200px;
+}

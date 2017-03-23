@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="layout" content="main" />
-        <g:set var="entityName" value="${message(code: 'blog.label', default: 'Blog')}" />
+        <g:set var="entityName" value="${message(code: 'blog.label', default: '')}" />
 
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
@@ -46,12 +46,12 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                         <g:link  mapping="blogLink" params="[id: item.id,title: seo.convert(value:item.title)]">
-                          <div id="blog-${i}">${item.title}</div>
+                          <div id="blog-${i}"><h2><strong>${item.title}</strong></h2></div>
                         </g:link>
+                            <div><small>Created: <span id="post-date-${i}" class="text-muted">${item.dateCreated}</span> by: </small><span>${item.postBy}</span></div>
 
-                            <div>author: ${item.postBy}</div>
-                            <div id="post-date-${i}" class="text-muted"><small>${item.dateCreated}</small></div>
-                            <div class="text-info"><small> ${item.mood}</small></div>
+
+                            <div><small> feeling: <i class="text-info">${item.mood}</i></small></div>
                         </div>
 
                         <div class="panel-body">

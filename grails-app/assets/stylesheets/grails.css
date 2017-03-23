@@ -381,8 +381,8 @@ body, html {
 }
 
 a {
-    color: #db4800;
-    text-decoration: underline;
+    color: #20404f;
+    font-weight: bold;
 }
 
 a:hover {

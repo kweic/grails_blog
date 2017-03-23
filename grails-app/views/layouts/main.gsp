@@ -24,9 +24,9 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/#">
-                    <i class="fa grails-icon">
-                        <asset:image src="grails-cupsonly-logo-white.svg"/>
-                    </i> Grails
+                    <i class="my-blog-logo">
+                        <asset:image src="blog_logo.GIF" class="blog-logo"/>
+                    </i>
                 </a>
             </div>
             <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">

@@ -30,7 +30,7 @@ module MainPage
     date_array = Array.new
     i = 0
     while i < n do
-      date_array << @browser.div(id: "post-date-#{i}").text
+      date_array << @browser.span(id: "post-date-#{i}").text
       i += 1
     end
     date_array
