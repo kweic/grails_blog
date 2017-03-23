@@ -50,7 +50,7 @@
                         </g:link>
 
                             <div>author: ${item.postBy}</div>
-                            <div id="post_date_${i}" class="text-muted"><small>${item.dateCreated}</small></div>
+                            <div id="post-date-${i}" class="text-muted"><small>${item.dateCreated}</small></div>
                             <div class="text-info"><small> ${item.mood}</small></div>
                         </div>
 
