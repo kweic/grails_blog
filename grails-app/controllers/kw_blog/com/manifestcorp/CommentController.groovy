@@ -29,7 +29,6 @@ class CommentController {
     @Secured('ROLE_USER')
     @Transactional
     def save(Comment comment) {
-        println "this is the new comment I added to save in comment controller"
         if (comment == null) {
             transactionStatus.setRollbackOnly()
             notFound()

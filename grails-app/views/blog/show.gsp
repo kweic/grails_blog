@@ -244,7 +244,7 @@
             </div>
 
 
-                        <g:form id="comment-section" action="save" controller="Comment">
+                        <g:form action="save" controller="Comment">
                             <f:with bean="comment">
                                 <f:field property="user"/>
                                 <f:field property="comment"/>

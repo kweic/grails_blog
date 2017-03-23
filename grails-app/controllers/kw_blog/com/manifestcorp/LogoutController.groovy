@@ -14,8 +14,6 @@ class LogoutController {
     RedirectStrategy redirectStrategy
 
     def index() {
-        println "logout index in logoutcontroller called"
-
         if (!request.post && SpringSecurityUtils.getSecurityConfig().logout.postOnly) {
             response.sendError HttpServletResponse.SC_METHOD_NOT_ALLOWED // 405
             return
