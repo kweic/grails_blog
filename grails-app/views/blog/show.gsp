@@ -194,6 +194,8 @@
                 <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
             </ul>
         </div>
+
+        <br>
         <div id="show-blog" class="content scaffold-show" role="main">
             <!--<h1><g:message code="default.show.label" args="[entityName]" /></h1>-->
             <g:if test="${flash.message}">
@@ -203,9 +205,9 @@
 
             <!--<f:display bean="blog" />-->
             <div class="well well-lg">
-            <div class="blog-title"><h1>${this.blog.title}</h1></div>
+            <div class="blog-title"><h1><strong>${this.blog.title}</strong></h1></div>
             <div class="blog-mood text-info">Mood: ${this.blog.mood}</div>
-            <div class="blog-blogEntry">${this.blog.blogEntry}</div>
+            <div class="blog-blogEntry"><pre>${this.blog.blogEntry}</pre></div>
             <div class="blog-date text-muted"><small>${this.blog.dateCreated}</small></div>
             </div>
 
@@ -218,44 +220,43 @@
             </g:form>
 
 
-
-
-
-            <g:form action="save" controller="Comment">
-                <f:with bean="comment">
-                    <f:field property="user"/>
-                    <f:field property="comment"/>
-                   <!-- <g:hiddenField name="id" property="blogId" value="${this.blog.id}"/>-->
-                    <g:hiddenField name="blog.id" value="${blog.id}"/>
-                    <g:hiddenField name="params.page" value="1"/>
-                </f:with>
-                <fieldset class="buttons">
-                    <g:submitButton params="${[page: 1]}" name="create" class="save" value="${message(code: 'default.button.comment.label', default: 'Comment')}" />
-                </fieldset>
-            </g:form>
-
             </br>
 
-
-
+            <div class="jump-link"><a href="#comment-section">Jump to comment</a></div>
+            </br>
 
             <div class="col-sm-12 posts-1">
             <g:each var="item" in="${blog.comments}" status="i">
 
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div id="comment-author-${i}">Post by: ${item.user}</div>
-                            <div id="comment-date-${i}">${item.dateCreated}</div>
+                            <div id="comment-author-${i}"><strong>${item.user}</strong></div>
                         </div>
 
                         <div class="panel-body">
-                            <div id="comment-${i}">
+                            <div class="blog-comment" id="comment-${i}">
                                  ${item.comment}
                             </div>
+                            <div class="text-muted" id="comment-date-${i}"><small>${item.dateCreated}</small></div>
                         </div>
                     </div>
             </g:each>
             </div>
+
+
+                        <g:form id="comment-section" action="save" controller="Comment">
+                            <f:with bean="comment">
+                                <f:field property="user"/>
+                                <f:field property="comment"/>
+                               <!-- <g:hiddenField name="id" property="blogId" value="${this.blog.id}"/>-->
+                                <g:hiddenField name="blog.id" value="${blog.id}"/>
+                                <g:hiddenField name="params.page" value="1"/>
+                            </f:with>
+                            <fieldset class="buttons">
+                                <g:submitButton params="${[page: 1]}" name="create" class="save" value="${message(code: 'default.button.comment.label', default: 'Comment')}" />
+                            </fieldset>
+                        </g:form>
+                        <a id="comment-section"></a>
 
 
         </div>

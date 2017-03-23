@@ -25,7 +25,7 @@
                 </button>
                 <a class="navbar-brand" href="/#">
                     <i class="my-blog-logo">
-                        <asset:image src="blog_logo.GIF" class="blog-logo"/>
+                        <asset:image src="blog_logo_invert.png" class="blog-logo"/>
                     </i>
                 </a>
             </div>
@@ -37,7 +37,11 @@
         </div>
     </div>
 
+    <form class="right" name="logout" method="POST" action="${createLink(controller:'logout') }">
+                <input class="logout-button" type="submit" value="Logout">
+                </form>
     <g:layoutBody/>
+
 
     <div class="footer" role="contentinfo"></div>
 
