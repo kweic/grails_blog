@@ -50,33 +50,11 @@
             </br>
 
 
-<div class="comments">
-</div>
-                        <g:form action="userComments" controller="Comment">
-                            <f:with bean="comment">
-                                <f:field property="user"/>
-                                <f:field property="comment"/>
-                                <g:hiddenField name="blog.id" value="${blog.id}"/>
-                                <g:hiddenField name="params.page" value="1"/>
-                            </f:with>
-
-                        <g:submitButton name="create" value="Comment" />
-                        </g:form>
-
-
-                            <button id="submit-button"> test submit</button>
-
-
-                            <div id="comments-spot">
-                                <g:render template="results"  model="['comments':blog.comments]"/>
-                            </div>
-
-
                             2d part down here
                             <form onsubmit="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),
                                             url:'/comment/save',success:function(data,textStatus){jQuery('#comments-spot').html(data);
-                                            jQuery('#commentForm')[0].reset();},error:function(XMLHttpRequest,textStatus,errorThrown){}});return false"
-                                            method="post" action="results" id="commentForm">
+                                            },error:function(XMLHttpRequest,textStatus,errorThrown){}});return false"
+                                            method="post" id="commentForm">
 
                                             <div class="form-group">
                                                 <label class="control-label col-sm-1">Name: </label>
@@ -88,13 +66,9 @@
                                             </div>
                                         </form>
 
-
-                                     <script>
-                                     $(document).on("click", ".submitButton", function(){
-                                          console.log("click detected");
-                                          $( "comments-spot" ).load( "results" );
-                                      })
-                                     </script>
+                                                        <div id="comments-spot">
+                                                            <g:render template="results"  model="['comments':blog.comments]"/>
+                                                        </div>
     </body>
 </html>
 
