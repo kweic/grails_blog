@@ -70,9 +70,11 @@ class BlogController {
     @Secured('ROLE_USER')
     def userComments() {
         println "in blog controller, in userComments"
-        def comments = Comment.list(); // what ever your fetch logic is
-        render(template:'results')
+        println "id: "+params.blog.id
+        def blogComments = Comment.list(); // what ever your fetch logic is
+        render(template:'results', model:[comments: blogComments])
     }
+
 
     @Secured('ROLE_USER')
     @Transactional

@@ -52,7 +52,9 @@
 
                             2d part down here
                             <form onsubmit="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),
-                                            url:'/comment/save',success:function(data,textStatus){jQuery('#comments-spot').html(data);
+                                            url:'/blog/userComments',success:function(data,textStatus){
+
+                            jQuery('#comments-spot').html(data);
                                             },error:function(XMLHttpRequest,textStatus,errorThrown){}});return false"
                                             method="post" id="commentForm">
 
@@ -66,6 +68,7 @@
                                             </div>
                                         </form>
 
+Comments spot here:
                                                         <div id="comments-spot">
                                                             <g:render template="results"  model="['comments':blog.comments]"/>
                                                         </div>

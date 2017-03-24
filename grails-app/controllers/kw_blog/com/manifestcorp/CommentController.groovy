@@ -98,6 +98,13 @@ class CommentController {
         }
     }
 
+    @Secured('ROLE_USER')
+    def userComments() {
+        println "in comment controller, in userComments"
+        def comments = Comment.list(); // what ever your fetch logic is
+        render(template:'results')
+    }
+
     def test(){
         println "test called in comment controller"
     }
