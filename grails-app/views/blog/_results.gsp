@@ -1,13 +1,15 @@
-<ol>
-THE RESULTS PAGE TEMPLATE!!
+            <g:each var="item" in="${comments}" status="i">
 
-<g:each var="comment" in="${comments}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div id="comment-author-${i}"><strong>${item.user}</strong></div>
+                        </div>
 
-
-<li>
-user: ${comment?.user}
-<br>
-comment: ${comment?.comment}
-</li>
-</g:each>
-</ol>
+                        <div class="panel-body">
+                            <div class="blog-comment" id="comment-${i}">
+                                 ${item.comment}
+                            </div>
+                            <div class="text-muted" id="comment-date-${i}"><small>${item.dateCreated}</small></div>
+                        </div>
+                    </div>
+            </g:each>

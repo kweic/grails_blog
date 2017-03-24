@@ -67,12 +67,27 @@ class BlogController {
         }
     }
 
+    def getBlog(int id){
+        println "getblog called"
+        return Blog.findByIdLike(id, params)
+    }
+
+
     @Secured('ROLE_USER')
     def userComments() {
-        println "in blog controller, in userComments"
-        println "id: "+params.blog.id
-        def blogComments = Comment.list(); // what ever your fetch logic is
-        render(template:'results', model:[comments: blogComments])
+        Blog blog = (Blog)getBlog(Integer.parseInt(params.blogId))
+
+        Comment comment = new Comment();
+        comment.blog = blog;
+        comment.comment = params.comment;
+        comment.user = params.user;
+        comment.dateCreated = new Date()
+
+        blog.comments.add(comment);
+
+        blog.save flush:true
+
+        render(template:'results', model:[comments: blog.comments])
     }
 
 

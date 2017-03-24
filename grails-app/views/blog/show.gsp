@@ -50,7 +50,7 @@
             </br>
 
 
-                            2d part down here
+
                             <form onsubmit="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),
                                             url:'/blog/userComments',success:function(data,textStatus){
 
@@ -63,7 +63,8 @@
                                                 <div class="col-sm-10"><g:textField name="user" /></div>
                                                 <label class="control-label col-sm-1">Comment: </label>
                                                 <div class="col-sm-10"><g:textArea name="comment" /></div>
-                                                <g:hiddenField name="blog.id" value="${blog.id}" />
+                                                <g:hiddenField name="blogId" value="${blog.id}" />
+
                                                 <div class="col-sm-2"><g:submitButton name="create" class="save" value="Post Comment" /></div>
                                             </div>
                                         </form>

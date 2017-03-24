@@ -98,17 +98,6 @@ class CommentController {
         }
     }
 
-    @Secured('ROLE_USER')
-    def userComments() {
-        println "in comment controller, in userComments"
-        def comments = Comment.list(); // what ever your fetch logic is
-        render(template:'results')
-    }
-
-    def test(){
-        println "test called in comment controller"
-    }
-
     protected void notFound() {
         request.withFormat {
             form multipartForm {
@@ -124,36 +113,5 @@ class CommentController {
         println "in results in comment controller"
         render template "results"
     }
-
-    def submitComment() {
-        println "remoteSearch clicked"
-        println "params value: "+params.comment
-        println "params id: "+params.blogId
-
-
-//        String htmlContent = g.render([template: "results", model: [value: params.value, comments: comments]])
-//
-//        Map responseData = [htmlContent: htmlContent]
-//
-//        render(responseData as JSON)
-
-        def comments = Comment.findAllByRefIdLike("${params.blogId}%")
-        println "remote search comments size: "+comments.size;
-        //render(template:'results', model: [value: params.value, comments: comments])
-//        render view: "index"
-
-        def model = comments.collect { [(it.user): it.comment] }
-        Comment comment = new Comment(params);
-//        comment.comment = params.comment;
-//        comment.refId = params.blogId;
-//        comment.user = params.user;
-
-        save(comment);
-        render template: "results", model as JSON
-    }
-
-    //        def comments = Comment.findAllByRefIdLike("${params.blogId}%")
-//        println "remote search comments size: "+comments.size;
-//        render(template:'results', model: [value: params.value, comments: comments])
 
 }
