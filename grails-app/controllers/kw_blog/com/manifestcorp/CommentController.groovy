@@ -108,10 +108,4 @@ class CommentController {
         }
     }
 
-    def _results(){
-
-        println "in results in comment controller"
-        render template "results"
-    }
-
 }

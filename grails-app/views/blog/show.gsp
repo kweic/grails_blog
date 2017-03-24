@@ -49,8 +49,7 @@
             <div class="jump-link"><a href="#comment-section">Jump to comment</a></div>
             </br>
 
-
-
+<div>
                             <form onsubmit="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),
                                             url:'/blog/userComments',success:function(data,textStatus){
 
@@ -59,17 +58,14 @@
                                             method="post" id="commentForm">
 
                                             <div class="form-group">
-                                                <label class="control-label col-sm-1">Name: </label>
-                                                <div class="col-sm-10"><g:textField name="user" /></div>
-                                                <label class="control-label col-sm-1">Comment: </label>
-                                                <div class="col-sm-10"><g:textArea name="comment" /></div>
-                                                <g:hiddenField name="blogId" value="${blog.id}" />
-
-                                                <div class="col-sm-2"><g:submitButton name="create" class="save" value="Post Comment" /></div>
+                                                <g:textField name="user" />
+                                                <g:textArea name="comment" />
+                                                <g:hiddenField name="blogId" value="${blog.id}" />                  
                                             </div>
+                            <g:submitButton name="create" class="save" value="Post Comment" />
                                         </form>
+                            </div>
 
-Comments spot here:
                                                         <div id="comments-spot">
                                                             <g:render template="results"  model="['comments':blog.comments]"/>
                                                         </div>
