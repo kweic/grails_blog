@@ -52,18 +52,45 @@
 
 <div class="comments">
 </div>
+                        <g:form action="userComments" controller="Comment">
+                            <f:with bean="comment">
+                                <f:field property="user"/>
+                                <f:field property="comment"/>
+                                <g:hiddenField name="blog.id" value="${blog.id}"/>
+                                <g:hiddenField name="params.page" value="1"/>
+                            </f:with>
+
+                        <g:submitButton name="create" value="Comment" />
+                        </g:form>
+
 
                             <button id="submit-button"> test submit</button>
 
-                            new template spot
+
                             <div id="comments-spot">
-                                <!-- When the Page is Loaded, We need render this without an Ajax Call -->
                                 <g:render template="results"  model="['comments':blog.comments]"/>
                             </div>
 
 
+                            2d part down here
+                            <form onsubmit="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),
+                                            url:'/comment/save',success:function(data,textStatus){jQuery('#comments-spot').html(data);
+                                            jQuery('#commentForm')[0].reset();},error:function(XMLHttpRequest,textStatus,errorThrown){}});return false"
+                                            method="post" action="results" id="commentForm">
+
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-1">Name: </label>
+                                                <div class="col-sm-10"><g:textField name="user" /></div>
+                                                <label class="control-label col-sm-1">Comment: </label>
+                                                <div class="col-sm-10"><g:textArea name="comment" /></div>
+                                                <g:hiddenField name="blog.id" value="${blog.id}" />
+                                                <div class="col-sm-2"><g:submitButton name="create" class="save" value="Post Comment" /></div>
+                                            </div>
+                                        </form>
+
+
                                      <script>
-                                     $(document).on("click", "#submit-button", function(){
+                                     $(document).on("click", ".submitButton", function(){
                                           console.log("click detected");
                                           $( "comments-spot" ).load( "results" );
                                       })
