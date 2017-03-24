@@ -1,8 +1,13 @@
 <ol>
-<g:each var="blog" in="${blogs}">
-<li>${blog?.name}
-<g:if test="${blog.title}">- </g:if>
-${blog?.title}
+THE RESULTS PAGE TEMPLATE!!
+
+<g:each var="comment" in="${comments}">
+
+
+<li>
+user: ${comment?.user}
+<br>
+comment: ${comment?.comment}
 </li>
 </g:each>
 </ol>

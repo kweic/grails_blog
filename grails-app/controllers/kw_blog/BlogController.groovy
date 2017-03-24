@@ -68,6 +68,13 @@ class BlogController {
     }
 
     @Secured('ROLE_USER')
+    def userComments() {
+        println "in blog controller, in userComments"
+        def comments = Comment.list(); // what ever your fetch logic is
+        render(template:'results')
+    }
+
+    @Secured('ROLE_USER')
     @Transactional
     def delete(Blog blog){
         if (blog == null) {
