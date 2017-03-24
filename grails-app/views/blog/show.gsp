@@ -5,188 +5,10 @@
         <g:set var="entityName" value="${message(code: 'blog.label', default: 'Blog')}" />
         <title><g:message code="default.show.label" args="[entityName]" /></title>
     </head>
-     <style>
 
-     textarea{
-       resize: none;
-       outline: none;
-       width: 394px;
-       font-family: tahoma;
-       background: #f9f9f9;
-     }
 
-     textarea:focus{
-       background: #fff;
-     }
-
-     input[type="submit"]{
-       width: 400px;
-       padding: 5px 0px;
-       font-weight: bold;
-       margin-top: -6px;
-     }
-
-     .content{
-       width: 100%;
-     }
-
-     .comments{
-       width: 400px;
-       margin: 30px auto;
-     }
-
-     .insert-text{
-       position: relative;
-     }
-
-     .insert-text .loading{
-       position: absolute;
-       bottom: -25px;
-       display: none;
-     }
-
-     .insert-text .total-comment{
-       position: absolute;
-       bottom: -25px;
-       right: 0px;
-     }
-
-     .insert-text .total-comment:before{
-       content: "Total comment: ";
-       font-weight: bold;
-     }
-
-     .list-comments{
-       margin-top: 30px;
-       border: 1px solid #ccc;
-       background: #f0f0f0;
-     }
-
-     .list-comments > div{
-       padding: 10px;
-       border-bottom: 1px solid #ccc;
-     }
-
-     .list-comments > div:last-child{
-       border-bottom: none;
-     }
-
-     .editor{
-       border: 1px solid #ccc;
-       border-radius: 5px;
-     }
-
-     .editor-header{
-       border-bottom: 1px solid #ccc;
-     }
-
-     .editor-header a{
-       display: inline-block;
-       padding: 10px;
-       color: #666;
-     }
-
-     .editor-header a:hover{
-       color: #000;
-     }
-
-     .editor-content{
-       padding: 10px;
-       outline: none;
-       min-height: 80px;
-       background: #f9f9f9;
-       border-radius: 0px 0px 5px 5px;
-     }
-
-     .editor-content:focus{
-       background: #fff;
-     }
-
-     b{
-       font-weight: bold;
-     }
-
-     i{
-       font-style: italic;
-     }
-
-     p{
-       line-height: 20px;
-     }
-
-     a{
-       text-decoration: none;
-     }
-
-     [data-role="bold"]{
-       font-weight: bold;
-     }
-
-     [data-role="italic"]{
-       font-style: italic;
-     }
-
-     [data-role="underline"]{
-       text-decoration: underline;
-     }
-
-     [class^="menu"] {
-       position: relative;
-       top: 6px;
-       display: block;
-       width: 27px;
-       height: 2px;
-       margin: 0 auto;
-       background: #999;
-     }
-
-     [class^="menu"]:before {
-       content: '';
-       top: -5px;
-       width: 80%;
-       position: relative;
-       display: block;
-       height: 2px;
-       margin: 0 auto;
-       background: #999;
-     }
-
-     [class^="menu"]:after {
-       content: '';
-       top: 3px;
-       width: 80%;
-       position: relative;
-       display: block;
-       height: 2px;
-       margin: 0 auto;
-       background: #999;
-     }
-
-     .menu-left {
-       margin-right: 5px;
-     }
-
-     .menu-left:before{
-       margin-right: 5px;
-     }
-
-     .menu-left:after{
-       margin-right: 5px;
-     }
-
-     .menu-right {
-       margin-left: 5px;
-     }
-
-     .menu-right:before{
-       margin-left: 5px;
-     }
-
-     .menu-right:after{
-       margin-left: 5px;
-     }
-     </style>
     <body>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <a href="#list-blog" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
         <div class="nav" role="navigation">
             <ul>
@@ -225,40 +47,76 @@
             <div class="jump-link"><a href="#comment-section">Jump to comment</a></div>
             </br>
 
-            <div class="col-sm-12 posts-1">
-            <g:each var="item" in="${blog.comments}" status="i">
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div id="comment-author-${i}"><strong>${item.user}</strong></div>
-                        </div>
+            <!-- original comments printing without ajax -->
+                        <div class="col-sm-12 posts-1">
+                        <g:each var="item" in="${blog.comments}" status="i">
 
-                        <div class="panel-body">
-                            <div class="blog-comment" id="comment-${i}">
-                                 ${item.comment}
-                            </div>
-                            <div class="text-muted" id="comment-date-${i}"><small>${item.dateCreated}</small></div>
-                        </div>
-                    </div>
-            </g:each>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <div id="comment-author-${i}"><strong>${item.user}</strong></div>
+                                    </div>
+
+                                    <div class="panel-body">
+                                        <div class="blog-comment" id="comment-${i}">
+                                             ${item.comment}
+                                        </div>
+                                        <div class="text-muted" id="comment-date-${i}"><small>${item.dateCreated}</small></div>
+                                    </div>
+                                </div>
+                        </g:each>
+
+                        <!-- new spot for comments to be dropped in with ajax -->
+
+<div class="comments">
+</div>
+
+
+
             </div>
 
+            <!-- original submit comments section -->
+                                    <g:form action="save" controller="Comment">
+                                        <f:with bean="comment">
+                                            <f:field property="user"/>
+                                            <f:field property="comment"/>
+                                           <!-- <g:hiddenField name="id" property="blogId" value="${this.blog.id}"/>-->
+                                            <g:hiddenField name="blog.id" value="${blog.id}"/>
+                                            <g:hiddenField name="params.page" value="1"/>
+                                        </f:with>
+                                        <fieldset class="buttons">
+                                            <g:submitButton params="${[page: 1]}" name="create" class="save" value="${message(code: 'default.button.comment.label', default: 'Comment')}" />
+                                        </fieldset>
+                                    </g:form>
 
-                        <g:form action="save" controller="Comment">
-                            <f:with bean="comment">
-                                <f:field property="user"/>
-                                <f:field property="comment"/>
-                               <!-- <g:hiddenField name="id" property="blogId" value="${this.blog.id}"/>-->
-                                <g:hiddenField name="blog.id" value="${blog.id}"/>
-                                <g:hiddenField name="params.page" value="1"/>
-                            </f:with>
-                            <fieldset class="buttons">
-                                <g:submitButton params="${[page: 1]}" name="create" class="save" value="${message(code: 'default.button.comment.label', default: 'Comment')}" />
-                            </fieldset>
-                        </g:form>
+
                         <a id="comment-section"></a>
+
+                        <!-- new submit comment with ajax -->
+
+
+                            <g:form name="submitComment" url="[controller:'comment',action:'submitComment']" update="[success:'results', failure:'error']" >
+                            <input type='text' name='comment'/>
+                            <input type='hidden' name='blogId' value="${blog.id}"/>
+                            <g:submitButton class="comment-button" name="comment" value="Comment" />
+                            </g:form>
+
+                            <div id="error"></div>
+                            Results:
+                            <div id="results"></div>
+
 
 
         </div>
+
+                                     <script>
+                                     		$(document).ready(
+                                     			function() {
+                                     				comments.init();
+                                         	});
+                                     </script>
     </body>
 </html>
+
+
+

@@ -5,6 +5,7 @@ import kw_blog.com.manifestcorp.Blog
 class Comment implements Comparable<Comment> {
     String user
     String comment
+//    String refId
     Date dateCreated
     Blog blog
 
@@ -17,6 +18,7 @@ class Comment implements Comparable<Comment> {
     static constraints = {
         user(blank: false)
         comment(maxSize: 1000, widget: 'textarea', nullable: true)
+
     }
 
     @Override
