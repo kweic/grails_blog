@@ -16,7 +16,7 @@ class BlogController {
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         def blogs = getBlogs()
-        respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query]
+        respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
     }
 
     @Secured('ROLE_USER')
@@ -145,13 +145,15 @@ class BlogController {
 
     @Secured('ROLE_USER')
     def search() {
-        def blogs = Blog.findAllByTitleLike("%${params.query}%", params)
+        Integer max
+        params.max = Math.min(max ?: 10, 100)
+        def blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
         flash.message = "Found "+blogs.size+" results."
         query = params.query
         //return index(10);
         //render view:"index", model: [value: params.value, blogList: blogs, blogCount: Blog.count()]
 
-        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: query]
+        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
     }
 
 

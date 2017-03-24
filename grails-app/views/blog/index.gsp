@@ -68,7 +68,7 @@
 
 
             <div class="pagination">
-                <g:paginate total="${blogCount ?: 0}" />
+                <g:paginate total="${blogCount ?: 0}" params="${filterParams}"/>
             </div>
         </div>
     </body>

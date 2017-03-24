@@ -9,29 +9,29 @@
 
 
     <body>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
         <a href="#list-blog" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
         <div class="nav" role="navigation">
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
                 <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-            </ul>
-        </div>
+                </ul>
+            </div>
 
         <br>
         <div id="show-blog" class="content scaffold-show" role="main">
             <!--<h1><g:message code="default.show.label" args="[entityName]" /></h1>-->
             <g:if test="${flash.message}">
-            <div class="message" role="status">${flash.message}</div>
+                <div class="message" role="status">${flash.message}</div>
             </g:if>
 
 
             <!--<f:display bean="blog" />-->
             <div class="well well-lg">
-            <div class="blog-title"><h1><strong>${this.blog.title}</strong></h1></div>
-            <div class="blog-mood text-info">Mood: ${this.blog.mood}</div>
-            <div class="blog-blogEntry"><pre>${this.blog.blogEntry}</pre></div>
+                <div class="blog-title"><h1><strong>${this.blog.title}</strong></h1></div>
+                <div class="blog-mood text-info">Mood: ${this.blog.mood}</div>
+                <div class="blog-blogEntry"><pre>${this.blog.blogEntry}</pre></div>
             <div class="blog-date text-muted"><small>${this.blog.dateCreated}</small></div>
             </div>
 
@@ -49,26 +49,26 @@
             <div class="jump-link"><a href="#comment-section">Jump to comment</a></div>
             </br>
 
-<div>
-                            <form onsubmit="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),
+            <div>
+                <form onsubmit="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),
                                             url:'/blog/userComments',success:function(data,textStatus){
 
-                            jQuery('#comments-spot').html(data);
+                jQuery('#comments-area').html(data);
                                             },error:function(XMLHttpRequest,textStatus,errorThrown){}});return false"
-                                            method="post" id="commentForm">
+                                            method="post">
 
                                             <div class="form-group">
-                                                <g:textField name="user" />
-                                                <g:textArea name="comment" />
-                                                <g:hiddenField name="blogId" value="${blog.id}" />                  
-                                            </div>
-                            <g:submitButton name="create" class="save" value="Post Comment" />
+                    <div class="col-sm-12">User:<g:textField name="user" /></div>
+                    <div class="col-sm-12">Comment:<g:textArea name="comment" /></div>
+                    <g:hiddenField name="blogId" value="${blog.id}" />                  
+                    <div class="col-sm-12"><g:submitButton name="create" class="save" value="Post Comment" /></div>
+                    </div>
                                         </form>
-                            </div>
-
-                                                        <div id="comments-spot">
-                                                            <g:render template="results"  model="['comments':blog.comments]"/>
-                                                        </div>
+            </div>
+            
+            <div id="comments-area">
+                <g:render template="results"  model="['comments':blog.comments]"/>
+            </div>
     </body>
 </html>
 
