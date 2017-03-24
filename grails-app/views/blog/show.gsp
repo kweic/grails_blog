@@ -107,6 +107,36 @@
 
 
 
+
+                            new below here
+                            <div class="comment-updates"></div>
+
+
+                            <form onsubmit="jQuery.ajax({
+                                   type:'POST',
+                                   data:jQuery(this).serialize(),
+                                   url:'/comment/save',
+                                   success:function(data,textStatus){
+                                        jQuery('#comment-updates').html(data);
+                                        jQuery('#commentForm')[0].reset();
+                            },
+                            error:function(XMLHttpRequest,textStatus,errorThrown){}});
+                            return false"
+                            method="post" action="/comment/save" id="commentForm">
+
+
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-1">Name: </label>
+                                                <div class="col-sm-10"><g:textField name="user" /></div>
+                                                <label class="control-label col-sm-1">Comment: </label>
+                                                <div class="col-sm-10"><g:textArea name="comment" /></div>
+                                                <g:hiddenField name="blog.id" value="${blog.id}" />
+                                                <div class="col-sm-2"><g:submitButton name="create" class="save" value="Post Comment" /></div>
+                                            </div>
+                                        </form>
+
+
+
         </div>
 
                                      <script>
