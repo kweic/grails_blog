@@ -58,6 +58,8 @@ class BlogController {
 
         blog.save flush:true
 
+        println "blog saved"
+
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message')
@@ -69,15 +71,10 @@ class BlogController {
 
     }
 
-    def getBlog(int id){
-        println "getblog called"
-        return Blog.findByIdLike(id, params)
-    }
-
 
     @Secured('ROLE_USER')
     def userComments() {
-        Blog blog = (Blog)getBlog(Integer.parseInt(params.blogId))
+        Blog blog = (Blog)Blog.findByIdLike(Integer.parseInt(params.blogId), params)
 
         Comment comment = new Comment();
         comment.blog = blog;
@@ -86,7 +83,6 @@ class BlogController {
         comment.dateCreated = new Date()
 
         blog.comments.add(comment);
-
         blog.save flush:true
 
         render(template:'results', model:[comments: blog.comments])

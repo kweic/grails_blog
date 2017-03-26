@@ -5,7 +5,6 @@ import kw_blog.com.manifestcorp.Blog
 class Comment implements Comparable<Comment> {
     String user
     String comment
-//    String refId
     Date dateCreated
     Blog blog
 

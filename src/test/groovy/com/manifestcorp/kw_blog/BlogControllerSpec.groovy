@@ -158,22 +158,29 @@ class BlogControllerSpec extends Specification {
 
     void "Test submission of comments on a blog post"(){
         when:"A comment is submitted"
-        def blog = new Blog();
-        save(blog)
-        params.blogId = 1;
-        params.comment = "a comment"
-        params.user = "username"
+            populateValidParams(params)
+            def blog = new Blog(params).save(flush: true)
+            blog.comments = new TreeSet();
+            blog.save(flush: true)
 
-        controller.userComments()
+
+            params.blogId = "1"
+            params.comment = "a comment"
+            params.user = "username"
+
+            controller.userComments()
         then:"The comment is saved"
-        def savedBlog = Blog.findByIdLike(1);
-        savedBlog.comments.first() == "a comment"
+            def savedBlog = Blog.findByIdLike("1");
+            savedBlog != null
+            savedBlog.comments.first().comment == "a comment"
 
         when:"A comment is a duplicate of the comment preceding it"
         then:"The comment is not saved"
+            0 == 1
 
         when:"A comment is submitted without a username"
         then:"The comment is not saved"
+            0 == 1
 
 
     }
