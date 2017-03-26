@@ -8,7 +8,7 @@ import static org.springframework.http.HttpStatus.*
 
 
 class BlogController {
-    //static scaffold = Blog
+    static scaffold = Blog
     def query = ""
 
 
@@ -61,10 +61,12 @@ class BlogController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message')
+
                 redirect blog
                 }
             '*' { respond blog, [status: CREATED] } //[status: 201]
         }
+
     }
 
     def getBlog(int id){

@@ -3,7 +3,7 @@ package com.manifestcorp.kw_blog
 import grails.test.mixin.*
 import spock.lang.*
 import kw_blog.com.manifestcorp.*
-import org.apache.tools.ant.taskdefs.optional.extension.Specification
+import spock.lang.Specification
 import kw_blog.*
 
 @TestFor(BlogController)
@@ -12,8 +12,10 @@ class BlogControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-
         params.title = "hey";
+        params.postBy = "kevin";
+
+
     }
 
     void "Test the index action returns the correct model"() {
@@ -152,5 +154,27 @@ class BlogControllerSpec extends Specification {
             Blog.count() == 0
             response.redirectedUrl == '/blog/index'
             flash.message != null
+    }
+
+    void "Test submission of comments on a blog post"(){
+        when:"A comment is submitted"
+        def blog = new Blog();
+        save(blog)
+        params.blogId = 1;
+        params.comment = "a comment"
+        params.user = "username"
+
+        controller.userComments()
+        then:"The comment is saved"
+        def savedBlog = Blog.findByIdLike(1);
+        savedBlog.comments.first() == "a comment"
+
+        when:"A comment is a duplicate of the comment preceding it"
+        then:"The comment is not saved"
+
+        when:"A comment is submitted without a username"
+        then:"The comment is not saved"
+
+
     }
 }
