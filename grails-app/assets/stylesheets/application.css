@@ -13,3 +13,71 @@
 *= require mobile
 *= require_self
 */
+
+
+.create-form{
+    padding-left: 0%;
+}
+
+
+.truncate {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.blog-logo {
+    margin-top: -20px;
+    height: 60px;
+    width: 200px;
+}
+
+.logout-button{
+    float: right;
+    margin-right: 20px;
+    margin-top: 2px;
+}
+
+.blog-blogEntry{
+    padding-left: 5%;
+    padding-right: 10%;
+}
+
+.right{
+    float: right;
+}
+
+.blog-mood, .blog-date {
+    margin-left: 50px;
+}
+
+pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    word-break: keep-all; /*this stops the word breaking*/
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.blog-comment{
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+}
+
+.jump-link{
+    padding-left: 5%;
+}
+
+.search-label{
+    display: inline;
+}
+
+.pad-left{
+    padding-left: 10%;
+}

@@ -44,7 +44,7 @@ pre {
 
 }
 .navbar-default, .navbar-static-top {
-    background-color: #4D8618;
+    background-color: #51555b;
     border: 0px;
 }
 a.navbar-brand {
@@ -381,8 +381,8 @@ body, html {
 }
 
 a {
-    color: #db4800;
-    text-decoration: underline;
+    color: #20404f;
+    font-weight: bold;
 }
 
 a:hover {
