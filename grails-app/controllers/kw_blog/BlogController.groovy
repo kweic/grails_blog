@@ -74,16 +74,21 @@ class BlogController {
 
     @Secured('ROLE_USER')
     def userComments() {
-        Blog blog = (Blog)Blog.findByIdLike(Integer.parseInt(params.blogId), params)
+        Blog blog = (Blog) Blog.findByIdLike(Integer.parseInt(params.blogId), params)
 
-        Comment comment = new Comment();
-        comment.blog = blog;
-        comment.comment = params.comment;
-        comment.user = params.user;
-        comment.dateCreated = new Date()
+        if (blog.comments.size() == 0 ||
+                (!params.user.isEmpty() &&
+                blog.comments.last().comment != params.comment)) {
 
-        blog.comments.add(comment);
-        blog.save flush:true
+            Comment comment = new Comment();
+            comment.blog = blog;
+            comment.comment = params.comment;
+            comment.user = params.user;
+            comment.dateCreated = new Date()
+
+            blog.comments.add(comment);
+            blog.save flush: true
+        }
 
         render(template:'results', model:[comments: blog.comments])
     }
