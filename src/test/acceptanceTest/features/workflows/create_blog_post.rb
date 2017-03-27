@@ -11,7 +11,7 @@ module CreatePost
       fill_title_field(page, specified_title)
       fill_blog_entry(page)
       select_mood
-      fill_post_by(page)
+      #fill_post_by(page)
     end
   end
 

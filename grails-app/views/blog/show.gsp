@@ -51,13 +51,15 @@
                                             method="post">
 
                                             <div class="form-group pad-left">
-                    <div class="col-sm-12">
-                        <label>User:</label>
-                        <g:textField name="user" />
-                    </div>
+
+                    <g:hiddenField name="user" value="${user}"/>
+
                     <div class="col-sm-12">
                         <label>Comment:</label>
                         <g:textArea name="comment" />
+                    </div>
+                    <div class="col-sm-12">
+                        <small>commenting as </small>${user}
                     </div>
                     <g:hiddenField name="blogId" value="${blog.id}" />                  
                     <div class="col-sm-12">
