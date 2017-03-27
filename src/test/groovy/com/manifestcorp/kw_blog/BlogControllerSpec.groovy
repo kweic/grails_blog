@@ -156,32 +156,59 @@ class BlogControllerSpec extends Specification {
             flash.message != null
     }
 
+    void "Test search returns matching result"(){
+        when: "A search is made"
+            makePost("post1")
+            makePost("post2")
+            makePost("post3")
+            params.query = "post"
+            controller.search()
+
+        then: "Matching results are returned"
+            view == '/blog/index'
+            model.blogsFound.size == 3
+
+        when: "A specific search is made"
+            params.query = "post3"
+            controller.search()
+        then: "The exact match is returned"
+            view == '/blog/index'
+            model.blogsFound.size == 1
+    }
+
     void "Test submission of comments on a blog post"(){
         when:"A comment is submitted"
-            populateValidParams(params)
-            def blog = new Blog(params).save(flush: true)
-            blog.comments = new TreeSet();
-            blog.save(flush: true)
+            makePost("post")
+            makeComment("a comment")
 
-
-            params.blogId = "1"
-            params.comment = "a comment"
-            params.user = "username"
-
-            controller.userComments()
         then:"The comment is saved"
             def savedBlog = Blog.findByIdLike("1");
             savedBlog != null
             savedBlog.comments.first().comment == "a comment"
 
         when:"A comment is a duplicate of the comment preceding it"
+            makeComment("a comment")
         then:"The comment is not saved"
-            0 == 1
+            savedBlog.comments.size == 1
 
         when:"A comment is submitted without a username"
         then:"The comment is not saved"
-            0 == 1
+            0 == 2
+    }
 
+    void makePost(title){
+        populateValidParams(params)
+        def blog = new Blog(params).save(flush: true)
+        blog.comments = new TreeSet();
+        blog.title = title
+        blog.save(flush: true)
+    }
 
+    void makeComment(comment){
+        params.blogId = "1"
+        params.comment = comment
+        params.user = "username"
+
+        controller.userComments()
     }
 }
