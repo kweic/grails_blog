@@ -7,7 +7,7 @@
 
                         <div class="panel-body">
                             <div class="blog-comment" id="comment-${i}">
-                                 ${item.comment}
+                                 <pre>${item.comment}</pre>
                             </div>
                             <div class="text-muted" id="comment-date-${i}"><small>${item.dateCreated}</small></div>
                         </div>

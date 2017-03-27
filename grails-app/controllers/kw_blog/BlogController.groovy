@@ -5,18 +5,19 @@ import kw_blog.com.manifestcorp.Comment
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import static org.springframework.http.HttpStatus.*
+import kw_blog.com.manifestcorp.User
 
 
 class BlogController {
     def springSecurityService
-    static scaffold = Blog
+
     def query = ""
 
-    //def currentPrincipal = springSecurityService.principal
 
 
-    @Secured('ROLE_USER')
-    def index(Integer max) {
+    //@Secured('ROLE_USER')
+    @Secured("permitAll")
+    index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         def blogs = getBlogs()
         respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params, user: getUser()]
@@ -27,7 +28,7 @@ class BlogController {
     }
 
     @Secured('ROLE_USER')
-    def create(){
+    create(){
         render(view: "create", model: [blog: new Blog(), user: getUser()])
     }
 
@@ -42,14 +43,14 @@ class BlogController {
         blogs
     }
 
-    @Secured('ROLE_USER')
+    @Secured('permitAll')
     show(Blog blog){
         respond blog, model: [comment: new Comment(), user: getUser()]
     }
 
     @Secured('ROLE_USER')
     @Transactional
-    def save(Blog blog) {
+    save(Blog blog) {
         if (blog == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -101,7 +102,7 @@ class BlogController {
 
     @Secured('ROLE_USER')
     @Transactional
-    def delete(Blog blog){
+    delete(Blog blog){
         if (blog == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -117,6 +118,19 @@ class BlogController {
                 }
             '*'{ render status: NO_CONTENT }
             }
+    }
+
+    @Secured("permitAll")
+    createUser(){
+        def userName = params.user
+        println "count of users: "
+        println User.size()
+        if (User.findByUsernameLike(userName) == null){
+            println "user does not exist"
+        }else{
+            println "user exists"
+        }
+
     }
 
     @Secured('ROLE_USER')
@@ -150,7 +164,7 @@ class BlogController {
         }
     }
 
-    @Secured('ROLE_USER')
+    @Secured('permitAll')
     search() {
         def blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
         flash.message = "Found "+blogs.size+" results."

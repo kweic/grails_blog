@@ -46,17 +46,25 @@
     </div>
 
 
+
     <sec:ifLoggedIn>
-    <div id="logout-button" class="right">
+        <div id="logout-button" class="right">
     <form name="logout" method="POST" action="${createLink(controller:'logout') }">
                 <input class="logout-button" type="submit" value="Logout">
     </form>
-    </div>
+        </div>
     </sec:ifLoggedIn>
 
+    <sec:ifNotLoggedIn>
+    <div class="login-text right">
+         <a href="/login/auth">Login</a>
+    </div>
+    </sec:ifNotLoggedIn>
+
+
+
+
     <g:layoutBody/>
-
-
 
 
     <div class="footer" role="contentinfo"></div>

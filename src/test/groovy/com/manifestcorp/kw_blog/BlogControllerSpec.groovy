@@ -218,6 +218,22 @@ class BlogControllerSpec extends Specification {
             savedBlog.comments.size() == 1
     }
 
+    void "Test creating a new user"(){
+        when: "A new user is created"
+            params.user = "Kevin"
+            controller.createUser()
+        then: "That new user exists"
+            User.count() == 1;
+
+        when: "A username is already taken"
+        then: "The new username is not saved"
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize()
+    }
+
     void makePost(title){
         populateValidParams(params)
         def blog = new Blog(params).save(flush: true)

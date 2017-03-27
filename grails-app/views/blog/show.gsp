@@ -33,15 +33,17 @@
             <div class="blog-date text-muted"><small>${this.blog.dateCreated}</small></div>
             </div>
 
-
+            <sec:ifLoggedIn>
             <g:form resource="${this.blog}" method="DELETE">
                 <fieldset class="buttons">
                     <g:link class="edit" action="edit" resource="${this.blog}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
                     <input class="delete" type="submit" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                 </fieldset>
             </g:form>
+            </sec:ifLoggedIn>
 
 
+            <sec:ifLoggedIn>
             <div>
                 <form onsubmit="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),
                                             url:'/blog/userComments',success:function(data,textStatus){
@@ -66,9 +68,11 @@
                         <g:submitButton name="create" class="save" value="Post Comment" />
                     </div>
                     </div>
-                                        </form>
+                </form>
             </div>
-            
+            </sec:ifLoggedIn>
+
+            <label>Comments</label>
             <div id="comments-area">
                 <g:render template="results"  model="['comments':blog.comments]"/>
             </div>
