@@ -21,33 +21,12 @@ if (typeof jQuery !== 'undefined') {
 }
 
 
-var comments = {
-	init: function(){
-	    console.log("comments init called")
-
-		var sortMethod = "name";
-
-		$(document).on("click", "#comment-button", function(){
-		    console.log("clicked comment")
-		    comments.printComments();
-		})
-	},
-
-	printComments: function(){
-	console.log("in printcomments function");
-		$("#comments").empty();
-		$.ajax(
-			{
-				"url": "${g.createLink(controller:'comment',action:'test')}",
-				"data": {
-                  type: "post",
-                    dataType: 'json',
-				},
-
-			"success": function(responseData){
-			console.log("success in ajax")
-					$("#comments").append("test");
-			}
-		});
-	}
+function hideShowLoginName(){
+    if(window.location.pathname === '/login/auth'){
+        document.getElementById("user-name").style.visibility="hidden";
+        document.getElementById("logout-button").style.visibility="hidden";
+    }else{
+        document.getElementById("user-name").style.visibility="visible";
+        document.getElementById("logout-button").style.visibility="visible";
+    }
 }

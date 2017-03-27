@@ -8,20 +8,27 @@ import static org.springframework.http.HttpStatus.*
 
 
 class BlogController {
+    def springSecurityService
     static scaffold = Blog
     def query = ""
+
+    //def currentPrincipal = springSecurityService.principal
 
 
     @Secured('ROLE_USER')
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         def blogs = getBlogs()
-        respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
+        respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params, user: getUser()]
+    }
+
+    def getUser(){
+        return springSecurityService.principal.username
     }
 
     @Secured('ROLE_USER')
     def create(){
-        render(view: "create", model: [blog: new Blog()])
+        render(view: "create", model: [blog: new Blog(), user: getUser()])
     }
 
     def getBlogs(){
@@ -37,7 +44,7 @@ class BlogController {
 
     @Secured('ROLE_USER')
     show(Blog blog){
-        respond blog, model: [comment: new Comment()]
+        respond blog, model: [comment: new Comment(), user: getUser()]
     }
 
     @Secured('ROLE_USER')
@@ -88,7 +95,7 @@ class BlogController {
             blog.save flush: true
         }
 
-        render(template:'results', model:[comments: blog.comments])
+        render(template:'results', model:[comments: blog.comments, user: getUser()])
     }
 
 
@@ -114,7 +121,7 @@ class BlogController {
 
     @Secured('ROLE_USER')
     edit(Blog blog){
-        respond blog
+        respond blog,  model:[user: getUser()]
     }
 
     @Secured('ROLE_USER')
@@ -148,7 +155,7 @@ class BlogController {
         def blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
         flash.message = "Found "+blogs.size+" results."
 
-        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
+        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params, user: getUser()]
     }
 
 

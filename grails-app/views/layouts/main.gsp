@@ -12,6 +12,7 @@
 
     <g:layoutHead/>
 </head>
+
 <body>
 
     <div class="navbar navbar-default navbar-static-top" role="navigation">
@@ -29,6 +30,7 @@
                     </i>
                 </a>
             </div>
+            <div id="user-name" class="user-name"><small>Logged in: </small><strong>${user}</strong></div>
             <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
                 <ul class="nav navbar-nav navbar-right">
                     <g:pageProperty name="page.nav" />
@@ -37,10 +39,15 @@
         </div>
     </div>
 
-    <form class="right" name="logout" method="POST" action="${createLink(controller:'logout') }">
+
+    <div id="logout-button" class="right">
+    <form name="logout" method="POST" action="${createLink(controller:'logout') }">
                 <input class="logout-button" type="submit" value="Logout">
-                </form>
+    </form>
+    </div>
     <g:layoutBody/>
+
+
 
 
     <div class="footer" role="contentinfo"></div>
@@ -53,3 +60,7 @@
 
 </body>
 </html>
+
+<script>
+   hideShowLoginName()
+</script>
