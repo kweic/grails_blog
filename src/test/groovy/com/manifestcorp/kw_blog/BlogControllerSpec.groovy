@@ -174,6 +174,18 @@ class BlogControllerSpec extends Specification {
         then: "The exact match is returned"
             view == '/blog/index'
             model.blogsFound.size == 1
+
+        when: "A blank search is made"
+            params.query = "";
+            controller.search()
+        then: "All posts are returned"
+            model.blogsFound.size == 3
+
+        when: "A search matching nothing is made"
+            params.query = "noMatchForThis";
+            controller.search()
+        then: "nothing is returned"
+            model.blogsFound.isEmpty() == true
     }
 
     void "Test submission of comments on a blog post"(){
