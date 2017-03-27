@@ -30,21 +30,30 @@
                     </i>
                 </a>
             </div>
-            <div id="user-name" class="user-name"><small>Logged in: </small><strong>${user}</strong></div>
+            <sec:ifLoggedIn>
+            <div id="user-name" class="user-name">
+            <small>Logged in: </small><strong>${user}</strong>
+            </div>
+            </sec:ifLoggedIn>
+
             <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
                 <ul class="nav navbar-nav navbar-right">
                     <g:pageProperty name="page.nav" />
                 </ul>
             </div>
+
         </div>
     </div>
 
 
+    <sec:ifLoggedIn>
     <div id="logout-button" class="right">
     <form name="logout" method="POST" action="${createLink(controller:'logout') }">
                 <input class="logout-button" type="submit" value="Logout">
     </form>
     </div>
+    </sec:ifLoggedIn>
+
     <g:layoutBody/>
 
 
@@ -61,6 +70,4 @@
 </body>
 </html>
 
-<script>
-   hideShowLoginName()
-</script>
+

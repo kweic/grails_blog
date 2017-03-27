@@ -19,14 +19,3 @@ if (typeof jQuery !== 'undefined') {
         });
     })(jQuery);
 }
-
-
-function hideShowLoginName(){
-    if(window.location.pathname === '/login/auth'){
-        document.getElementById("user-name").style.visibility="hidden";
-        document.getElementById("logout-button").style.visibility="hidden";
-    }else{
-        document.getElementById("user-name").style.visibility="visible";
-        document.getElementById("logout-button").style.visibility="visible";
-    }
-}
