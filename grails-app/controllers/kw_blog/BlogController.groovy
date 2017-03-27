@@ -3,7 +3,7 @@ package kw_blog
 import kw_blog.com.manifestcorp.Blog
 import kw_blog.com.manifestcorp.Comment
 import grails.plugin.springsecurity.annotation.Secured
-import grails.transaction.Transactional;
+import grails.transaction.Transactional
 import static org.springframework.http.HttpStatus.*
 
 
@@ -22,7 +22,6 @@ class BlogController {
     @Secured('ROLE_USER')
     def create(){
         render(view: "create", model: [blog: new Blog()])
-        //respond view: "create", model: [blog: new Blog()]
     }
 
     def getBlogs(){
@@ -37,7 +36,7 @@ class BlogController {
     }
 
     @Secured('ROLE_USER')
-    def show(Blog blog){
+    show(Blog blog){
         respond blog, model: [comment: new Comment()]
     }
 
@@ -58,22 +57,20 @@ class BlogController {
 
         blog.save flush:true
 
-        println "blog saved"
-
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message')
 
                 redirect blog
                 }
-            '*' { respond blog, [status: CREATED] } //[status: 201]
+            '*' { respond blog, [status: CREATED] }
         }
 
     }
 
 
     @Secured('ROLE_USER')
-    def userComments() {
+    userComments() {
         Blog blog = (Blog) Blog.findByIdLike(Integer.parseInt(params.blogId), params)
 
         if (blog.comments.size() == 0 ||
@@ -81,13 +78,13 @@ class BlogController {
                         !params.comment.trim().isEmpty() &&
                 blog.comments.last().comment != params.comment)) {
 
-            Comment comment = new Comment();
-            comment.blog = blog;
-            comment.comment = params.comment;
-            comment.user = params.user;
+            Comment comment = new Comment()
+            comment.blog = blog
+            comment.comment = params.comment
+            comment.user = params.user
             comment.dateCreated = new Date()
 
-            blog.comments.add(comment);
+            blog.comments.add(comment)
             blog.save flush: true
         }
 
@@ -116,14 +113,13 @@ class BlogController {
     }
 
     @Secured('ROLE_USER')
-    def edit(Blog blog){
-        //render(view: "edit", model: [blog: blog, newComment: new Comment()]);
+    edit(Blog blog){
         respond blog
     }
 
     @Secured('ROLE_USER')
     @Transactional
-    def update(Blog blog) {
+    update(Blog blog) {
         if (blog == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -148,16 +144,11 @@ class BlogController {
     }
 
     @Secured('ROLE_USER')
-    def search() {
-        Integer max
-        params.max = Math.min(max ?: 10, 100)
+    search() {
         def blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
         flash.message = "Found "+blogs.size+" results."
-        query = params.query
-        //return index(10);
-        //render view:"index", model: [value: params.value, blogList: blogs, blogCount: Blog.count()]
 
-        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
+        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
     }
 
 

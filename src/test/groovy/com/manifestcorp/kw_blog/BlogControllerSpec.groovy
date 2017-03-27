@@ -12,10 +12,8 @@ class BlogControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-        params.title = "hey";
-        params.postBy = "kevin";
-
-
+        params.title = "hey"
+        params.postBy = "kevin"
     }
 
     void "Test the index action returns the correct model"() {
@@ -176,13 +174,13 @@ class BlogControllerSpec extends Specification {
             model.blogsFound.size == 1
 
         when: "A blank search is made"
-            params.query = "";
+            params.query = ""
             controller.search()
         then: "All posts are returned"
             model.blogsFound.size == 3
 
         when: "A search matching nothing is made"
-            params.query = "noMatchForThis";
+            params.query = "noMatchForThis"
             controller.search()
         then: "nothing is returned"
             model.blogsFound.isEmpty() == true
@@ -194,7 +192,7 @@ class BlogControllerSpec extends Specification {
             makeComment("user", "a comment")
 
         then:"The comment is saved"
-            def savedBlog = Blog.findByIdLike("1");
+            def savedBlog = Blog.findByIdLike("1")
             savedBlog != null
             savedBlog.comments.first().comment == "a comment"
 
@@ -210,12 +208,12 @@ class BlogControllerSpec extends Specification {
             savedBlog.comments.size() == 1
 
         when: "A comment is submitted with no comment"
-            makeComment("Bob", "");
+            makeComment("Bob", "")
         then: "The comment is not saved"
             savedBlog.comments.size() == 1
 
         when: "A comment is submitted that is only whitespace"
-            makeComment("Ted", "     ");
+            makeComment("Ted", "     ")
         then: "The comment is not saved"
             savedBlog.comments.size() == 1
     }
@@ -223,7 +221,7 @@ class BlogControllerSpec extends Specification {
     void makePost(title){
         populateValidParams(params)
         def blog = new Blog(params).save(flush: true)
-        blog.comments = new TreeSet();
+        blog.comments = new TreeSet()
         blog.title = title
         blog.save(flush: true)
     }
