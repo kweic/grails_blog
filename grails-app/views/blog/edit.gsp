@@ -14,10 +14,14 @@
             </ul>
         </div>
         <div id="edit-blog" class="content scaffold-edit" role="main">
+
             <h1><g:message code="default.edit.label" args="[entityName]" /></h1>
+
             <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
             </g:if>
+
+
             <g:hasErrors bean="${this.blog}">
             <ul class="errors" role="alert">
                 <g:eachError bean="${this.blog}" var="error">
@@ -25,6 +29,8 @@
                 </g:eachError>
             </ul>
             </g:hasErrors>
+
+
             <g:form resource="${this.blog}" method="PUT">
                 <g:hiddenField name="version" value="${this.blog?.version}" />
                 <fieldset class="form">
@@ -34,6 +40,8 @@
                     <input class="save" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
                 </fieldset>
             </g:form>
+
+
         </div>
     </body>
 </html>

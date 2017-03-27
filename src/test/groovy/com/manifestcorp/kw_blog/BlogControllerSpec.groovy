@@ -179,7 +179,7 @@ class BlogControllerSpec extends Specification {
     void "Test submission of comments on a blog post"(){
         when:"A comment is submitted"
             makePost("post")
-            makeComment("a comment")
+            makeComment("user", "a comment")
 
         then:"The comment is saved"
             def savedBlog = Blog.findByIdLike("1");
@@ -187,13 +187,15 @@ class BlogControllerSpec extends Specification {
             savedBlog.comments.first().comment == "a comment"
 
         when:"A comment is a duplicate of the comment preceding it"
-            makeComment("a comment")
+            makeComment("user", "a comment")
+
         then:"The comment is not saved"
-            savedBlog.comments.size == 1
+            savedBlog.comments.size() == 1
 
         when:"A comment is submitted without a username"
+            makeComment("", "a comment without a user")
         then:"The comment is not saved"
-            0 == 2
+            savedBlog.comments.size() == 1
     }
 
     void makePost(title){
@@ -204,10 +206,10 @@ class BlogControllerSpec extends Specification {
         blog.save(flush: true)
     }
 
-    void makeComment(comment){
+    void makeComment(username, comment){
         params.blogId = "1"
         params.comment = comment
-        params.user = "username"
+        params.user = username
 
         controller.userComments()
     }

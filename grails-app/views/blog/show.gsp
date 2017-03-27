@@ -26,8 +26,6 @@
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
 
-
-            <!--<f:display bean="blog" />-->
             <div class="well well-lg">
                 <div class="blog-title"><h1><strong>${this.blog.title}</strong></h1></div>
                 <div class="blog-mood text-info">Mood: ${this.blog.mood}</div>
