@@ -78,6 +78,7 @@ class BlogController {
 
         if (blog.comments.size() == 0 ||
                 (!params.user.isEmpty() &&
+                        !params.comment.trim().isEmpty() &&
                 blog.comments.last().comment != params.comment)) {
 
             Comment comment = new Comment();

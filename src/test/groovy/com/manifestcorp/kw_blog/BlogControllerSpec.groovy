@@ -196,6 +196,16 @@ class BlogControllerSpec extends Specification {
             makeComment("", "a comment without a user")
         then:"The comment is not saved"
             savedBlog.comments.size() == 1
+
+        when: "A comment is submitted with no comment"
+            makeComment("Bob", "");
+        then: "The comment is not saved"
+            savedBlog.comments.size() == 1
+
+        when: "A comment is submitted that is only whitespace"
+            makeComment("Ted", "     ");
+        then: "The comment is not saved"
+            savedBlog.comments.size() == 1
     }
 
     void makePost(title){
