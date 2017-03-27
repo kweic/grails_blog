@@ -1,8 +1,10 @@
-package kw_blog
+package com.manifestcorp.kw_blog
 
 import grails.test.mixin.TestFor
-import kw_blog.com.manifestcorp.Blog
 import spock.lang.Specification
+import kw_blog.com.manifestcorp.*
+import kw_blog.*
+
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions

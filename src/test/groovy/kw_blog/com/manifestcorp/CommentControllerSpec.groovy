@@ -3,9 +3,9 @@ package kw_blog.com.manifestcorp
 import grails.test.mixin.*
 import spock.lang.*
 
-@TestFor(BlogController)
-@Mock(Blog)
-class BlogControllerSpec extends Specification {
+@TestFor(CommentController)
+@Mock(Comment)
+class CommentControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
@@ -21,8 +21,8 @@ class BlogControllerSpec extends Specification {
             controller.index()
 
         then:"The model is correct"
-            !model.blogList
-            model.blogCount == 0
+            !model.commentList
+            model.commentCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -30,7 +30,7 @@ class BlogControllerSpec extends Specification {
             controller.create()
 
         then:"The model is correctly created"
-            model.blog!= null
+            model.comment!= null
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -38,25 +38,25 @@ class BlogControllerSpec extends Specification {
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'POST'
-            def blog = new Blog()
-            blog.validate()
-            controller.save(blog)
+            def comment = new Comment()
+            comment.validate()
+            controller.save(comment)
 
         then:"The create view is rendered again with the correct model"
-            model.blog!= null
+            model.comment!= null
             view == 'create'
 
         when:"The save action is executed with a valid instance"
             response.reset()
             populateValidParams(params)
-            blog = new Blog(params)
+            comment = new Comment(params)
 
-            controller.save(blog)
+            controller.save(comment)
 
         then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/blog/show/1'
+            response.redirectedUrl == '/comment/show/1'
             controller.flash.message != null
-            Blog.count() == 1
+            Comment.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -68,11 +68,11 @@ class BlogControllerSpec extends Specification {
 
         when:"A domain instance is passed to the show action"
             populateValidParams(params)
-            def blog = new Blog(params)
-            controller.show(blog)
+            def comment = new Comment(params)
+            controller.show(comment)
 
         then:"A model is populated containing the domain instance"
-            model.blog == blog
+            model.comment == comment
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -84,11 +84,11 @@ class BlogControllerSpec extends Specification {
 
         when:"A domain instance is passed to the edit action"
             populateValidParams(params)
-            def blog = new Blog(params)
-            controller.edit(blog)
+            def comment = new Comment(params)
+            controller.edit(comment)
 
         then:"A model is populated containing the domain instance"
-            model.blog == blog
+            model.comment == comment
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -98,28 +98,28 @@ class BlogControllerSpec extends Specification {
             controller.update(null)
 
         then:"A 404 error is returned"
-            response.redirectedUrl == '/blog/index'
+            response.redirectedUrl == '/comment/index'
             flash.message != null
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
-            def blog = new Blog()
-            blog.validate()
-            controller.update(blog)
+            def comment = new Comment()
+            comment.validate()
+            controller.update(comment)
 
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
-            model.blog == blog
+            model.comment == comment
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
             populateValidParams(params)
-            blog = new Blog(params).save(flush: true)
-            controller.update(blog)
+            comment = new Comment(params).save(flush: true)
+            controller.update(comment)
 
         then:"A redirect is issued to the show action"
-            blog != null
-            response.redirectedUrl == "/blog/show/$blog.id"
+            comment != null
+            response.redirectedUrl == "/comment/show/$comment.id"
             flash.message != null
     }
 
@@ -130,23 +130,23 @@ class BlogControllerSpec extends Specification {
             controller.delete(null)
 
         then:"A 404 is returned"
-            response.redirectedUrl == '/blog/index'
+            response.redirectedUrl == '/comment/index'
             flash.message != null
 
         when:"A domain instance is created"
             response.reset()
             populateValidParams(params)
-            def blog = new Blog(params).save(flush: true)
+            def comment = new Comment(params).save(flush: true)
 
         then:"It exists"
-            Blog.count() == 1
+            Comment.count() == 1
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(blog)
+            controller.delete(comment)
 
         then:"The instance is deleted"
-            Blog.count() == 0
-            response.redirectedUrl == '/blog/index'
+            Comment.count() == 0
+            response.redirectedUrl == '/comment/index'
             flash.message != null
     }
 }

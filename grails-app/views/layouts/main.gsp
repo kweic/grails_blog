@@ -24,9 +24,9 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/#">
-                    <i class="fa grails-icon">
-                        <asset:image src="grails-cupsonly-logo-white.svg"/>
-                    </i> Grails
+                    <i class="my-blog-logo">
+                        <asset:image src="blog_logo_invert.png" class="blog-logo"/>
+                    </i>
                 </a>
             </div>
             <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
@@ -37,7 +37,11 @@
         </div>
     </div>
 
+    <form class="right" name="logout" method="POST" action="${createLink(controller:'logout') }">
+                <input class="logout-button" type="submit" value="Logout">
+                </form>
     <g:layoutBody/>
+
 
     <div class="footer" role="contentinfo"></div>
 
