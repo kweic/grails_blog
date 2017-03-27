@@ -16,7 +16,7 @@
 
 
 .create-form{
-    padding-left: 10%;
+    padding-left: 0%;
 }
 
 
@@ -72,4 +72,12 @@ pre {
 
 .jump-link{
     padding-left: 5%;
+}
+
+.search-label{
+    display: inline;
+}
+
+.pad-left{
+    padding-left: 10%;
 }

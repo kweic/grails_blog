@@ -26,20 +26,29 @@
             </ul>
             </g:hasErrors>
 
+
+
             <div class="create-form">
             <g:form action="save">
 
+            <div class="pad-left">
                 <f:with bean="blog">
                     <f:field property="title"/>
                     <f:field property="blogEntry"/>
                     <f:field property="mood"/>
                     <f:field property="postBy"/>
                 </f:with>
+            </div>
+                </br>
+                </br>
                 <fieldset class="buttons">
                     <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
                 </fieldset>
+
             </g:form>
             </div>
+
+
         </div>
     </body>
 </html>
