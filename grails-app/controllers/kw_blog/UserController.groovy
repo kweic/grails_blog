@@ -30,7 +30,6 @@ class UserController {
 
     @Transactional
     def save(User userInstance) {
-        println "save in user called"
         if (userInstance == null) {
             notFound()
             println "userinstance is null"
@@ -38,13 +37,11 @@ class UserController {
         }
 
         if (userInstance.hasErrors()) {
-            println "userInstance has errors"
             respond userInstance.errors, view: 'create', model: [error: "Please choose a different name."]
             return
         }
 
         userInstance.save flush: true
-        println "userinstance saved"
         saveNewUserWithRole(userInstance)
 
         request.withFormat {
@@ -57,12 +54,9 @@ class UserController {
     }
 
     private void saveNewUserWithRole(User user){
-        println "in save new user"
-
         def ROLE_USER = Role.findByAuthority("ROLE_USER");
 
         if(ROLE_USER == null){
-            println "role was null, creating new"
             ROLE_USER = new Role(authority: 'ROLE_USER').save()
         }
 
@@ -72,8 +66,6 @@ class UserController {
             it.flush()
             it.clear()
         }
-
-        println "done with save new"
     }
 
     def edit(User userInstance) {
