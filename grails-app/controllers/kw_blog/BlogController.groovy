@@ -64,7 +64,6 @@ class BlogController {
                 }
             '*' { respond blog, [status: CREATED] }
         }
-
     }
 
 

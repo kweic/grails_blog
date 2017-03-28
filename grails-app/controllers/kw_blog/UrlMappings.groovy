@@ -19,6 +19,7 @@ class UrlMappings {
         "500"(view:'/error')
         "404"(view:'/notFound')
         "/comment"(controller:'Blog')
+        "/login"(view:'/login')
         "/comment/index"(controller:'Blog')
     }
 }

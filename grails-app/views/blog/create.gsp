@@ -36,7 +36,7 @@
                     <f:field property="title"/>
                     <f:field property="blogEntry"/>
                     <f:field property="mood"/>
-                    <f:field property="postBy" value="${user}" widget-hidden="true" label-hidden="true"/><label>${user}</label>
+                    <f:field property="postBy" value="${sec.username()}" widget-hidden="true" label-hidden="true"/><label>${sec.username()}</label>
                 </f:with>
             </div>
                 </br>

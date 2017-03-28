@@ -54,14 +54,14 @@
 
                                             <div class="form-group pad-left">
 
-                    <g:hiddenField name="user" value="${user}"/>
+                    <g:hiddenField name="user" value="${sec.username()}"/>
 
                     <div class="col-sm-12">
                         <label>Comment:</label>
                         <g:textArea name="comment" />
                     </div>
                     <div class="col-sm-12">
-                        <small>commenting as </small>${user}
+                        <small>commenting as </small>${sec.username()}
                     </div>
                     <g:hiddenField name="blogId" value="${blog.id}" />                  
                     <div class="col-sm-12">
