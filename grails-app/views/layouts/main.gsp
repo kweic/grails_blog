@@ -30,11 +30,7 @@
                     </i>
                 </a>
             </div>
-            <sec:ifLoggedIn>
-            <div id="user-name" class="user-name">
-            <small>Logged in: </small><strong>${user}</strong>
-            </div>
-            </sec:ifLoggedIn>
+
 
             <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
                 <ul class="nav navbar-nav navbar-right">
@@ -48,12 +44,17 @@
 
 
     <sec:ifLoggedIn>
-        <div id="logout-button" class="right">
+    <div id="logout-button" class="right">
     <form name="logout" method="POST" action="${createLink(controller:'logout') }">
                 <input class="logout-button" type="submit" value="Logout">
     </form>
-        </div>
+    </div>
+
+    <div id="user-name" class="right">
+    <small>Logged in: </small><strong>${sec.username()}</strong>
+    </div>
     </sec:ifLoggedIn>
+
 
     <sec:ifNotLoggedIn>
     <div class="login-text right">

@@ -10,6 +10,7 @@ import kw_blog.*
 @Mock(Blog)
 class BlogControllerSpec extends Specification {
 
+
     def populateValidParams(params) {
         assert params != null
         params.title = "hey"
@@ -17,7 +18,6 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test the index action returns the correct model"() {
-
         when:"The index action is executed"
             controller.index()
 
@@ -27,6 +27,7 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test the create action returns the correct model"() {
+
         when:"The create action is executed"
             controller.create()
 
@@ -35,6 +36,7 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test the save action correctly persists an instance"() {
+
 
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
@@ -218,16 +220,16 @@ class BlogControllerSpec extends Specification {
             savedBlog.comments.size() == 1
     }
 
-    void "Test creating a new user"(){
-        when: "A new user is created"
-            params.user = "Kevin"
-            controller.createUser()
-        then: "That new user exists"
-            User.count() == 1;
-
-        when: "A username is already taken"
-        then: "The new username is not saved"
-    }
+//    void "Test creating a new user"(){
+//        when: "A new user is created"
+//            params.user = "Kevin"
+//            controller.createUser()
+//        then: "That new user exists"
+//            User.count() == 1;
+//
+//        when: "A username is already taken"
+//        then: "The new username is not saved"
+//    }
 
     @Override
     protected void finalize() throws Throwable {

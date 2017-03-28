@@ -9,10 +9,8 @@ import kw_blog.com.manifestcorp.User
 
 
 class BlogController {
-    def springSecurityService
-
     def query = ""
-
+    static scaffold = Blog
 
 
     //@Secured('ROLE_USER')
@@ -20,16 +18,12 @@ class BlogController {
     index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         def blogs = getBlogs()
-        respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params, user: getUser()]
-    }
-
-    def getUser(){
-        return springSecurityService.principal.username
+        respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
     }
 
     @Secured('ROLE_USER')
     create(){
-        render(view: "create", model: [blog: new Blog(), user: getUser()])
+        render(view: "create", model: [blog: new Blog()])
     }
 
     def getBlogs(){
@@ -45,7 +39,7 @@ class BlogController {
 
     @Secured('permitAll')
     show(Blog blog){
-        respond blog, model: [comment: new Comment(), user: getUser()]
+        respond blog, model: [comment: new Comment()]
     }
 
     @Secured('ROLE_USER')
@@ -96,7 +90,9 @@ class BlogController {
             blog.save flush: true
         }
 
-        render(template:'results', model:[comments: blog.comments, user: getUser()])
+
+
+        render(template:'results', model:[comments: blog.comments])
     }
 
 
@@ -120,22 +116,10 @@ class BlogController {
             }
     }
 
-    @Secured("permitAll")
-    createUser(){
-        def userName = params.user
-        println "count of users: "
-        println User.size()
-        if (User.findByUsernameLike(userName) == null){
-            println "user does not exist"
-        }else{
-            println "user exists"
-        }
-
-    }
 
     @Secured('ROLE_USER')
     edit(Blog blog){
-        respond blog,  model:[user: getUser()]
+        respond blog
     }
 
     @Secured('ROLE_USER')
@@ -169,7 +153,7 @@ class BlogController {
         def blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
         flash.message = "Found "+blogs.size+" results."
 
-        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params, user: getUser()]
+        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
     }
 
 
