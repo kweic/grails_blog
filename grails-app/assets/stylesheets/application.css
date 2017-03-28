@@ -91,3 +91,7 @@ pre {
 .login-text{
     padding-right: 2%;
 }
+
+#new-user-tag {
+    text-align: center;
+}

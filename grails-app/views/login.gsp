@@ -165,7 +165,9 @@
 			<p>
 				<input type="submit" id="submit" value="Login"/>
 			</p>
+					<div id="new-user-tag"><a href="/user/create">New User</a></div>
 		</form>
+
 	</div>
 </div>
 <script>

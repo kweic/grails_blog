@@ -21,16 +21,16 @@
 			<g:hasErrors bean="${userInstance}">
 			<ul class="errors" role="alert">
 				<g:eachError bean="${userInstance}" var="error">
-				<li> <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
+				<li> <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if><g:message error="${error}"/></li>
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
 
-            ${error}
+            <label>${error}</label>
             <g:form action="save">
             <div class="pad-left">
                 <f:with bean="user">
-                    <f:field property="username"/>
+                    <f:field property="username" value="dont put ithere"/>
                     <f:field property="password"/>
                 </f:with>
             </div>
