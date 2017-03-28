@@ -10,10 +10,7 @@ import kw_blog.com.manifestcorp.User
 
 class BlogController {
     def query = ""
-    static scaffold = Blog
 
-
-    //@Secured('ROLE_USER')
     @Secured("permitAll")
     index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -154,6 +151,16 @@ class BlogController {
         flash.message = "Found "+blogs.size+" results."
 
         render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'blog.label', default: 'Blog'), params.id])
+                redirect action: "index", method: "GET"
+            }
+            '*'{ render status: NOT_FOUND }
+        }
     }
 
 

@@ -21,23 +21,24 @@
 			<g:hasErrors bean="${userInstance}">
 			<ul class="errors" role="alert">
 				<g:eachError bean="${userInstance}" var="error">
-				<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
+				<li> <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
 
-			            <div class="create-form">
-                        <g:form action="save">
+            ${error}
+            <g:form action="save">
+            <div class="pad-left">
+                <f:with bean="user">
+                    <f:field property="username"/>
+                    <f:field property="password"/>
+                </f:with>
+            </div>
+                </br>
+                <fieldset class="buttons">
+                    <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+                </fieldset>
 
-                        <div class="pad-left">
-                            <input id="username"/>
-                            <input id="password"/>
-                        </div>
-
-				<fieldset class="buttons">
-					<g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
-				</fieldset>
-			</g:form>
-		</div>
+            </g:form>
 	</body>
 </html>

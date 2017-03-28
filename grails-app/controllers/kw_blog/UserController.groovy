@@ -6,6 +6,8 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 import kw_blog.com.manifestcorp.User
+import kw_blog.com.manifestcorp.Role
+import kw_blog.com.manifestcorp.UserRole
 
 @Transactional(readOnly = true)
 @Secured("permitAll")
@@ -23,8 +25,7 @@ class UserController {
     }
 
     def create() {
-        println "create in user called"
-        respond new User(params)
+        render(view: "create", model: [user: new User()])
     }
 
     @Transactional
@@ -38,19 +39,30 @@ class UserController {
 
         if (userInstance.hasErrors()) {
             println "userInstance has errors"
-            respond userInstance.errors, view: 'create'
+            respond userInstance.errors, view: 'create', model: [error: "Please choose a different name."]
             return
         }
 
         userInstance.save flush: true
         println "userinstance saved"
+        saveNewUser(userInstance)
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-                redirect userInstance
+                redirect(controller: "blog", action: "index")
             }
             '*' { respond userInstance, [status: CREATED] }
+        }
+    }
+
+    private void saveNewUser(User user){
+        def userRole = new Role(authority: 'ROLE_USER').save()
+        UserRole.create user, userRole
+
+        UserRole.withSession {
+            it.flush()
+            it.clear()
         }
     }
 
