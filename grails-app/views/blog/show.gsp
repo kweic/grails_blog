@@ -30,16 +30,18 @@
                 <div class="blog-title"><h1><strong>${this.blog.title}</strong></h1></div>
                 <div class="blog-mood text-info">Mood: ${this.blog.mood}</div>
                 <div class="blog-blogEntry"><pre>${this.blog.blogEntry}</pre></div>
-            <div class="blog-date text-muted"><small>${this.blog.dateCreated}</small></div>
+            <div class="blog-date text-muted"><small>${this.blog.dateCreated}</small> - post by: ${this.blog.postBy}</div>
             </div>
 
             <sec:ifLoggedIn>
+            <g:if test="${sec.username() == this.blog.postBy}">
             <g:form resource="${this.blog}" method="DELETE">
                 <fieldset class="buttons">
                     <g:link class="edit" action="edit" resource="${this.blog}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
                     <input class="delete" type="submit" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                 </fieldset>
             </g:form>
+            </g:if>
             </sec:ifLoggedIn>
 
 
@@ -71,6 +73,10 @@
                 </form>
             </div>
             </sec:ifLoggedIn>
+
+            <sec:ifNotLoggedIn>
+               <div class="center"><a href="/login">Login</a> or <a href="/user/create">Sign-up</a> to comment.</div>
+            </sec:ifNotLoggedIn>
 
             <label>Comments</label>
             <div id="comments-area">

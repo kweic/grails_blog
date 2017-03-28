@@ -9,13 +9,22 @@ import kw_blog.com.manifestcorp.User
 
 
 class BlogController {
+    def springSecurityService
     def query = ""
+    def user
 
     @Secured("permitAll")
     index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         def blogs = getBlogs()
         respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
+    }
+
+    def getUser(){
+        if(user == null){
+            user = springSecurityService.principal.username;
+        }
+        return user;
     }
 
     @Secured('ROLE_USER')
@@ -54,7 +63,9 @@ class BlogController {
             return
         }
 
-        blog.save flush:true
+        if (userIsPoster(blog)) {
+            blog.save flush: true
+        }
 
         request.withFormat {
             form multipartForm {
@@ -74,34 +85,33 @@ class BlogController {
         if (blog.comments.size() == 0 ||
                 (!params.user.isEmpty() &&
                         !params.comment.trim().isEmpty() &&
-                blog.comments.last().comment != params.comment)) {
+                blog.comments.first().comment != params.comment)) {
 
             Comment comment = new Comment()
             comment.blog = blog
-            comment.comment = params.comment
+            comment.comment = params.comment.trim()
             comment.user = params.user
             comment.dateCreated = new Date()
 
             blog.comments.add(comment)
             blog.save flush: true
         }
-
-
-
         render(template:'results', model:[comments: blog.comments])
     }
 
 
     @Secured('ROLE_USER')
     @Transactional
-    delete(Blog blog){
+    delete(Blog blog) {
         if (blog == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        blog.delete(flush: true)
+        if (userIsPoster(blog)) {
+            blog.delete(flush: true)
+        }
 
         request.withFormat {
             form multipartForm {
@@ -112,10 +122,21 @@ class BlogController {
             }
     }
 
+    def userIsPoster(blog){
+        if(blog != null){
+            return blog.postBy == getUser()
+        }
+        return false
+    }
+
 
     @Secured('ROLE_USER')
     edit(Blog blog){
-        respond blog
+        if (userIsPoster(blog) || blog == null) {
+            respond blog
+        }else{
+            ""
+        }
     }
 
     @Secured('ROLE_USER')
@@ -133,7 +154,9 @@ class BlogController {
             return
         }
 
-        blog.save flush: true
+        if (userIsPoster(blog)) {
+            blog.save flush: true
+        }
 
         request.withFormat {
             form multipartForm {

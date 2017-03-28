@@ -58,7 +58,7 @@
 
     <sec:ifNotLoggedIn>
     <div class="login-text right">
-         <a href="/login">Login</a>
+         <a href="/login">Login</a> | <a href="/user/create">Sign-up</a>
     </div>
     </sec:ifNotLoggedIn>
 
