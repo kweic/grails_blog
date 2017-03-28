@@ -45,7 +45,7 @@ class UserController {
 
         userInstance.save flush: true
         println "userinstance saved"
-        saveNewUser(userInstance)
+        saveNewUserWithRole(userInstance)
 
         request.withFormat {
             form multipartForm {
@@ -56,14 +56,24 @@ class UserController {
         }
     }
 
-    private void saveNewUser(User user){
-        def userRole = new Role(authority: 'ROLE_USER').save()
-        UserRole.create user, userRole
+    private void saveNewUserWithRole(User user){
+        println "in save new user"
+
+        def ROLE_USER = Role.findByAuthority("ROLE_USER");
+
+        if(ROLE_USER == null){
+            println "role was null, creating new"
+            ROLE_USER = new Role(authority: 'ROLE_USER').save()
+        }
+
+        UserRole.create user, ROLE_USER
 
         UserRole.withSession {
             it.flush()
             it.clear()
         }
+
+        println "done with save new"
     }
 
     def edit(User userInstance) {
