@@ -95,3 +95,8 @@ pre {
 .center {
     text-align: center;
 }
+
+.show-blog-buttons{
+    margin-top: -60px;
+    padding-right: 12%;
+}
