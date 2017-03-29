@@ -44,13 +44,13 @@
                     <!--<f:all bean="blog"/>-->
                     </f:with>
                 </fieldset>
+                <br/>
+            <button class="save btn btn-primary" type="submit">Update</button>
+
+            <br>
+            <br>
             </div>
 
-                </br>
-
-                <fieldset class="buttons">
-                    <input class="save" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
-                </fieldset>
             </g:form>
             </div>
 

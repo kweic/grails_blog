@@ -52,11 +52,13 @@
                             <div><small> feeling: <i class="text-info">${item.mood}</i></small></div>
                         </div>
 
+                        <g:link  mapping="blogLink" params="[id: item.id,title: seo.convert(value:item.title)]">
                         <div class="panel-body">
                             <div class="truncate">
                                 ${item.blogEntry}
                             </div>
                         </div>
+                        </g:link>
 
                     </div>
                 </div>

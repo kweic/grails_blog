@@ -31,7 +31,7 @@ module PageInteractions
   end
 
   def click_update_button
-    @browser.input(:class => 'save').click
+    @browser.button(:class => 'save').click
   end
 
   def click_home

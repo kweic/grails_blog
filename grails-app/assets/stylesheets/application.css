@@ -76,6 +76,7 @@ pre {
 
 .search-label{
     display: inline;
+    color: #51555b;
 }
 
 .pad-left{
@@ -99,4 +100,15 @@ pre {
 .show-blog-buttons{
     margin-top: -60px;
     padding-right: 12%;
+}
+
+.comment-area{
+    background: #dee5f2;
+    width: 75%;
+}
+
+.comment-tag{
+    color: #ffffff;
+    width: 75%;
+    background-color: #51555b;
 }
