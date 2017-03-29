@@ -1,5 +1,6 @@
 package com.manifestcorp.kw_blog
 
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.*
 import spock.lang.*
 import kw_blog.com.manifestcorp.*
@@ -17,8 +18,12 @@ class BlogControllerSpec extends Specification {
         params.postBy = "kevin"
     }
 
-    def defineUser(user){
-        controller.user = user;
+    def injectTemporaryUser(username){
+        def springSecurityService = Stub(SpringSecurityService)
+        User currUser = new User(username: username, password: "password")
+        springSecurityService.principal >> currUser
+
+        controller.springSecurityService = springSecurityService
     }
 
     def initSpringSecurityMock(){
@@ -45,8 +50,8 @@ class BlogControllerSpec extends Specification {
 
     void "Test the save action correctly persists an instance"() {
 
-        given: "User is assigned"
-            defineUser("kevin")
+        given: "My mock user is in place"
+        injectTemporaryUser("kevin")
 
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
@@ -91,8 +96,8 @@ class BlogControllerSpec extends Specification {
 
     void "Test that the edit action returns the correct model"() {
 
-        given: "User is logged in"
-            defineUser("kevin")
+        given: "My mock user is in place"
+            injectTemporaryUser("kevin")
 
         when:"The edit action is executed with a null domain"
             controller.edit(null)
@@ -110,8 +115,8 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
-        given: "User is assigned"
-            defineUser("kevin")
+        given: "My mock user is in place"
+        injectTemporaryUser("kevin")
 
         when:"Update is called for a domain instance that doesn't exist"
             request.contentType = FORM_CONTENT_TYPE
@@ -146,8 +151,8 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test that the delete action deletes an instance if it exists"() {
-        given: "User is assigned"
-            defineUser("kevin")
+        given: "My mock user is in place"
+        injectTemporaryUser("kevin")
 
         when:"The delete action is called for a null instance"
             request.contentType = FORM_CONTENT_TYPE
@@ -210,7 +215,7 @@ class BlogControllerSpec extends Specification {
 
     void "Test submission of comments on a blog post"(){
         when:"A comment is submitted"
-            makePost("post")
+            makePost("post", "bob")
             makeComment("user", "a comment")
 
         then:"The comment is saved"
@@ -247,8 +252,9 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test edit and delete of post by poster and non poster"(){
-        given: "A user is logged in"
-            defineUser("differentUser")
+
+        given: "My mock user is in place"
+            injectTemporaryUser("differentUser")
 
         when: "A user tries to delete a blog he didn't post"
             def blog = makePost("title", "kevin")
@@ -259,7 +265,7 @@ class BlogControllerSpec extends Specification {
 
 
         when: "A user tries to edit a blog he didn't post"
-            defineUser("different")
+            injectTemporaryUser("different")
             params.title = "changed text"
             println "is blog null "+ (blog == null)
             controller.edit(blog)

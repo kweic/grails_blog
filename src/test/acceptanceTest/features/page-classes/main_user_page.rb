@@ -4,7 +4,7 @@ include Navigation
 
 class MainBlog
   include PageObject
-  page_url "#{base_url}/blog/"
+  page_url "#{base_url}"
   # text_field(:title, id: 'title')
   # text_area(:blogEntry, id: 'blogEntry')
   # select_list(:mood, id: 'mood')
@@ -16,4 +16,5 @@ class MainBlog
   link(:firstBlogLink, id: 'blog-0')
   text_field(:searchInput, id: 'query')
   button(:search, id: 'search')
+  link(:login, id:'login-link')
 end

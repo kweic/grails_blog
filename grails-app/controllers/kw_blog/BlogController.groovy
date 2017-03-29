@@ -11,7 +11,7 @@ import kw_blog.com.manifestcorp.User
 class BlogController {
     def springSecurityService
     def query = ""
-    def user
+    //def user
 
     @Secured("permitAll")
     index(Integer max) {
@@ -21,10 +21,7 @@ class BlogController {
     }
 
     def getUser(){
-        if(user == null){
-            user = springSecurityService.principal.username;
-        }
-        return user;
+        return springSecurityService.principal.username;
     }
 
     @Secured('ROLE_USER')
@@ -51,6 +48,7 @@ class BlogController {
     @Secured('ROLE_USER')
     @Transactional
     save(Blog blog) {
+        println "trying to do save"
         if (blog == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -63,9 +61,8 @@ class BlogController {
             return
         }
 
-        if (userIsPoster(blog)) {
-            blog.save flush: true
-        }
+        blog.save flush: true
+
 
         request.withFormat {
             form multipartForm {
