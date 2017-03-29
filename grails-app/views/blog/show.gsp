@@ -30,18 +30,22 @@
                 <div class="blog-title"><h1><strong>${this.blog.title}</strong></h1></div>
                 <div class="blog-mood text-info">Mood: ${this.blog.mood}</div>
                 <div class="blog-blogEntry"><pre>${this.blog.blogEntry}</pre></div>
-            <div class="blog-date text-muted"><small>${this.blog.dateCreated}</small></div>
+            <div class="blog-date text-muted"><small>${this.blog.dateCreated}</small> - post by: ${this.blog.postBy}</div>
             </div>
 
-
+            <sec:ifLoggedIn>
+            <g:if test="${sec.username() == this.blog.postBy}">
             <g:form resource="${this.blog}" method="DELETE">
                 <fieldset class="buttons">
                     <g:link class="edit" action="edit" resource="${this.blog}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
                     <input class="delete" type="submit" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                 </fieldset>
             </g:form>
+            </g:if>
+            </sec:ifLoggedIn>
 
 
+            <sec:ifLoggedIn>
             <div>
                 <form onsubmit="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),
                                             url:'/blog/userComments',success:function(data,textStatus){
@@ -51,22 +55,30 @@
                                             method="post">
 
                                             <div class="form-group pad-left">
-                    <div class="col-sm-12">
-                        <label>User:</label>
-                        <g:textField name="user" />
-                    </div>
+
+                    <g:hiddenField name="user" value="${sec.username()}"/>
+
                     <div class="col-sm-12">
                         <label>Comment:</label>
                         <g:textArea name="comment" />
+                    </div>
+                    <div class="col-sm-12">
+                        <small>commenting as </small>${sec.username()}
                     </div>
                     <g:hiddenField name="blogId" value="${blog.id}" />                  
                     <div class="col-sm-12">
                         <g:submitButton name="create" class="save" value="Post Comment" />
                     </div>
                     </div>
-                                        </form>
+                </form>
             </div>
-            
+            </sec:ifLoggedIn>
+
+            <sec:ifNotLoggedIn>
+               <div class="center"><a href="/login">Login</a> or <a href="/user/create">Sign-up</a> to comment.</div>
+            </sec:ifNotLoggedIn>
+
+            <label>Comments</label>
             <div id="comments-area">
                 <g:render template="results"  model="['comments':blog.comments]"/>
             </div>

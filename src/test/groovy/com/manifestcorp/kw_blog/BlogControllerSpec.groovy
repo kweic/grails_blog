@@ -1,5 +1,6 @@
 package com.manifestcorp.kw_blog
 
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.mixin.*
 import spock.lang.*
 import kw_blog.com.manifestcorp.*
@@ -10,14 +11,26 @@ import kw_blog.*
 @Mock(Blog)
 class BlogControllerSpec extends Specification {
 
+
     def populateValidParams(params) {
         assert params != null
         params.title = "hey"
         params.postBy = "kevin"
     }
 
-    void "Test the index action returns the correct model"() {
+    def injectTemporaryUser(username){
+        def springSecurityService = Stub(SpringSecurityService)
+        User currUser = new User(username: username, password: "password")
+        springSecurityService.principal >> currUser
 
+        controller.springSecurityService = springSecurityService
+    }
+
+    def initSpringSecurityMock(){
+        controller.springSecurityService.username = "bob"
+    }
+
+    void "Test the index action returns the correct model"() {
         when:"The index action is executed"
             controller.index()
 
@@ -27,6 +40,7 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test the create action returns the correct model"() {
+
         when:"The create action is executed"
             controller.create()
 
@@ -35,6 +49,9 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test the save action correctly persists an instance"() {
+
+        given: "My mock user is in place"
+        injectTemporaryUser("kevin")
 
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
@@ -78,6 +95,10 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test that the edit action returns the correct model"() {
+
+        given: "My mock user is in place"
+            injectTemporaryUser("kevin")
+
         when:"The edit action is executed with a null domain"
             controller.edit(null)
 
@@ -94,6 +115,9 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
+        given: "My mock user is in place"
+        injectTemporaryUser("kevin")
+
         when:"Update is called for a domain instance that doesn't exist"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'PUT'
@@ -127,6 +151,9 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test that the delete action deletes an instance if it exists"() {
+        given: "My mock user is in place"
+        injectTemporaryUser("kevin")
+
         when:"The delete action is called for a null instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'DELETE'
@@ -156,9 +183,9 @@ class BlogControllerSpec extends Specification {
 
     void "Test search returns matching result"(){
         when: "A search is made"
-            makePost("post1")
-            makePost("post2")
-            makePost("post3")
+            makePost("post1", "kevin")
+            makePost("post2", "kevin")
+            makePost("post3", "kevin")
             params.query = "post"
             controller.search()
 
@@ -188,7 +215,7 @@ class BlogControllerSpec extends Specification {
 
     void "Test submission of comments on a blog post"(){
         when:"A comment is submitted"
-            makePost("post")
+            makePost("post", "bob")
             makeComment("user", "a comment")
 
         then:"The comment is saved"
@@ -197,33 +224,85 @@ class BlogControllerSpec extends Specification {
             savedBlog.comments.first().comment == "a comment"
 
         when:"A comment is a duplicate of the comment preceding it"
-            makeComment("user", "a comment")
+            makeComment("user", "a comment to duplicate")
+            makeComment("user", "a comment to duplicate")
 
         then:"The comment is not saved"
-            savedBlog.comments.size() == 1
+            savedBlog.comments.size() == 2
 
         when:"A comment is submitted without a username"
             makeComment("", "a comment without a user")
         then:"The comment is not saved"
-            savedBlog.comments.size() == 1
+            savedBlog.comments.size() == 2
 
         when: "A comment is submitted with no comment"
             makeComment("Bob", "")
         then: "The comment is not saved"
-            savedBlog.comments.size() == 1
+            savedBlog.comments.size() == 2
 
         when: "A comment is submitted that is only whitespace"
             makeComment("Ted", "     ")
         then: "The comment is not saved"
-            savedBlog.comments.size() == 1
+            savedBlog.comments.size() == 2
+
+        when: "A comment with leading and or trailing newlines is submitted"
+            makeComment("user", "\n\n\n\n\nhey\nthere\nwords\nOne space\n")
+        then: "The leading and or trailing newlines are removed"
+            savedBlog.comments.first().comment == "hey\nthere\nwords\nOne space"
     }
 
-    void makePost(title){
+    void "Test edit and delete of post by poster and non poster"(){
+
+        given: "My mock user is in place"
+            injectTemporaryUser("differentUser")
+
+        when: "A user tries to delete a blog he didn't post"
+            def blog = makePost("title", "kevin")
+            println "is blog null after creating: "+(blog == null)
+            controller.delete(blog)
+        then: "The action is denied"
+            Blog.count() == 1
+
+
+        when: "A user tries to edit a blog he didn't post"
+            injectTemporaryUser("different")
+            params.title = "changed text"
+            println "is blog null "+ (blog == null)
+            controller.edit(blog)
+        then: "The action is denied"
+            Blog.count() == 1
+            String found = Blog.findAllById(1).title
+            removeBrackets(found) == "title"
+    }
+
+    def removeBrackets(bracketedString){
+        return bracketedString.substring(1, bracketedString.length()-1)
+    }
+
+//    void "Test creating a new user"(){
+//        when: "A new user is created"
+//            params.user = "Kevin"
+//            controller.createUser()
+//        then: "That new user exists"
+//            User.count() == 1;
+//
+//        when: "A username is already taken"
+//        then: "The new username is not saved"
+//    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize()
+    }
+
+    def makePost(title, user){
         populateValidParams(params)
         def blog = new Blog(params).save(flush: true)
         blog.comments = new TreeSet()
         blog.title = title
+        blog.postBy = user
         blog.save(flush: true)
+        return blog
     }
 
     void makeComment(username, comment){

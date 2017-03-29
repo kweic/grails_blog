@@ -5,22 +5,27 @@ import kw_blog.com.manifestcorp.Comment
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import static org.springframework.http.HttpStatus.*
+import kw_blog.com.manifestcorp.User
 
 
 class BlogController {
-    static scaffold = Blog
+    def springSecurityService
     def query = ""
+    //def user
 
-
-    @Secured('ROLE_USER')
-    def index(Integer max) {
+    @Secured("permitAll")
+    index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         def blogs = getBlogs()
         respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
     }
 
+    def getUser(){
+        return springSecurityService.principal.username;
+    }
+
     @Secured('ROLE_USER')
-    def create(){
+    create(){
         render(view: "create", model: [blog: new Blog()])
     }
 
@@ -35,14 +40,15 @@ class BlogController {
         blogs
     }
 
-    @Secured('ROLE_USER')
+    @Secured('permitAll')
     show(Blog blog){
         respond blog, model: [comment: new Comment()]
     }
 
     @Secured('ROLE_USER')
     @Transactional
-    def save(Blog blog) {
+    save(Blog blog) {
+        println "trying to do save"
         if (blog == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -55,7 +61,8 @@ class BlogController {
             return
         }
 
-        blog.save flush:true
+        blog.save flush: true
+
 
         request.withFormat {
             form multipartForm {
@@ -65,7 +72,6 @@ class BlogController {
                 }
             '*' { respond blog, [status: CREATED] }
         }
-
     }
 
 
@@ -76,32 +82,33 @@ class BlogController {
         if (blog.comments.size() == 0 ||
                 (!params.user.isEmpty() &&
                         !params.comment.trim().isEmpty() &&
-                blog.comments.last().comment != params.comment)) {
+                blog.comments.first().comment != params.comment)) {
 
             Comment comment = new Comment()
             comment.blog = blog
-            comment.comment = params.comment
+            comment.comment = params.comment.trim()
             comment.user = params.user
             comment.dateCreated = new Date()
 
             blog.comments.add(comment)
             blog.save flush: true
         }
-
         render(template:'results', model:[comments: blog.comments])
     }
 
 
     @Secured('ROLE_USER')
     @Transactional
-    def delete(Blog blog){
+    delete(Blog blog) {
         if (blog == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        blog.delete(flush: true)
+        if (userIsPoster(blog)) {
+            blog.delete(flush: true)
+        }
 
         request.withFormat {
             form multipartForm {
@@ -112,9 +119,21 @@ class BlogController {
             }
     }
 
+    def userIsPoster(blog){
+        if(blog != null){
+            return blog.postBy == getUser()
+        }
+        return false
+    }
+
+
     @Secured('ROLE_USER')
     edit(Blog blog){
-        respond blog
+        if (userIsPoster(blog) || blog == null) {
+            respond blog
+        }else{
+            ""
+        }
     }
 
     @Secured('ROLE_USER')
@@ -132,7 +151,9 @@ class BlogController {
             return
         }
 
-        blog.save flush: true
+        if (userIsPoster(blog)) {
+            blog.save flush: true
+        }
 
         request.withFormat {
             form multipartForm {
@@ -143,12 +164,22 @@ class BlogController {
         }
     }
 
-    @Secured('ROLE_USER')
+    @Secured('permitAll')
     search() {
         def blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
         flash.message = "Found "+blogs.size+" results."
 
         render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'blog.label', default: 'Blog'), params.id])
+                redirect action: "index", method: "GET"
+            }
+            '*'{ render status: NOT_FOUND }
+        }
     }
 
 

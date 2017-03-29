@@ -14,7 +14,7 @@
             </ul>
         </div>
         <div id="create-blog" class="content scaffold-create" role="main">
-            <h1><g:message code="default.create.label" args="[entityName]" /></h1>
+
             <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
             </g:if>
@@ -36,7 +36,7 @@
                     <f:field property="title"/>
                     <f:field property="blogEntry"/>
                     <f:field property="mood"/>
-                    <f:field property="postBy"/>
+                    <f:field property="postBy" value="${sec.username()}" widget-hidden="true" label-hidden="true"/><label>${sec.username()}</label>
                 </f:with>
             </div>
                 </br>

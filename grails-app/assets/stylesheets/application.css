@@ -33,7 +33,7 @@
     width: 200px;
 }
 
-.logout-button{
+#logout-button{
     float: right;
     margin-right: 20px;
     margin-top: 2px;
@@ -80,4 +80,18 @@ pre {
 
 .pad-left{
     padding-left: 10%;
+}
+
+#user-name{
+    float: right;
+    padding-right: 10px;
+    color: #51555b;
+}
+
+.login-text{
+    padding-right: 2%;
+}
+
+.center {
+    text-align: center;
 }

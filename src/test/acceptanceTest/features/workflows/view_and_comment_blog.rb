@@ -2,7 +2,7 @@
 
 def comment_on_blog(comment)
   on_page(ShowPage) do |page|
-    fill_user(page, "asdf")
+    #fill_user(page, "asdf")
     fill_comment(page, comment)
   end
   comment

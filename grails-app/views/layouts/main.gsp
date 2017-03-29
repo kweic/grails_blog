@@ -12,6 +12,7 @@
 
     <g:layoutHead/>
 </head>
+
 <body>
 
     <div class="navbar navbar-default navbar-static-top" role="navigation">
@@ -29,17 +30,41 @@
                     </i>
                 </a>
             </div>
+
+
             <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
                 <ul class="nav navbar-nav navbar-right">
                     <g:pageProperty name="page.nav" />
                 </ul>
             </div>
+
         </div>
     </div>
 
-    <form class="right" name="logout" method="POST" action="${createLink(controller:'logout') }">
+
+
+    <sec:ifLoggedIn>
+    <div id="logout-button" class="right">
+    <form name="logout" method="POST" action="${createLink(controller:'logout') }">
                 <input class="logout-button" type="submit" value="Logout">
-                </form>
+    </form>
+    </div>
+
+    <div id="user-name" class="right">
+    <small>Logged in: </small><strong>${sec.username()}</strong>
+    </div>
+    </sec:ifLoggedIn>
+
+
+    <sec:ifNotLoggedIn>
+    <div class="login-text right">
+         <a href="/login" id="login-link">Login</a> | <a href="/user/create">Sign-up</a>
+    </div>
+    </sec:ifNotLoggedIn>
+
+
+
+
     <g:layoutBody/>
 
 
@@ -53,3 +78,5 @@
 
 </body>
 </html>
+
+
