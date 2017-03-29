@@ -19,7 +19,7 @@
                 <g:form action="search" method="GET">
                     <div class="fieldcontain">
                         <label class="search-label" for="query">Search:</label>
-                        <g:textField name="query" value="${params.query}"/>
+                        <g:textField name="query" value="${params.query}" />
                     </div>
                 </g:form>
                 </fieldset>

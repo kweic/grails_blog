@@ -23,7 +23,17 @@
                         <asset:image src="blog_logo_invert.png" class="blog-logo"/>
                     </i>
                 </a>
+
             </div>
+
+                            <sec:ifLoggedIn>
+                                <div id="user-name">
+                                <span class="right">
+                                <small>Logged in as: </small><strong>${sec.username()}</strong>
+                                </span>
+                                </div>
+                            </sec:ifLoggedIn>
+
 
 
             <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
@@ -42,10 +52,6 @@
     <form name="logout" method="POST" action="${createLink(controller:'logout') }">
                 <input class="logout-button btn btn-default" type="submit" value="Logout">
     </form>
-    </div>
-
-    <div id="user-name" class="right">
-    <small>Logged in: </small><strong>${sec.username()}</strong>
     </div>
     </sec:ifLoggedIn>
 

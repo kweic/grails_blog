@@ -84,9 +84,8 @@ pre {
 }
 
 #user-name{
-    float: right;
-    padding-right: 10px;
-    color: #51555b;
+    color: #ffffff;
+    vertical-align: bottom;
 }
 
 .login-text{
