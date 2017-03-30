@@ -17,7 +17,6 @@ class Comment implements Comparable<Comment> {
     static constraints = {
         user(blank: false)
         comment(maxSize: 1000, widget: 'textarea', nullable: true)
-
     }
 
     @Override

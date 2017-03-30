@@ -1,5 +1,6 @@
 package kw_blog.com.manifestcorp
 
+import kw_blog.com.manifestcorp.User
 
 class Blog implements Comparable<Blog>{
     String title
@@ -7,8 +8,8 @@ class Blog implements Comparable<Blog>{
     String mood
     String postBy
     Date dateCreated
-    SortedSet comments
     User user
+    SortedSet comments
 
     static belongsTo = [user: User]
 
@@ -22,7 +23,7 @@ class Blog implements Comparable<Blog>{
 
     static mapping = {
         sort dateCreated: 'desc'
-        user lazy: false
+        //user lazy: false
     }
 
     @Override

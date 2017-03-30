@@ -26,9 +26,13 @@ class BlogController {
     }
 
     def getUser() {
+        println "getting user"
         if (user == null) {
-            return (User) User.findByIdLike(springSecurityService.principal.id, params)
+            println "user was null, returning new"
+            user = (User) User.findByIdLike(springSecurityService.principal.id, params)
         }
+        println "user: "+user
+        println "user username "+user.username
         return user
     }
 
@@ -56,15 +60,14 @@ class BlogController {
     @Secured('ROLE_USER')
     @Transactional
     save(Blog blog) {
-        //println "in save, about to get user with id: "+getUser().id
-        //User user = (User) User.findByIdLike(getUser().id, params)
-        //println "got user: "+user
-        blog.user = getUser()
         if (blog == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
+
+        blog.user = getUser()
+        blog.validate()
 
         if (blog.hasErrors()) {
             println "blog has errors"
@@ -84,7 +87,7 @@ class BlogController {
         println "blog id: "+blog.id
         println "blog title"+blog.title
         println "blog entry"+blog.blogEntry
-        println "blog user "+blog.user
+        //println "blog user "+blog.user
         println "blog postBy "+blog.postBy
 
         request.withFormat {
