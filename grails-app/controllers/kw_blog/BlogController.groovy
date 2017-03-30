@@ -10,7 +10,6 @@ import kw_blog.com.manifestcorp.User
 
 class BlogController {
     def springSecurityService
-    User user
     def query = ""
 
 
@@ -28,13 +27,8 @@ class BlogController {
 
     def getUser() {
         println "getting user"
-        if (user == null) {
-            println "user was null, returning new"
-            user = (User) User.findByIdLike(springSecurityService.principal.id, params)
-        }
-        println "user: "+user
-        println "user username "+user.username
-        return user
+
+        return (User) User.findByIdLike(springSecurityService.principal.id, params)
     }
 
     @Secured('ROLE_USER')
@@ -67,7 +61,11 @@ class BlogController {
             return
         }
 
-        blog.user = getUser()
+        if (blog.user == null) {
+            println "blog user null, getting user from currently logged in"
+            blog.user = getUser()
+        }
+
         blog.validate()
 
         if (blog.hasErrors()) {
@@ -83,12 +81,10 @@ class BlogController {
 
         blog.save flush: true
 
-        //addBlogToUser(blog)
         println "about to do redirect"
         println "blog id: "+blog.id
         println "blog title"+blog.title
         println "blog entry"+blog.blogEntry
-        //println "blog user "+blog.user
         println "blog postBy "+blog.postBy
 
         request.withFormat {
@@ -100,11 +96,6 @@ class BlogController {
             '*' { respond blog, [status: CREATED] }
         }
     }
-
-    def addBlogToUser(blog){
-        User.findByUsernameLike(getUsername()).addBlog(blog)
-    }
-
 
     @Secured('ROLE_USER')
     userComments() {
@@ -210,7 +201,7 @@ class BlogController {
 
         println "found blogs, size: "+blogs.size
 
-        render view: "/user/blogs", model: [user: User.findById(params.id), blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
+        render view: "/user/blogs", model: [id: params.id, blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
     }
 
     protected void notFound() {

@@ -20,7 +20,7 @@
                     <div class="fieldcontain">
                         <label class="search-label" for="query">Search:</label>
                         <g:textField name="query" value="${params.query}" />
-                        <g:hiddenField name="id" value="${user.id}"/>
+                        <g:hiddenField name="id" value="${id}"/>
                     </div>
                 </g:form>
                 </fieldset>
