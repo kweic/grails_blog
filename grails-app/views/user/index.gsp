@@ -36,14 +36,40 @@
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
-                On user index.gsp
 
-                <br/>
-              <g:each var="user" in="${usersFound}" status="i">
-                <g:link action="blogs" id="${user.id}">${user.username}</g:link>
-                ${user.blogs}
-                <br/>
-              </g:each>
+                <g:each var="user" in="${usersFound}" status="i">
+
+                  <div class="blogPost col-sm-12">
+                      <div class="panel panel-default">
+                          <div class="panel-heading">
+                          <g:link action="blogs" id="${user.id}">
+                            <div id="user-${i}"><h2><strong>${user.username}</strong></h2></div>
+                            <div><small><strong>${user.blogs.size()}</strong> posts</small></div>
+                          </g:link>
+                          </div>
+                          <g:if test="${user.blogs[0] != null}">
+                              <g:link action="blogs" id="${user.id}">
+                                  <div class="panel-body">
+
+                                      <h3>
+                                      <div class="main-page-titles">${user.blogs[0].title}</div>
+                                      </h3>
+                                      <div class="truncate">
+                                      ${user.blogs[0].blogEntry}
+                                      </div>
+
+                              </g:link>
+                            <g:if test="${user.blogs[0].mood != null}">
+                                 <div><small> feeling: <i class="text-info">${user.blogs[0].mood}</i></small></div>
+                            </g:if>
+
+                            <div><small>Last post: <span id="post-date-${i}" class="text-muted">${user.blogs[0].dateCreated}</span></small></div>
+                            </div>
+                          </g:if>
+
+                      </div>
+                  </div>
+                </g:each>
 
 
             <div class="pagination">

@@ -43,9 +43,8 @@ class UserController {
     }
 
     def blogs(User user){
-        println "params id: "+params.id
         //params.max = Math.min(max ?: 10, 100)
-        respond user
+        respond user, model:[blogsFound: user.blogs]
     }
 
 //    def getBlogs(){
@@ -73,8 +72,17 @@ class UserController {
         render(view: "create", model: [user: new User()])
     }
 
+    @Secured('permitAll')
+    search() {
+        def users = User.findAllByUsernameLike("%${params.query}%", [max: params.max, offset: params.offset])
+        flash.message = "Found "+users.size+" results."
+
+        render view: "index", model: [usersFound: users, userCount: User.count(), query: params.query, filterParams: params]
+    }
+
     @Transactional
     def save(User userInstance) {
+        println "in user save"
         if (userInstance == null) {
             notFound()
             println "userinstance is null"
@@ -92,7 +100,7 @@ class UserController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-                redirect(controller: "blog", action: "index")
+                redirect(controller: "user", action: "index")
             }
             '*' { respond userInstance, [status: CREATED] }
         }

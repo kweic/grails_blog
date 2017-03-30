@@ -16,6 +16,7 @@ class BlogController {
 
     @Secured("permitAll")
     index(Integer max) {
+        println "index of blog controller"
         params.max = Math.min(max ?: 10, 100)
         def blogs = getBlogs()
         respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
@@ -196,10 +197,20 @@ class BlogController {
 
     @Secured('permitAll')
     search() {
-        def blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
+        println "search called, id of: "+params.id
+        println "looking for: "+params.query
+        def blogs
+        if(params.id != null){
+            blogs = Blog.findAllByUserAndTitleLike(User.findById(params.id), "%${params.query}%", [max: params.max, offset: params.offset])
+        }else {
+            println "id null, finding all"
+            blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
+        }
         flash.message = "Found "+blogs.size+" results."
 
-        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
+        println "found blogs, size: "+blogs.size
+
+        render view: "/user/blogs", model: [user: User.findById(params.id), blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
     }
 
     protected void notFound() {

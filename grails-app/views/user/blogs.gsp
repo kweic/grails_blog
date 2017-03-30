@@ -12,14 +12,15 @@
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
                 <sec:ifLoggedIn>
-                <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+                <li><g:link class="create" controller="blog" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
                 </sec:ifLoggedIn>
                 <li>
                 <fieldset class="form">
-                <g:form action="search" method="GET">
+                <g:form action="search" controller="blog" method="GET">
                     <div class="fieldcontain">
                         <label class="search-label" for="query">Search:</label>
                         <g:textField name="query" value="${params.query}" />
+                        <g:hiddenField name="id" value="${user.id}"/>
                     </div>
                 </g:form>
                 </fieldset>
@@ -37,9 +38,7 @@
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
 
-              in show user
-
-              <g:each var="item" in="${user.blogs}" status="i">
+              <g:each var="item" in="${blogsFound}" status="i">
 
                 <div class="blogPost col-sm-12 posts-1">
                     <div class="panel panel-default">
