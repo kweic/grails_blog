@@ -28,9 +28,10 @@
 
             <label>${error}</label>
             <g:form action="save">
+
             <div class="pad-left">
                 <f:with bean="user">
-                    <f:field property="username" value="dont put ithere"/>
+                    <f:field property="username"/>
                     <f:field property="password"/>
                 </f:with>
             </div>

@@ -17,6 +17,7 @@ class User implements Serializable {
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
+	SortedSet blogs
 
 	static hasMany = [blogs:Blog]
 
@@ -32,6 +33,10 @@ class User implements Serializable {
 		if (isDirty('password')) {
 			encodePassword()
 		}
+	}
+
+	def addBlog(blog){
+		blogs.add(blog)
 	}
 
 	protected void encodePassword() {

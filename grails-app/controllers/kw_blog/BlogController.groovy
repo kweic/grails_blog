@@ -20,8 +20,12 @@ class BlogController {
         respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
     }
 
-    def getUser(){
+    def getUsername(){
         return springSecurityService.principal.username;
+    }
+
+    def getUser(){
+        return springSecurityService.principal;
     }
 
     @Secured('ROLE_USER')
@@ -49,20 +53,31 @@ class BlogController {
     @Transactional
     save(Blog blog) {
         println "trying to do save"
+        User user = (User) User.findByIdLike(getUser().id, params)
+        println "found user: "+ user
+        blog.user = user
+        println " == null "+(blog.user == null)
         if (blog == null) {
+            println "blog is null"
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (blog.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond blog.errors, view:'create'
-            return
-        }
+//        if (blog.hasErrors()) {
+//            println "blog has errors"
+//            blog.errors.allErrors.each {
+//                println it
+//            }
+//            println blog
+//            transactionStatus.setRollbackOnly()
+//            respond blog.errors, view:'create'
+//            return
+//        }
 
         blog.save flush: true
 
+        User.findByUsernameLike(getUsername()).addBlog(blog)
 
         request.withFormat {
             form multipartForm {
@@ -121,7 +136,7 @@ class BlogController {
 
     def userIsPoster(blog){
         if(blog != null){
-            return blog.postBy == getUser()
+            return blog.postBy == getUsername()
         }
         return false
     }

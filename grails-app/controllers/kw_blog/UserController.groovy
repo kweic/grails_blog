@@ -42,22 +42,23 @@ class UserController {
         users
     }
 
-    def blogs(){
-        params.max = Math.min(max ?: 10, 100)
-        def blogs = getBlogs()
-        respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
+    def blogs(User user){
+        println "params id: "+params.id
+        //params.max = Math.min(max ?: 10, 100)
+        respond user
     }
 
-    def getBlogs(){
-        def criteria = User.blogs.createCriteria()
-
-        def blogs = criteria.list(params) {
-            if (params.query) {
-                ilike("title", "%${params.query}%")
-            }
-        }
-        blogs
-    }
+//    def getBlogs(){
+//        println "user parts: "+getUser()
+//        def criteria = getUser().blogs.createCriteria()
+//
+//        def blogs = criteria.list(params) {
+//            if (params.query) {
+//                ilike("title", "%${params.query}%")
+//            }
+//        }
+//        blogs
+//    }
 
     def getUser(){
         return springSecurityService.principal;
@@ -70,10 +71,6 @@ class UserController {
 
     def create() {
         render(view: "create", model: [user: new User()])
-    }
-
-    def submit(){
-        render(view: "submit", model: [blog: new Blog()])
     }
 
     @Transactional
@@ -99,24 +96,6 @@ class UserController {
             }
             '*' { respond userInstance, [status: CREATED] }
         }
-    }
-
-    @Secured('ROLE_USER')
-    saveBlog(Blog blog) {
-        if (getUser() != null) {
-//            Blog blog = new Blog()
-//
-//            blog.title = params.title
-//            blog.blogEntry = params.blogEntry
-//            blog.postBy = getUser().username
-//            blog.mood = params.mood
-//            blog.dateCreated = new Date()
-
-            blog.save flush: true
-        }
-
-        //render(template:'blog_results', model:[blogs: getUser().blogs])
-        //respond User.list(params), model: [users: User.list(), userCount: User.count()]
     }
 
     private void saveNewUserWithRole(User user){

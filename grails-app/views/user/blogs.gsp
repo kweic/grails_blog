@@ -39,7 +39,7 @@
 
               in show user
 
-              <g:each var="item" in="${blogsFound}" status="i">
+              <g:each var="item" in="${user.blogs}" status="i">
 
                 <div class="blogPost col-sm-12 posts-1">
                     <div class="panel panel-default">

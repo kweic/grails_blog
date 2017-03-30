@@ -12,7 +12,7 @@
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
                 <sec:ifLoggedIn>
-                <li><g:link class="create" controller="user" action="submit"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+                <li><g:link class="create" controller="blog" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
                 </sec:ifLoggedIn>
                 <li>
                 <fieldset class="form">
@@ -40,7 +40,7 @@
 
                 <br/>
               <g:each var="user" in="${usersFound}" status="i">
-                ${user.username}
+                <g:link action="blogs" id="${user.id}">${user.username}</g:link>
                 ${user.blogs}
                 <br/>
               </g:each>
