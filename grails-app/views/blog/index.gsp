@@ -71,7 +71,3 @@
         </div>
     </body>
 </html>
-
-    <script>
-    hideShowLoginName(true)
-    </script>

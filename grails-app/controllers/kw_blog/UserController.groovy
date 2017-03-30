@@ -8,24 +8,72 @@ import grails.transaction.Transactional
 import kw_blog.com.manifestcorp.User
 import kw_blog.com.manifestcorp.Role
 import kw_blog.com.manifestcorp.UserRole
+import kw_blog.com.manifestcorp.Blog
 
 @Transactional(readOnly = true)
 @Secured("permitAll")
 class UserController {
+    def springSecurityService
+    User currentUser;
+    def query = ""
+    //static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
+//    @Secured("permitAll")
 //    def index(Integer max) {
+//        println "user, index, list size: "+User.count()
 //        params.max = Math.min(max ?: 10, 100)
-//        respond User.list(params), model: [userInstanceCount: User.count()]
+//        respond User.list(params), model: [users: User.list(), userCount: User.count(), filterParams: params]
 //    }
+    @Secured("permitAll")
+    index(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        def users = getUsers()
+        respond User.list(params), model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
+    }
 
+    def getUsers(){
+        def criteria = User.createCriteria()
+
+        def users = criteria.list(params) {
+            if (params.query) {
+                ilike("username", "%${params.query}%")
+            }
+        }
+        users
+    }
+
+    def blogs(){
+        params.max = Math.min(max ?: 10, 100)
+        def blogs = getBlogs()
+        respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
+    }
+
+    def getBlogs(){
+        def criteria = User.blogs.createCriteria()
+
+        def blogs = criteria.list(params) {
+            if (params.query) {
+                ilike("title", "%${params.query}%")
+            }
+        }
+        blogs
+    }
+
+    def getUser(){
+        return springSecurityService.principal;
+    }
+
+    @Secured("permitAll")
     def show(User userInstance) {
         respond userInstance
     }
 
     def create() {
         render(view: "create", model: [user: new User()])
+    }
+
+    def submit(){
+        render(view: "submit", model: [blog: new Blog()])
     }
 
     @Transactional
@@ -51,6 +99,24 @@ class UserController {
             }
             '*' { respond userInstance, [status: CREATED] }
         }
+    }
+
+    @Secured('ROLE_USER')
+    saveBlog(Blog blog) {
+        if (getUser() != null) {
+//            Blog blog = new Blog()
+//
+//            blog.title = params.title
+//            blog.blogEntry = params.blogEntry
+//            blog.postBy = getUser().username
+//            blog.mood = params.mood
+//            blog.dateCreated = new Date()
+
+            blog.save flush: true
+        }
+
+        //render(template:'blog_results', model:[blogs: getUser().blogs])
+        //respond User.list(params), model: [users: User.list(), userCount: User.count()]
     }
 
     private void saveNewUserWithRole(User user){

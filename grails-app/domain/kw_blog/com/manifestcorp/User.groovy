@@ -18,6 +18,7 @@ class User implements Serializable {
 	boolean accountLocked
 	boolean passwordExpired
 
+	static hasMany = [blogs:Blog]
 
 	Set<Role> getAuthorities() {
 		UserRole.findAllByUser(this)*.role

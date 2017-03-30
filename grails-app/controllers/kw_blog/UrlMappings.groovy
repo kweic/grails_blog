@@ -15,7 +15,7 @@ class UrlMappings {
         }
 
 
-        "/"(controller:"Blog")
+        "/"(controller:"User")
         "500"(view:'/error')
         "404"(view:'/notFound')
         "/comment"(controller:'Blog')
