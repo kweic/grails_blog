@@ -10,8 +10,9 @@ import kw_blog.com.manifestcorp.User
 
 class BlogController {
     def springSecurityService
+    User user
     def query = ""
-    //def user
+
 
     @Secured("permitAll")
     index(Integer max) {
@@ -24,8 +25,11 @@ class BlogController {
         return springSecurityService.principal.username;
     }
 
-    def getUser(){
-        return springSecurityService.principal;
+    def getUser() {
+        if (user == null) {
+            return (User) User.findByIdLike(springSecurityService.principal.id, params)
+        }
+        return user
     }
 
     @Secured('ROLE_USER')
@@ -52,32 +56,36 @@ class BlogController {
     @Secured('ROLE_USER')
     @Transactional
     save(Blog blog) {
-        println "trying to do save"
-        User user = (User) User.findByIdLike(getUser().id, params)
-        println "found user: "+ user
-        blog.user = user
-        println " == null "+(blog.user == null)
+        //println "in save, about to get user with id: "+getUser().id
+        //User user = (User) User.findByIdLike(getUser().id, params)
+        //println "got user: "+user
+        blog.user = getUser()
         if (blog == null) {
-            println "blog is null"
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-//        if (blog.hasErrors()) {
-//            println "blog has errors"
-//            blog.errors.allErrors.each {
-//                println it
-//            }
-//            println blog
-//            transactionStatus.setRollbackOnly()
-//            respond blog.errors, view:'create'
-//            return
-//        }
+        if (blog.hasErrors()) {
+            println "blog has errors"
+            blog.errors.allErrors.each {
+                println it
+            }
+            println blog
+            transactionStatus.setRollbackOnly()
+            respond blog.errors, view:'create'
+            return
+        }
 
         blog.save flush: true
 
-        User.findByUsernameLike(getUsername()).addBlog(blog)
+        //addBlogToUser(blog)
+        println "about to do redirect"
+        println "blog id: "+blog.id
+        println "blog title"+blog.title
+        println "blog entry"+blog.blogEntry
+        println "blog user "+blog.user
+        println "blog postBy "+blog.postBy
 
         request.withFormat {
             form multipartForm {
@@ -87,6 +95,10 @@ class BlogController {
                 }
             '*' { respond blog, [status: CREATED] }
         }
+    }
+
+    def addBlogToUser(blog){
+        User.findByUsernameLike(getUsername()).addBlog(blog)
     }
 
 

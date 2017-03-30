@@ -16,18 +16,18 @@ class BlogControllerSpec extends Specification {
         assert params != null
         params.title = "hey"
         params.postBy = "kevin"
+        params.user = new User()
     }
 
     def injectTemporaryUser(username){
         def springSecurityService = Stub(SpringSecurityService)
         User currUser = new User(username: username, password: "password")
+        currUser.id = 1
         springSecurityService.principal >> currUser
 
-        controller.springSecurityService = springSecurityService
-    }
+        controller.user = currUser;
 
-    def initSpringSecurityMock(){
-        controller.springSecurityService.username = "bob"
+        controller.springSecurityService = springSecurityService
     }
 
     void "Test the index action returns the correct model"() {
@@ -298,6 +298,7 @@ class BlogControllerSpec extends Specification {
     def makePost(title, user){
         populateValidParams(params)
         def blog = new Blog(params).save(flush: true)
+        println "is blog null? "+(blog==null)
         blog.comments = new TreeSet()
         blog.title = title
         blog.postBy = user
