@@ -33,18 +33,20 @@ class UserController {
 
     def getUsers(){
         def criteria = User.createCriteria()
+        //println "user count: "+User.count()
 
-        def users = criteria.list(params) {
-            if (params.query) {
-                ilike("username", "%${params.query}%")
+            def users = criteria.list(params) {
+                if (params.query) {
+                    ilike("username", "%${params.query}%")
+                }
             }
-        }
-        users
+
+        return users
     }
 
     def blogs(User user){
         //params.max = Math.min(max ?: 10, 100)
-        respond user, model:[blogsFound: user.blogs]
+        respond user, model:[blogsFound: user.blogs, id: user.id]
     }
 
 //    def getBlogs(){
