@@ -163,7 +163,8 @@ img {
 }
 
 .nav a.home {
-    background-image: url(../images/skin/house.png);
+    background-image: url(../images/users_icon.png);
+    background-size: 22px 22px;
 }
 
 .nav a.list {
@@ -171,7 +172,8 @@ img {
 }
 
 .nav a.create {
-    background-image: url(../images/skin/database_add.png);
+    background-image: url(../images/plus-sign.png);
+    background-size: 16px 16px;
 }
 
 .nav li.dropdown.open ul.dropdown-menu {

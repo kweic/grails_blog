@@ -28,6 +28,15 @@
             </ul>
             </g:hasErrors>
 
+            <br>
+            <div class="title-line">
+            <h1>
+            <span class="blogs-icon">
+                <img src="http://localhost:8080/assets/plus-sign.png" width="50" alt="new blog icon">
+            </span>
+             New Blog</h1>
+            </div>
+
 
 
             <div class="create-form">

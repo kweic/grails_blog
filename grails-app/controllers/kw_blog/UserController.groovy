@@ -100,6 +100,8 @@ class UserController {
         userInstance.save flush: true
         saveNewUserWithRole(userInstance)
 
+        println "saving new user: "+userInstance.username
+        println "user id: "+userInstance.id
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])

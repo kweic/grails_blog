@@ -196,7 +196,7 @@ class BlogController {
         blogs = paginator.paginateResults(blogs, params)
 
 
-        render view: "/user/blogs", model: [id: params.id, blogsFound: blogs, blogCount: resultSize, query: params.query, filterParams: params]
+        render view: "/user/blogs", model: [user: User.findById(params.id), id: params.id, blogsFound: blogs, blogCount: resultSize, query: params.query, filterParams: params]
     }
 
     protected void notFound() {
