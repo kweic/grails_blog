@@ -78,7 +78,6 @@
             <div class="pagination">
                 <g:paginate total="${userCount ?: 0}" params="${filterParams}"/>
             </div>
-                        on index page, user count: ${userCount}
         </div>
     </body>
 </html>

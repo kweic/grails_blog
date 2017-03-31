@@ -6,11 +6,13 @@ import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import static org.springframework.http.HttpStatus.*
 import kw_blog.com.manifestcorp.User
+import kw_blog.com.manifestcorp.Pagination;
 
 
 class BlogController {
     def springSecurityService
     def query = ""
+    Pagination paginator = new Pagination();
 
 
     @Secured("permitAll")
@@ -197,16 +199,20 @@ class BlogController {
         println "looking for: "+params.query
         def blogs
         if(params.id != null){
-            blogs = Blog.findAllByUserAndTitleLike(User.findById(params.id), "%${params.query}%", [max: params.max, offset: params.offset])
+            blogs = Blog.findAllByUserAndTitleLike(User.findById(params.id), "%${params.query}%")
         }else {
             println "id null, finding all"
-            blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
+            blogs = Blog.findAllByTitleLike("%${params.query}%")
         }
         flash.message = "Found "+blogs.size+" results."
 
+        def resultSize = blogs.size
         println "found blogs, size: "+blogs.size
+        blogs = paginator.paginateResults(blogs, params)
+        println "paginated size: "+blogs.size()
 
-        render view: "/user/blogs", model: [id: params.id, blogsFound: blogs, blogCount: blogs.size, query: params.query, filterParams: params]
+
+        render view: "/user/blogs", model: [id: params.id, blogsFound: blogs, blogCount: resultSize, query: params.query, filterParams: params]
     }
 
     protected void notFound() {

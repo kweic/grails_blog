@@ -9,6 +9,7 @@ import kw_blog.com.manifestcorp.User
 import kw_blog.com.manifestcorp.Role
 import kw_blog.com.manifestcorp.UserRole
 import kw_blog.com.manifestcorp.Blog
+import kw_blog.com.manifestcorp.Pagination;
 
 
 @Transactional(readOnly = true)
@@ -17,6 +18,7 @@ class UserController {
     def springSecurityService
     User currentUser;
     def query = ""
+    Pagination paginator = new Pagination();
     //static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
 //    @Secured("permitAll")
@@ -50,25 +52,9 @@ class UserController {
             user = User.findById(springSecurityService.principal.id)
         }
         def blogs = getBlogs(query, user)
-        blogs = paginateResults(blogs, params)
+        blogs = paginator.paginateResults(blogs, params)
 
         respond user, model:[blogsFound: blogs, id: user.id, blogCount: user.blogs.size(), query: query, filterParams: params]
-    }
-
-    def paginateResults(array, params){
-        def end = 10
-        def begin = 0
-        if(params.offset != null) {
-            def pageSize = Integer.parseInt(params.offset)
-            end += pageSize
-            begin += pageSize
-        }
-
-        if(end > array.size()){
-            end = array.size()
-        }
-
-        array.subList(begin, end)
     }
 
     def getBlogs(query, user){
