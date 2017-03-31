@@ -10,7 +10,7 @@ include MainPage
 
 And(/^I have created a blog post$/) do
   @my_post_title = create_and_save_post
-  click_home
+  click_my_blog
 end
 
 When(/^I edit my blog post$/) do
@@ -27,6 +27,6 @@ Then(/^I am notified that the blog post was successfully edited$/) do
 end
 
 And(/^the edits I have made are saved$/) do
-  click_home
+  click_my_blog
   expect(first_post_on_page).to eq(@new_title)
 end

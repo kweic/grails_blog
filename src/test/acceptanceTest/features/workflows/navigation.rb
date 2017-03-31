@@ -14,6 +14,10 @@ module Navigation
     visit_page(CreatePostPage)
   end
 
+  def goto_main_user_index
+    visit_page(UserIndex)
+  end
+
   def reload_page
     @browser.refresh
   end

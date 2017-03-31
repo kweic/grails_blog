@@ -1,15 +1,17 @@
 package kw_blog.com.manifestcorp
 
+import kw_blog.com.manifestcorp.User
 
-class Blog {
+class Blog implements Comparable<Blog>{
     String title
     String blogEntry
     String mood
     String postBy
     Date dateCreated
+    User user
     SortedSet comments
 
-//    static belongsTo = [user: User]
+    static belongsTo = [user: User]
 
     static hasMany = [comments:Comment]
 
@@ -21,6 +23,12 @@ class Blog {
 
     static mapping = {
         sort dateCreated: 'desc'
+        //user lazy: false
+    }
+
+    @Override
+    int compareTo(Blog o) {
+        return o.dateCreated.compareTo(dateCreated)
     }
 
 }

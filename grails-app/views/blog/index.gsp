@@ -14,12 +14,13 @@
                 <sec:ifLoggedIn>
                 <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
                 </sec:ifLoggedIn>
+
                 <li>
                 <fieldset class="form">
                 <g:form action="search" method="GET">
                     <div class="fieldcontain">
                         <label class="search-label" for="query">Search:</label>
-                        <g:textField name="query" value="${params.query}"/>
+                        <g:textField name="query" value="${params.query}" />
                     </div>
                 </g:form>
                 </fieldset>
@@ -52,11 +53,13 @@
                             <div><small> feeling: <i class="text-info">${item.mood}</i></small></div>
                         </div>
 
+                        <g:link  mapping="blogLink" params="[id: item.id,title: seo.convert(value:item.title)]">
                         <div class="panel-body">
                             <div class="truncate">
                                 ${item.blogEntry}
                             </div>
                         </div>
+                        </g:link>
 
                     </div>
                 </div>
@@ -69,7 +72,3 @@
         </div>
     </body>
 </html>
-
-    <script>
-    hideShowLoginName(true)
-    </script>

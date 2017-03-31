@@ -16,18 +16,18 @@ class BlogControllerSpec extends Specification {
         assert params != null
         params.title = "hey"
         params.postBy = "kevin"
+        params.user = new User()
     }
 
     def injectTemporaryUser(username){
         def springSecurityService = Stub(SpringSecurityService)
         User currUser = new User(username: username, password: "password")
+        currUser.id = 1
         springSecurityService.principal >> currUser
 
-        controller.springSecurityService = springSecurityService
-    }
 
-    def initSpringSecurityMock(){
-        controller.springSecurityService.username = "bob"
+
+        controller.springSecurityService = springSecurityService
     }
 
     void "Test the index action returns the correct model"() {
@@ -58,6 +58,7 @@ class BlogControllerSpec extends Specification {
             request.method = 'POST'
             request.format = 'form'
             def blog = new Blog()
+            blog.user = new User();
             blog.validate()
             controller.save(blog)
 
@@ -190,14 +191,14 @@ class BlogControllerSpec extends Specification {
             controller.search()
 
         then: "Matching results are returned"
-            view == '/blog/index'
+            view == '/user/blogs'
             model.blogsFound.size == 3
 
         when: "A specific search is made"
             params.query = "post3"
             controller.search()
         then: "The exact match is returned"
-            view == '/blog/index'
+            view == '/user/blogs'
             model.blogsFound.size == 1
 
         when: "A blank search is made"
@@ -298,6 +299,7 @@ class BlogControllerSpec extends Specification {
     def makePost(title, user){
         populateValidParams(params)
         def blog = new Blog(params).save(flush: true)
+        println "is blog null? "+(blog==null)
         blog.comments = new TreeSet()
         blog.title = title
         blog.postBy = user

@@ -10,7 +10,9 @@
         <div class="nav" role="navigation">
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+                <sec:ifLoggedIn>
+                    <li><g:link class="blogs" action="blogs" id="${userId}" controller="user">My Blog</g:link></li>
+                </sec:ifLoggedIn>
             </ul>
         </div>
         <div id="create-blog" class="content scaffold-create" role="main">

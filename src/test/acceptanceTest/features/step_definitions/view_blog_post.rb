@@ -9,7 +9,8 @@ include MainPage
 include StringConverter
 
 Given(/^I visit the blog for my favorite blogger$/) do
-  login_to_blog
+  goto_main_user_index
+  click_favorite_blogger
 end
 
 When(/^I choose a blog post$/) do
@@ -18,9 +19,10 @@ When(/^I choose a blog post$/) do
 end
 
 Then(/^I should see comments left by other readers$/) do
-  my_comment = generate_random_words(5).strip
-  comment_on_blog(my_comment)
-  expect(@browser.text.include?(my_comment)).to be true
+  #my_comment = generate_random_words(5).strip
+  #comment_on_blog(my_comment)
+  #expect(@browser.text.include?(my_comment)).to be true
+  expect(comments_exist_on_blog).to be true
 end
 
 Then(/^the url should contain information about the post$/) do

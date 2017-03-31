@@ -1,8 +1,7 @@
 
 
 When(/^I search for a blog post$/) do
-  @my_title = create_and_save_post
-  click_home
+  @my_title = first_post_on_page
   search_for_post(@my_title)
 end
 

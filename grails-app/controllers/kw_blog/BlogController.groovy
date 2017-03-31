@@ -11,17 +11,24 @@ import kw_blog.com.manifestcorp.User
 class BlogController {
     def springSecurityService
     def query = ""
-    //def user
+
 
     @Secured("permitAll")
     index(Integer max) {
+        println "index of blog controller"
         params.max = Math.min(max ?: 10, 100)
         def blogs = getBlogs()
         respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
     }
 
-    def getUser(){
+    def getUsername(){
         return springSecurityService.principal.username;
+    }
+
+    def getUser() {
+        println "getting user"
+
+        return (User) User.findByIdLike(springSecurityService.principal.id, params)
     }
 
     @Secured('ROLE_USER')
@@ -42,20 +49,35 @@ class BlogController {
 
     @Secured('permitAll')
     show(Blog blog){
-        respond blog, model: [comment: new Comment()]
+        if(springSecurityService != null && springSecurityService.principal.enabled) {
+            respond blog, model: [comment: new Comment(), userId: springSecurityService.principal.id]
+        }else{
+            respond blog, model: [comment: new Comment()]
+        }
     }
 
     @Secured('ROLE_USER')
     @Transactional
     save(Blog blog) {
-        println "trying to do save"
         if (blog == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
+        if (blog.user == null) {
+            println "blog user null, getting user from currently logged in"
+            blog.user = getUser()
+        }
+
+        blog.validate()
+
         if (blog.hasErrors()) {
+            println "blog has errors"
+            blog.errors.allErrors.each {
+                println it
+            }
+            println blog
             transactionStatus.setRollbackOnly()
             respond blog.errors, view:'create'
             return
@@ -63,6 +85,11 @@ class BlogController {
 
         blog.save flush: true
 
+        println "about to do redirect"
+        println "blog id: "+blog.id
+        println "blog title"+blog.title
+        println "blog entry"+blog.blogEntry
+        println "blog postBy "+blog.postBy
 
         request.withFormat {
             form multipartForm {
@@ -73,7 +100,6 @@ class BlogController {
             '*' { respond blog, [status: CREATED] }
         }
     }
-
 
     @Secured('ROLE_USER')
     userComments() {
@@ -121,7 +147,7 @@ class BlogController {
 
     def userIsPoster(blog){
         if(blog != null){
-            return blog.postBy == getUser()
+            return blog.postBy == getUsername()
         }
         return false
     }
@@ -166,10 +192,20 @@ class BlogController {
 
     @Secured('permitAll')
     search() {
-        def blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
+        println "search called, id of: "+params.id
+        println "looking for: "+params.query
+        def blogs
+        if(params.id != null){
+            blogs = Blog.findAllByUserAndTitleLike(User.findById(params.id), "%${params.query}%", [max: params.max, offset: params.offset])
+        }else {
+            println "id null, finding all"
+            blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
+        }
         flash.message = "Found "+blogs.size+" results."
 
-        render view: "index", model: [blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
+        println "found blogs, size: "+blogs.size
+
+        render view: "/user/blogs", model: [id: params.id, blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
     }
 
     protected void notFound() {

@@ -18,40 +18,40 @@
     <div class="navbar navbar-default navbar-static-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <a class="navbar-brand" href="/#">
                     <i class="my-blog-logo">
                         <asset:image src="blog_logo_invert.png" class="blog-logo"/>
                     </i>
                 </a>
+
             </div>
+
+                            <sec:ifLoggedIn>
+                                <div id="user-name">
+                                <span class="right">
+                                <small>Logged in as: </small><strong>${sec.username()}</strong>
+                                </span>
+                                </div>
+                            </sec:ifLoggedIn>
+
 
 
             <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
                 <ul class="nav navbar-nav navbar-right">
                     <g:pageProperty name="page.nav" />
                 </ul>
+
             </div>
 
         </div>
     </div>
 
 
-
     <sec:ifLoggedIn>
     <div id="logout-button" class="right">
     <form name="logout" method="POST" action="${createLink(controller:'logout') }">
-                <input class="logout-button" type="submit" value="Logout">
+                <input class="logout-button btn btn-default" type="submit" value="Logout">
     </form>
-    </div>
-
-    <div id="user-name" class="right">
-    <small>Logged in: </small><strong>${sec.username()}</strong>
     </div>
     </sec:ifLoggedIn>
 

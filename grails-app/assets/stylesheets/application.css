@@ -76,6 +76,7 @@ pre {
 
 .search-label{
     display: inline;
+    color: #51555b;
 }
 
 .pad-left{
@@ -83,9 +84,8 @@ pre {
 }
 
 #user-name{
-    float: right;
-    padding-right: 10px;
-    color: #51555b;
+    color: #ffffff;
+    vertical-align: bottom;
 }
 
 .login-text{
@@ -94,4 +94,24 @@ pre {
 
 .center {
     text-align: center;
+}
+
+.show-blog-buttons{
+    margin-top: -60px;
+    padding-right: 12%;
+}
+
+.comment-area{
+    background: #dee5f2;
+    width: 75%;
+}
+
+.comment-tag{
+    color: #ffffff;
+    width: 75%;
+    background-color: #51555b;
+}
+
+.main-page-titles{
+    font-style: italic;
 }
