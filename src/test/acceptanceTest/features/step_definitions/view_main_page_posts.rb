@@ -3,11 +3,12 @@
 
 Given(/^my favorite blogger has been very active$/) do
   login_to_blog
+  click_my_blog
   blog_count = get_blog_count_from_page
   puts "first check count is: #{blog_count}"
   while blog_count < 10 do
     create_and_save_post
-    click_home
+    click_my_blog
     blog_count = get_blog_count_from_page
     puts "blog count: #{blog_count}"
   end

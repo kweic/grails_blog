@@ -11,7 +11,6 @@
         <div class="nav" role="navigation">
             <ul>
 
-
                 <sec:ifLoggedIn>
                     <li><g:link class="blogs" action="blogs" id="${userId}" controller="user">My Blog</g:link></li>
                 </sec:ifLoggedIn>
@@ -47,7 +46,7 @@
                       <div class="panel panel-default">
                           <div class="panel-heading">
                           <g:link action="blogs" id="${user.id}">
-                            <div id="user-${i}"><h2><strong>${user.username}</strong></h2></div>
+                            <div id="${user.username}"><h2><strong>${user.username}</strong></h2></div>
                             <div><small><strong>${user.blogs.size()}</strong> posts</small></div>
                           </g:link>
                           </div>

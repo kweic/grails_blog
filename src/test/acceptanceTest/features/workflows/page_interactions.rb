@@ -34,6 +34,18 @@ module PageInteractions
     @browser.button(:class => 'save').click
   end
 
+  def click_first_blogger
+    @browser.div(:id => 'user-0').click
+  end
+
+  def click_favorite_blogger
+    @browser.div(:id => 'user').click
+  end
+
+  def click_sign_up
+    @browser.link(:text => 'Sign-up').click
+  end
+
   def click_home
     on_page(MainBlog).home
   end

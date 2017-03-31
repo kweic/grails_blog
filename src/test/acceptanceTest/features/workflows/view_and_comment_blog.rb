@@ -20,3 +20,7 @@ end
 def first_comment_on_page
   on_page(ShowPage).firstComment
 end
+
+def comments_exist_on_blog
+  @browser.div(:id => 'comment-0').exists?
+end
