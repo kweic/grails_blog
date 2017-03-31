@@ -17,6 +17,7 @@ class BlogController {
     index(Integer max) {
         println "index of blog controller"
         params.max = Math.min(max ?: 10, 100)
+
         def blogs = getBlogs()
         respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
     }
@@ -205,7 +206,7 @@ class BlogController {
 
         println "found blogs, size: "+blogs.size
 
-        render view: "/user/blogs", model: [id: params.id, blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
+        render view: "/user/blogs", model: [id: params.id, blogsFound: blogs, blogCount: blogs.size, query: params.query, filterParams: params]
     }
 
     protected void notFound() {

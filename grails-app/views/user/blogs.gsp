@@ -68,6 +68,7 @@
             <div class="pagination">
                 <g:paginate total="${blogCount ?: 0}" params="${filterParams}"/>
             </div>
+            on blogs page, blog count: ${blogCount}
         </div>
     </body>
 </html>

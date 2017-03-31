@@ -10,6 +10,7 @@ import kw_blog.com.manifestcorp.Role
 import kw_blog.com.manifestcorp.UserRole
 import kw_blog.com.manifestcorp.Blog
 
+
 @Transactional(readOnly = true)
 @Secured("permitAll")
 class UserController {
@@ -26,7 +27,6 @@ class UserController {
 //    }
     @Secured("permitAll")
     index(Integer max) {
-        println "visiting index from user controller"
         params.max = Math.min(max ?: 10, 100)
         def users = getUsers()
         respond User.list(params), model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
@@ -46,24 +46,43 @@ class UserController {
     }
 
     def blogs(User user){
-        //params.max = Math.min(max ?: 10, 100)
         if(user == null){
             user = User.findById(springSecurityService.principal.id)
         }
-        respond user, model:[blogsFound: user.blogs, id: user.id]
+        def blogs = getBlogs(query, user)
+        blogs = paginateResults(blogs, params)
+
+        respond user, model:[blogsFound: blogs, id: user.id, blogCount: user.blogs.size(), query: query, filterParams: params]
     }
 
-//    def getBlogs(){
-//        println "user parts: "+getUser()
-//        def criteria = getUser().blogs.createCriteria()
-//
-//        def blogs = criteria.list(params) {
-//            if (params.query) {
-//                ilike("title", "%${params.query}%")
-//            }
-//        }
-//        blogs
-//    }
+    def paginateResults(array, params){
+        def end = 10
+        def begin = 0
+        if(params.offset != null) {
+            def pageSize = Integer.parseInt(params.offset)
+            end += pageSize
+            begin += pageSize
+        }
+
+        if(end > array.size()){
+            end = array.size()
+        }
+
+        array.subList(begin, end)
+    }
+
+    def getBlogs(query, user){
+
+        def blogs = user.blogs
+        def blogsFiltered = []
+        for(Blog blog:blogs){
+            if(blog.title.contains(query)){
+                blogsFiltered.add(blog)
+            }
+        }
+
+        blogsFiltered
+    }
 
     def getUser(){
         return springSecurityService.principal;
@@ -88,10 +107,8 @@ class UserController {
 
     @Transactional
     def save(User userInstance) {
-        println "in user save"
         if (userInstance == null) {
             notFound()
-            println "userinstance is null"
             return
         }
 
