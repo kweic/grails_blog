@@ -21,12 +21,7 @@ class UserController {
     Pagination paginator = new Pagination();
     //static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-//    @Secured("permitAll")
-//    def index(Integer max) {
-//        println "user, index, list size: "+User.count()
-//        params.max = Math.min(max ?: 10, 100)
-//        respond User.list(params), model: [users: User.list(), userCount: User.count(), filterParams: params]
-//    }
+
     @Secured("permitAll")
     index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -36,7 +31,6 @@ class UserController {
 
     def getUsers(){
         def criteria = User.createCriteria()
-        //println "user count: "+User.count()
 
             def users = criteria.list(params) {
                 if (params.query) {

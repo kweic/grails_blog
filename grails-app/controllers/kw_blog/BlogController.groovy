@@ -17,7 +17,6 @@ class BlogController {
 
     @Secured("permitAll")
     index(Integer max) {
-        println "index of blog controller"
         params.max = Math.min(max ?: 10, 100)
 
         def blogs = getBlogs()
@@ -29,8 +28,6 @@ class BlogController {
     }
 
     def getUser() {
-        println "getting user"
-
         return (User) User.findByIdLike(springSecurityService.principal.id, params)
     }
 
@@ -69,7 +66,6 @@ class BlogController {
         }
 
         if (blog.user == null) {
-            println "blog user null, getting user from currently logged in"
             blog.user = getUser()
         }
 
@@ -80,19 +76,12 @@ class BlogController {
             blog.errors.allErrors.each {
                 println it
             }
-            println blog
             transactionStatus.setRollbackOnly()
             respond blog.errors, view:'create'
             return
         }
 
         blog.save flush: true
-
-        println "about to do redirect"
-        println "blog id: "+blog.id
-        println "blog title"+blog.title
-        println "blog entry"+blog.blogEntry
-        println "blog postBy "+blog.postBy
 
         request.withFormat {
             form multipartForm {
@@ -195,21 +184,16 @@ class BlogController {
 
     @Secured('permitAll')
     search() {
-        println "search called, id of: "+params.id
-        println "looking for: "+params.query
         def blogs
         if(params.id != null){
             blogs = Blog.findAllByUserAndTitleLike(User.findById(params.id), "%${params.query}%")
         }else {
-            println "id null, finding all"
             blogs = Blog.findAllByTitleLike("%${params.query}%")
         }
         flash.message = "Found "+blogs.size+" results."
 
         def resultSize = blogs.size
-        println "found blogs, size: "+blogs.size
         blogs = paginator.paginateResults(blogs, params)
-        println "paginated size: "+blogs.size()
 
 
         render view: "/user/blogs", model: [id: params.id, blogsFound: blogs, blogCount: resultSize, query: params.query, filterParams: params]
