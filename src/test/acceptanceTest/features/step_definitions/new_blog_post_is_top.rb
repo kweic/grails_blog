@@ -26,6 +26,6 @@ Then(/^I am notified that the blog post was successfully added$/) do
 end
 
 And (/^the newly added blog post is at the top of the recent posts list$/) do
-  click_home
+  click_my_blog
   expect(first_post_on_page).to eq(@my_post_title)
 end

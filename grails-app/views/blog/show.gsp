@@ -15,7 +15,11 @@
         <div class="nav" role="navigation">
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
+                <sec:ifLoggedIn>
+                    <li><g:link class="blogs" action="blogs" id="${userId}" controller="user">My Blog</g:link></li>
+                </sec:ifLoggedIn>
                 <li><g:link class="create" controller="blog" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+
                 </ul>
         </div>
 

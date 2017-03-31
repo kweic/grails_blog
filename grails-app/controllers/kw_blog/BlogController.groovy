@@ -49,7 +49,11 @@ class BlogController {
 
     @Secured('permitAll')
     show(Blog blog){
-        respond blog, model: [comment: new Comment()]
+        if(springSecurityService.principal.enabled) {
+            respond blog, model: [comment: new Comment(), userId: springSecurityService.principal.id]
+        }else{
+            respond blog, model: [comment: new Comment()]
+        }
     }
 
     @Secured('ROLE_USER')

@@ -38,6 +38,10 @@ module PageInteractions
     on_page(MainBlog).home
   end
 
+  def click_my_blog
+    on_page(MainBlog).my_blog
+  end
+
   def get_page_url
   @browser.url
   end

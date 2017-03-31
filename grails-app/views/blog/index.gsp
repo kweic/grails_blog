@@ -14,6 +14,7 @@
                 <sec:ifLoggedIn>
                 <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
                 </sec:ifLoggedIn>
+
                 <li>
                 <fieldset class="form">
                 <g:form action="search" method="GET">

@@ -11,6 +11,7 @@ class MainBlog
   # text_field(:postBy, id: 'postBy')
   link(:create, text: 'New Blog')
   link(:home, text: 'Home')
+  link(:my_blog, text:'My Blog')
   div(:message, class: 'message')
   div(:firstBlog, id: 'blog-0')
   link(:firstBlogLink, id: 'blog-0')

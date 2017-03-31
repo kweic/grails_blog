@@ -26,6 +26,7 @@ class UserController {
 //    }
     @Secured("permitAll")
     index(Integer max) {
+        println "visiting index from user controller"
         params.max = Math.min(max ?: 10, 100)
         def users = getUsers()
         respond User.list(params), model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
@@ -46,6 +47,9 @@ class UserController {
 
     def blogs(User user){
         //params.max = Math.min(max ?: 10, 100)
+        if(user == null){
+            user = User.findById(springSecurityService.principal.id)
+        }
         respond user, model:[blogsFound: user.blogs, id: user.id]
     }
 
