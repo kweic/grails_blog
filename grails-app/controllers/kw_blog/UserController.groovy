@@ -26,12 +26,17 @@ class UserController {
     index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         def users = getUsers()
+
         respond User.list(params), model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
+    }
+
+    def matchingUserSize(query){
+        println "searching for: "+query
+        return User.findAllByUsernameLike(query).size()
     }
 
     def getUsers(){
         def criteria = User.createCriteria()
-
             def users = criteria.list(params) {
                 if (params.query) {
                     ilike("username", "%${params.query}%")
@@ -82,7 +87,7 @@ class UserController {
         def users = User.findAllByUsernameLike("%${params.query}%", [max: params.max, offset: params.offset])
         flash.message = "Found "+users.size+" results."
 
-        render view: "index", model: [usersFound: users, userCount: User.count(), query: params.query, filterParams: params]
+        render view: "index", model: [usersFound: users, userCount: matchingUserSize(params.query), query: params.query, filterParams: params]
     }
 
     @Transactional

@@ -69,7 +69,7 @@
                                 </span>
                                 </h2>
                             </div>
-                            <div><small><strong>${user.blogs.size()}</strong> posts</small></div>
+                            <div><small><strong>${user.blogs.size()}</strong> post<g:if test="${user.blogs.size() > 1}">s</g:if></small></div>
                           </g:link>
                           </div>
                           <g:if test="${user.blogs[0] != null}">

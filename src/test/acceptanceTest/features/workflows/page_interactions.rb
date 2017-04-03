@@ -27,7 +27,7 @@ module PageInteractions
   end
 
   def click_edit_button
-    @browser.link(:class => 'edit').click
+    @browser.button(:class => 'edit').click
   end
 
   def click_update_button

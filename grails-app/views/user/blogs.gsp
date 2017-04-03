@@ -63,7 +63,10 @@
                         <g:link  mapping="blogLink" params="[id: item.id,title: seo.convert(value:item.title)]">
                           <div class="main-page-titles" id="blog-${i}"><h2><strong>${item.title}</strong></h2></div>
                         </g:link>
-                            <div><small>Created: <span id="post-date-${i}" class="text-muted">${item.dateCreated}</span> by: </small><span>${item.postBy}</span></div>
+                            <div><small>Created: <span id="post-date-${i}" class="text-muted">${item.dateCreated}</span>
+                            <g:if test="${item.dateUpdated != null}">
+                                <span class="text-danger">edit: ${item.dateUpdated}</span>
+                            </g:if> by: </small><span>${item.postBy}</span></div>
 
                             <g:if test="${item.mood != null}">
                             <div><small> feeling: <i class="text-info">${item.mood}</i></small></div>
@@ -76,13 +79,15 @@
                                 ${item.blogEntry}
                             </div>
 
+                            <small>
                             <g:if test="${item.comments.size() != 0}">
 
-                            <small><strong>${item.comments.size()}</strong> comment<g:if test="${item.comments.size() > 1}">s</g:if></small>
+                            <strong>${item.comments.size()}</strong> comment<g:if test="${item.comments.size() > 1}">s</g:if>
                             </g:if>
                             <g:else>
-                            <small>no comments</small>
+                            no comments
                             </g:else>
+                            </small>
                         </div>
                         </g:link>
 

@@ -37,7 +37,9 @@
                 <div class="col-sm-12">
                 <div class="well well-lg">
                     <div class="blog-title"><h1><strong>${this.blog.title}</strong></h1></div>
-                    <div class="blog-mood text-info">Mood: ${this.blog.mood}</div>
+                    <g:if test="${this.blog.mood != null}">
+                        <div class="blog-mood text-info">Mood: ${this.blog.mood}</div>
+                    </g:if>
                     <div class="blog-blogEntry"><pre>${this.blog.blogEntry}</pre></div>
                     <div class="blog-date text-muted"><small>${this.blog.dateCreated}</small> - post by: ${this.blog.postBy}</div>
                 </div>

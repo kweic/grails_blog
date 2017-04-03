@@ -93,14 +93,20 @@ class BlogController {
         }
     }
 
+    def isDuplicateComment(comment, blog){
+        return blog.comments.size() > 0 && blog.comments.first().comment == comment.trim()
+    }
+
+    def validCommentForBlog(comment, blog){
+        if(comment.trim().isEmpty() || isDuplicateComment(comment, blog))return false
+        return true;
+    }
+
     @Secured('ROLE_USER')
     userComments() {
         Blog blog = (Blog) Blog.findByIdLike(Integer.parseInt(params.blogId), params)
 
-        if (blog.comments.size() == 0 ||
-                (!params.user.isEmpty() &&
-                        !params.comment.trim().isEmpty() &&
-                blog.comments.first().comment != params.comment)) {
+        if (validCommentForBlog(params.comment, blog)) {
 
             Comment comment = new Comment()
             comment.blog = blog
@@ -168,6 +174,8 @@ class BlogController {
             respond blog.errors, view: 'edit'
             return
         }
+
+        blog.dateUpdated = new Date()
 
         if (userIsPoster(blog)) {
             blog.save flush: true
