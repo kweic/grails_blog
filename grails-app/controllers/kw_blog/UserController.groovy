@@ -47,6 +47,16 @@ class UserController {
         return users
     }
 
+    def sort(){
+        println "SORT doing sort: "+params.sort
+        println "SORT with query: "+params.query
+
+        def users = User.findAllByUsernameLike("%${params.query}%", [max: params.max, offset: params.offset])
+        flash.message = "Found "+users.size+" results."
+
+        render template:"user_results", model: [usersFound: users, userCount: matchingUserSize(params.query), query: params.query, filterParams: params]
+    }
+
     def blogs(User user){
         if(user == null){
             user = User.findById(springSecurityService.principal.id)

@@ -22,16 +22,27 @@
                 <li>|</li>
                 <li>
                 <fieldset class="form">
-
-                <g:form action="search" method="GET">
-                    <div class="fieldcontain">
-                        <g:textField name="query" value="${params.query}" />
-                        <button class="btn btn-default" type="submit"><img src="http://localhost:8080/assets/search-icon.png" width="18"></button>
-                    </div>
-
-                </g:form>
+                    <g:form action="search" method="GET">
+                        <div class="fieldcontain">
+                            <g:textField class="search" id="search-input" name="query" value="${params.query}" />
+                            <button class="btn btn-default" type="submit"><img src="http://localhost:8080/assets/search-icon.png" width="18"></button>
+                        </div>
+                    </g:form>
                 </fieldset>
+                </li>
 
+                <li>
+                Sort:
+                </li>
+
+                <li>
+                 <div class="sort-options form-group right">
+                   <select class="form-control">
+                     <option id="sort-name">Name</option>
+                     <option id="sort-date">Last Post</option>
+                     <option id="sort-by-posts">Total Posts</option>
+                   </select>
+                 </div>
                 </li>
 
             </ul>
@@ -52,48 +63,13 @@
                 </span>
                 Users</h1>
                 </div>
-                 <br>
+                <br>
 
+                ajax results below here
 
-                <g:each var="user" in="${usersFound}" status="i">
-
-                  <div class="blogPost col-sm-12">
-                      <div class="panel panel-default mouse-highlight">
-                          <div class="panel-heading">
-                          <g:link action="blogs" id="${user.id}">
-                            <div class = "inline" id="${user.username}"><h2><strong>${user.username}</strong>
-                            <span>
-                               <g:if test="${user.blogs[0] && user.blogs[0].mood != null}">
-                                     <small> <i class="text-info">${user.blogs[0].mood}</i></small>
-                                </g:if>
-                                </span>
-                                </h2>
-                            </div>
-                            <g:if test="${user.blogs.size() > 0}">
-                            <div><small><strong>${user.blogs.size()}</strong> post<g:if test="${user.blogs.size() > 1}">s</g:if>
-                            , Latest: <span id="post-date-${i}" class="text-muted">${user.blogs[0].dateCreated}</span></small>
-                            </div>
-                            </g:if>
-                            <g:else>
-                                <small>No posts</small>
-                            </g:else>
-                          </g:link>
-                          </div>
-                          <g:if test="${user.blogs[0] != null}">
-                              <g:link action="blogs" id="${user.id}">
-                                  <div class="panel-body">
-                                      <h3>
-                                      <div class="main-page-titles">${user.blogs[0].title}</div>
-                                      </h3>
-                              </g:link>
-
-
-                            </div>
-                          </g:if>
-
-                      </div>
-                  </div>
-                </g:each>
+                <div id="user-results">
+                    <g:render template="user_results"  model="['usersFound':usersFound]"/>
+                </div>
 
 
             <div class="pagination">
@@ -101,4 +77,5 @@
             </div>
         </div>
     </body>
+
 </html>

@@ -19,3 +19,73 @@ if (typeof jQuery !== 'undefined') {
         });
     })(jQuery);
 }
+
+$(function() {
+    selectionChanged();
+});
+
+// hook up the change event of the select box
+$('select').change(selectionChanged);
+
+// event handler for the change event
+
+function selectionChanged(e) {
+    console.log("select changed: "+$('select').val());
+    search($('select').val());
+}
+
+
+var ascending = true;
+
+var sortMethod = "name";
+
+function checkOrderChange(chosenSort, previousSort){
+    if(chosenSort === previousSort){
+        console.log("same select, changed from asc to desc")
+        ascending = !ascending;
+    }
+}
+
+
+
+function search(sortMethod){
+    var key = $("#search-input").val();
+    console.log("doing sort type: "+sortMethod+" with term: "+key);
+    $("#search_results").empty();
+    $.ajax(
+        {
+            "url": "http://localhost:8080/user/sort",
+            "data": {
+                "query": key,
+                "sort": sortMethod,
+                "asc": ascending
+            },
+
+        "success": function(data){
+               $('#user-results').html(data);
+        }
+    });
+}
+
+
+
+var ascending = true;
+var context = "testing";
+
+var filter = {
+	init: function(){
+
+	console.log("init function called");
+
+		$(document).on("click", "#search", function(){
+			console.log("search click");
+		})
+		$(document).on("click", "#name-heading", function(){
+
+		})
+
+}
+
+
+
+
