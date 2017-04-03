@@ -58,7 +58,7 @@
                 <g:each var="user" in="${usersFound}" status="i">
 
                   <div class="blogPost col-sm-12">
-                      <div class="panel panel-default">
+                      <div class="panel panel-default mouse-highlight">
                           <div class="panel-heading">
                           <g:link action="blogs" id="${user.id}">
                             <div class = "inline" id="${user.username}"><h2><strong>${user.username}</strong>

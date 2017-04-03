@@ -128,3 +128,9 @@ pre {
     background-repeat: no-repeat;
     text-indent: 25px;
 }
+
+.mouse-highlight:hover{
+    border-color: #6f747c;
+    border-width: 3px;
+    border-style: solid;
+}

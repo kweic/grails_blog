@@ -58,7 +58,7 @@
               <g:each var="item" in="${blogsFound}" status="i">
 
                 <div class="blogPost col-sm-12 posts-1">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default mouse-highlight">
                         <div class="panel-heading">
                         <g:link  mapping="blogLink" params="[id: item.id,title: seo.convert(value:item.title)]">
                           <div class="main-page-titles" id="blog-${i}"><h2><strong>${item.title}</strong></h2></div>
@@ -77,7 +77,8 @@
                             </div>
 
                             <g:if test="${item.comments.size() != 0}">
-                            <small><strong>${item.comments.size()}</strong> comments</small>
+
+                            <small><strong>${item.comments.size()}</strong> comment<g:if test="${item.comments.size() > 1}">s</g:if></small>
                             </g:if>
                             <g:else>
                             <small>no comments</small>

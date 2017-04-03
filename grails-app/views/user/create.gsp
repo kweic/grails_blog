@@ -36,9 +36,9 @@
                 </f:with>
             </div>
                 </br>
-                <fieldset class="buttons">
-                    <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
-                </fieldset>
+                <div class="pad-left">
+                <g:submitButton name="create" class="save btn btn-default" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+                </div>
 
             </g:form>
 	</body>

@@ -32,7 +32,7 @@
             <div class="title-line">
             <h1>
             <span class="blogs-icon">
-                <img src="http://localhost:8080/assets/plus-sign.png" width="50" alt="new blog icon">
+                <img src="http://localhost:8080/assets/quill-pen-512.png" width="50" alt="new blog icon">
             </span>
              New Blog</h1>
             </div>
@@ -51,10 +51,11 @@
                 </f:with>
             </div>
                 </br>
-                </br>
-                <fieldset class="buttons">
-                    <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
-                </fieldset>
+
+
+                <div class="pad-left">
+                    <g:submitButton name="create" class="save btn btn-default" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+                </div>
 
             </g:form>
             </div>
