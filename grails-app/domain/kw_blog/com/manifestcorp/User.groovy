@@ -5,7 +5,7 @@ import groovy.transform.ToString
 
 @EqualsAndHashCode(includes='username')
 @ToString(includes='username', includeNames=true, includePackage=false)
-class User implements Serializable {
+class User implements Serializable, Comparable<User> {
 
 	private static final long serialVersionUID = 1
 
@@ -52,5 +52,19 @@ class User implements Serializable {
 
 	static mapping = {
 		password column: '`password`'
+	}
+
+	@Override
+	int compareTo(User o) {
+		if(!blogs.isEmpty() && !o.blogs.isEmpty()) {
+			return ((Blog) o.blogs.first()).dateCreated.compareTo(((Blog) blogs.first()).dateCreated)
+		}else if(!blogs.isEmpty()){
+			return -1;
+		}else if(!o.blogs.isEmpty()){
+			return 1;
+		}
+
+		return this.id - o.id;
+
 	}
 }

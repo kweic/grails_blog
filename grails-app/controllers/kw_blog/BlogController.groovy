@@ -28,7 +28,8 @@ class BlogController {
     }
 
     def getLoggedInUser() {
-        return (User) User.findById(springSecurityService.principal.id, params)
+        println "about to try to find: "+springSecurityService.principal.id
+        return User.findById(springSecurityService.principal.id, params)
     }
 
     @Secured('ROLE_USER')
@@ -211,6 +212,7 @@ class BlogController {
     }
 
     def findUserById(id){
+        println "search test, search id is: "+id
         return User.findById(id)
     }
 

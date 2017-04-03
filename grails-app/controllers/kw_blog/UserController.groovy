@@ -42,6 +42,7 @@ class UserController {
                     ilike("username", "%${params.query}%")
                 }
             }
+        Collections.sort(users);
 
         return users
     }
