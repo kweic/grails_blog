@@ -26,7 +26,11 @@
 			</ul>
 			</g:hasErrors>
 
-            <label>${error}</label>
+
+
+
+
+            <label class="pad-left">${error}</label>
             <g:form action="save">
 
             <div class="pad-left">

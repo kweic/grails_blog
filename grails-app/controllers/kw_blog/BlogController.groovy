@@ -27,8 +27,8 @@ class BlogController {
         return springSecurityService.principal.username;
     }
 
-    def getUser() {
-        return (User) User.findByIdLike(springSecurityService.principal.id, params)
+    def getLoggedInUser() {
+        return (User) User.findById(springSecurityService.principal.id, params)
     }
 
     @Secured('ROLE_USER')
@@ -66,7 +66,7 @@ class BlogController {
         }
 
         if (blog.user == null) {
-            blog.user = getUser()
+            blog.user = getLoggedInUser()
         }
 
         blog.validate()
@@ -98,20 +98,20 @@ class BlogController {
     }
 
     def validCommentForBlog(comment, blog){
-        if(comment.trim().isEmpty() || isDuplicateComment(comment, blog))return false
+        if(comment.trim().isEmpty() || isDuplicateComment(comment, blog) || getLoggedInUser() == null)return false
         return true;
     }
 
     @Secured('ROLE_USER')
     userComments() {
-        Blog blog = (Blog) Blog.findByIdLike(Integer.parseInt(params.blogId), params)
+        Blog blog = (Blog) Blog.findById(Integer.parseInt(params.blogId), params)
 
         if (validCommentForBlog(params.comment, blog)) {
 
             Comment comment = new Comment()
             comment.blog = blog
             comment.comment = params.comment.trim()
-            comment.user = params.user
+            comment.user = getLoggedInUser().username
             comment.dateCreated = new Date()
 
             blog.comments.add(comment)
@@ -192,9 +192,11 @@ class BlogController {
 
     @Secured('permitAll')
     search() {
+        def user = findUserById(params.id)
+
         def blogs
         if(params.id != null){
-            blogs = Blog.findAllByUserAndTitleLike(User.findById(params.id), "%${params.query}%")
+            blogs = Blog.findAllByUserAndTitleLike(user, "%${params.query}%")
         }else {
             blogs = Blog.findAllByTitleLike("%${params.query}%")
         }
@@ -204,7 +206,12 @@ class BlogController {
         blogs = paginator.paginateResults(blogs, params)
 
 
-        render view: "/user/blogs", model: [user: User.findById(params.id), id: params.id, blogsFound: blogs, blogCount: resultSize, query: params.query, filterParams: params]
+
+        render view: "/user/blogs", model: [user: user, id: params.id, blogsFound: blogs, blogCount: resultSize, query: params.query, filterParams: params]
+    }
+
+    def findUserById(id){
+        return User.findById(id)
     }
 
     protected void notFound() {

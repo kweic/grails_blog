@@ -69,7 +69,14 @@
                                 </span>
                                 </h2>
                             </div>
-                            <div><small><strong>${user.blogs.size()}</strong> post<g:if test="${user.blogs.size() > 1}">s</g:if></small></div>
+                            <g:if test="${user.blogs.size() > 0}">
+                            <div><small><strong>${user.blogs.size()}</strong> post<g:if test="${user.blogs.size() > 1}">s</g:if>
+                            , Latest: <span id="post-date-${i}" class="text-muted">${user.blogs[0].dateCreated}</span></small>
+                            </div>
+                            </g:if>
+                            <g:else>
+                                <small>No posts</small>
+                            </g:else>
                           </g:link>
                           </div>
                           <g:if test="${user.blogs[0] != null}">
@@ -80,7 +87,7 @@
                                       </h3>
                               </g:link>
 
-                            <div><small>Last post: <span id="post-date-${i}" class="text-muted">${user.blogs[0].dateCreated}</span></small></div>
+
                             </div>
                           </g:if>
 
