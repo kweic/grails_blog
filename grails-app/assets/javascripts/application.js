@@ -25,14 +25,15 @@ if (typeof jQuery !== 'undefined') {
 //});
 
 // hook up the change event of the select box
-//$('select').change(selectionChanged);
+$('select').change(selectionChanged);
 //
 //// event handler for the change event
 //
-//function selectionChanged(e) {
-//    console.log("select changed: "+$('select').val());
-//    search($('select').val());
-//}
+function selectionChanged(e) {
+    console.log("select changed: "+$('select').val());
+    sortMethod = $('select').val();
+    search();
+}
 
 var previousSearch = "";
    $('#search-input').on('keyup', function (e) {
@@ -46,14 +47,13 @@ var previousSearch = "";
 
 var offset;
 
-var sortMethod = "name";
+var sortMethod = "Name";
 
 //window.onload = function load(){
 //    search(${'params'});
 //}
 
 function search(){
-    console.log("search called in application.js");
     var key = $("#search-input").val();
 
     $.ajax(
@@ -62,6 +62,7 @@ function search(){
             data: {
                 "query": key,
                 "asc": ascending,
+                "sort": sortMethod,
                 "offset": offset,
                 "max": 10
             },

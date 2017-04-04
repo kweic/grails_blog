@@ -52,9 +52,12 @@ class BlogController {
 
     @Secured('permitAll')
     show(Blog blog){
+        println "show called, blog: "+blog
         if(springSecurityService != null && springSecurityService.principal.enabled) {
+            println "part 1"
             respond blog, model: [comment: new Comment(), userId: springSecurityService.principal.id]
         }else{
+            println "part 2"
             respond blog, model: [comment: new Comment()]
         }
     }
