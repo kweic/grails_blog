@@ -34,9 +34,15 @@ if (typeof jQuery !== 'undefined') {
 //    search($('select').val());
 //}
 
-function paginationClick(){
+var previousSearch = "";
+   $('#search-input').on('keyup', function (e) {
+         var val = $("#search-input").val();
 
-}
+         if(val != previousSearch){
+            previousSearch = val;
+            search();
+         }
+   });
 
 var offset;
 
@@ -46,7 +52,7 @@ var sortMethod = "name";
 //    search(${'params'});
 //}
 
-function search(params){
+function search(){
     console.log("search called in application.js");
     var key = $("#search-input").val();
 
@@ -57,7 +63,7 @@ function search(params){
                 "query": key,
                 "asc": ascending,
                 "offset": offset,
-                "max": params.max
+                "max": 10
             },
 
         "success": function(data){

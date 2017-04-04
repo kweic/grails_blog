@@ -65,10 +65,6 @@
                 </div>
                 <br>
 
-                ajax results below here
-                offset: ${params.offset}
-                passing usercount: ${params.userCount}
-                params: ${params}
 
                 <div id="user-results">
                     <g:render template="user_results" model="['usersFound':usersFound]"/>

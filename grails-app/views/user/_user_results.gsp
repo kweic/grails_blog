@@ -1,4 +1,4 @@
-                in results params: ${params}
+
                 <g:each var="user" in="${usersFound}" status="i">
 
                   <div class="blogPost col-sm-12">
@@ -39,9 +39,7 @@
                   </div>
                 </g:each>
 
-                usercount: ${userCount}
-                <br>
-                query: ${params.query}
+
                 <div class="pagination">
                     <g:paginate total="${userCount ?: 0}" action="index" params="${[query: params.query]}" />
                 </div>
