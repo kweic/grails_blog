@@ -4,7 +4,7 @@ include RandomStrings
 
 Given(/^I am reading a blog post from my favorite blogger$/) do
   login_to_blog
-  click_first_blogger
+  click_favorite_blogger
   click_first_blog
 end
 

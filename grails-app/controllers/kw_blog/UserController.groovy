@@ -9,6 +9,8 @@ import kw_blog.com.manifestcorp.User
 import kw_blog.com.manifestcorp.Role
 import kw_blog.com.manifestcorp.UserRole
 import kw_blog.com.manifestcorp.Blog
+import kw_blog.com.manifestcorp.Pagination
+
 
 @Transactional(readOnly = true)
 @Secured("permitAll")
@@ -16,54 +18,104 @@ class UserController {
     def springSecurityService
     User currentUser;
     def query = ""
+    Pagination paginator = new Pagination();
     //static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-//    @Secured("permitAll")
-//    def index(Integer max) {
-//        println "user, index, list size: "+User.count()
-//        params.max = Math.min(max ?: 10, 100)
-//        respond User.list(params), model: [users: User.list(), userCount: User.count(), filterParams: params]
-//    }
+
     @Secured("permitAll")
     index(Integer max) {
-        println "visiting index from user controller"
+        println "user index called"
+        println "user index params: "+params
+        println "sort type: "+params.sort
         params.max = Math.min(max ?: 10, 100)
-        def users = getUsers()
+        def users = findUsersWithPagination()
+
+        println "in index, users being returned: "+users.size()
+
         respond User.list(params), model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
+    }
+
+    def usersTemplate(){
+        println "in user template"
+        def users = findUsersWithPagination()
+
+        println "in userTemplate, users being returned: "+users.size()
+
+        render template:"user_results", model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
+    }
+
+    def matchingUserSize(query){
+        return User.findAllByUsernameLike('%'+query+'%').size()
     }
 
     def getUsers(){
         def criteria = User.createCriteria()
-        //println "user count: "+User.count()
-
             def users = criteria.list(params) {
                 if (params.query) {
                     ilike("username", "%${params.query}%")
                 }
             }
+        Collections.sort(users);
 
         return users
     }
 
+    def findUsersWithPagination(){
+        println "find with page called, max: "+params.max+" offset: "+params.offset+" query: "+params.query
+        def query = params.query;
+        if(query == null){
+            query = "";
+        }
+
+        return User.findAllByUsernameLike("%"+query+"%", [max: params.max, offset: params.offset])
+    }
+
+    def test(){
+        println "test method called"
+    }
+
+    def sort(){
+        println "sort called"
+
+        params.max = 10
+        params.offset = 0
+        println "SORT doing sort: "+params.sort
+        println "SORT with query: "+params.query
+
+        println "SORT, params: "+params
+
+        def users = findUsersWithPagination()
+        def foundSize = matchingUserSize(params.query)
+        println "users page found size: "+users.size()
+        println "found: "+foundSize
+        flash.message = "Found "+foundSize+" results."
+
+
+        render template:"user_results", model: [usersFound: users, userCount: foundSize,query: query, filterParams: params]
+    }
+
     def blogs(User user){
-        //params.max = Math.min(max ?: 10, 100)
         if(user == null){
             user = User.findById(springSecurityService.principal.id)
         }
-        respond user, model:[blogsFound: user.blogs, id: user.id]
+        def blogs = getBlogs(query, user)
+        blogs = paginator.paginateResults(blogs, params)
+
+        respond user, model:[blogsFound: blogs, id: user.id, blogCount: user.blogs.size(), query: query, filterParams: params]
     }
 
-//    def getBlogs(){
-//        println "user parts: "+getUser()
-//        def criteria = getUser().blogs.createCriteria()
-//
-//        def blogs = criteria.list(params) {
-//            if (params.query) {
-//                ilike("title", "%${params.query}%")
-//            }
-//        }
-//        blogs
-//    }
+    def getBlogs(query, user){
+
+        def blogs = user.blogs
+        def blogsFiltered = []
+        for(Blog blog:blogs){
+            if(blog.title.contains(query)){
+                blogsFiltered.add(blog)
+            }
+        }
+
+        blogsFiltered
+    }
 
     def getUser(){
         return springSecurityService.principal;
@@ -80,18 +132,20 @@ class UserController {
 
     @Secured('permitAll')
     search() {
-        def users = User.findAllByUsernameLike("%${params.query}%", [max: params.max, offset: params.offset])
-        flash.message = "Found "+users.size+" results."
+        println "search called"
+        params.max = 10;
+        params.offset = 0;
+        def users = findUsersWithPagination()
+        def resultSize = matchingUserSize(params.query)
+        flash.message = "Found "+resultSize+" results."
 
-        render view: "index", model: [usersFound: users, userCount: User.count(), query: params.query, filterParams: params]
+        render view: "index", model: [usersFound: users, userCount: resultSize, query: params.query, filterParams: params]
     }
 
     @Transactional
     def save(User userInstance) {
-        println "in user save"
         if (userInstance == null) {
             notFound()
-            println "userinstance is null"
             return
         }
 
@@ -103,9 +157,11 @@ class UserController {
         userInstance.save flush: true
         saveNewUserWithRole(userInstance)
 
+        println "saving new user: "+userInstance.username
+        println "user id: "+userInstance.id
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
+                flash.message = message(code: 'default.usercreated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
                 redirect(controller: "user", action: "index")
             }
             '*' { respond userInstance, [status: CREATED] }

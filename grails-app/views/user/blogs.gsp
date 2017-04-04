@@ -12,15 +12,17 @@
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
                 <sec:ifLoggedIn>
+                <li>|</li>
                 <li><g:link class="create" controller="blog" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
                 </sec:ifLoggedIn>
                 <li>
+                <li>|</li>
                 <fieldset class="form">
                 <g:form action="search" controller="blog" method="GET">
                     <div class="fieldcontain">
-                        <label class="search-label" for="query">Search:</label>
                         <g:textField name="query" value="${params.query}" />
                         <g:hiddenField name="id" value="${id}"/>
+                        <button class="btn btn-default" type="submit"><img src="http://localhost:8080/assets/search-icon.png" width="18"></button>
                     </div>
                 </g:form>
                 </fieldset>
@@ -38,18 +40,37 @@
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
 
+
+                <div class="title-line">
+                <h1>
+                <span class="blogs-icon">
+                    <img src="http://localhost:8080/assets/book_icon.png" width="50" alt="book icon">
+                </span>
+                Posts by ${user.username}</h1>
+                </div>
+
+                <br>
+
+                <g:if test="${user.blogs.size() == 0}">
+                    <div class="pad-left">This user has no posts.</div>
+                </g:if>
+
               <g:each var="item" in="${blogsFound}" status="i">
 
                 <div class="blogPost col-sm-12 posts-1">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default mouse-highlight">
                         <div class="panel-heading">
                         <g:link  mapping="blogLink" params="[id: item.id,title: seo.convert(value:item.title)]">
-                          <div id="blog-${i}"><h2><strong>${item.title}</strong></h2></div>
+                          <div class="main-page-titles" id="blog-${i}"><h2><strong>${item.title}</strong></h2></div>
                         </g:link>
-                            <div><small>Created: <span id="post-date-${i}" class="text-muted">${item.dateCreated}</span> by: </small><span>${item.postBy}</span></div>
+                            <div><small>Created: <span id="post-date-${i}" class="text-muted">${item.dateCreated}</span>
+                            <g:if test="${item.dateUpdated != null}">
+                                <span class="text-danger">edit: ${item.dateUpdated}</span>
+                            </g:if> by: </small><span>${item.postBy}</span></div>
 
-
+                            <g:if test="${item.mood != null}">
                             <div><small> feeling: <i class="text-info">${item.mood}</i></small></div>
+                            </g:if>
                         </div>
 
                         <g:link  mapping="blogLink" params="[id: item.id,title: seo.convert(value:item.title)]">
@@ -57,6 +78,16 @@
                             <div class="truncate">
                                 ${item.blogEntry}
                             </div>
+
+                            <small>
+                            <g:if test="${item.comments.size() != 0}">
+
+                            <strong>${item.comments.size()}</strong> comment<g:if test="${item.comments.size() > 1}">s</g:if>
+                            </g:if>
+                            <g:else>
+                            no comments
+                            </g:else>
+                            </small>
                         </div>
                         </g:link>
 
@@ -64,10 +95,11 @@
                 </div>
               </g:each>
 
-
+            <g:if test="${user.blogs.size() > 10}">
             <div class="pagination">
                 <g:paginate total="${blogCount ?: 0}" params="${filterParams}"/>
             </div>
+            </g:if>
         </div>
     </body>
 </html>

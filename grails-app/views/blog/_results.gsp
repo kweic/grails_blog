@@ -1,3 +1,4 @@
+            <br>
             <g:each var="item" in="${comments}" status="i">
 
                     <div class="panel panel-default">

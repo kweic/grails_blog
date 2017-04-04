@@ -7,6 +7,7 @@ import kw_blog.com.manifestcorp.*
 import spock.lang.Specification
 import kw_blog.*
 
+
 @TestFor(BlogController)
 @Mock(Blog)
 class BlogControllerSpec extends Specification {
@@ -21,20 +22,30 @@ class BlogControllerSpec extends Specification {
 
     def injectTemporaryUser(username){
         def springSecurityService = Stub(SpringSecurityService)
-        User currUser = new User(username: username, password: "password")
+        User currUser = new User()
+        currUser.username = username
+        currUser.password = "password"
         currUser.id = 1
         springSecurityService.principal >> currUser
-
-
-
+        springSecurityService.principal.id >> 1
         controller.springSecurityService = springSecurityService
     }
 
+
+
     void "Test the index action returns the correct model"() {
+        setup:
+        GroovySpy(Blog, global: true)
+
         when:"The index action is executed"
+            //User.findById(1) >> Mock(User)
+            Blog.createCriteria() >> Mock(grails.gorm.CriteriaBuilder)
+            Blog.count() >> 0
+            Blog.list() >> Blog
             controller.index()
 
         then:"The model is correct"
+            def savedBlog = Blog.findByIdLike("1")
             !model.blogList
             model.blogCount == 0
     }
@@ -183,11 +194,17 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test search returns matching result"(){
+        setup:
+        GroovySpy(User, global: true)
+
         when: "A search is made"
             makePost("post1", "kevin")
             makePost("post2", "kevin")
             makePost("post3", "kevin")
             params.query = "post"
+
+            User.findById(null) >> Mock(User)
+
             controller.search()
 
         then: "Matching results are returned"
@@ -215,8 +232,14 @@ class BlogControllerSpec extends Specification {
     }
 
     void "Test submission of comments on a blog post"(){
+        setup:
+        GroovySpy(User, global: true)
+
         when:"A comment is submitted"
+            injectTemporaryUser("user")
             makePost("post", "bob")
+            User.findById(1) >> Mock(User)
+            User.findById(1, params) >> Mock(User)
             makeComment("user", "a comment")
 
         then:"The comment is saved"
@@ -228,11 +251,6 @@ class BlogControllerSpec extends Specification {
             makeComment("user", "a comment to duplicate")
             makeComment("user", "a comment to duplicate")
 
-        then:"The comment is not saved"
-            savedBlog.comments.size() == 2
-
-        when:"A comment is submitted without a username"
-            makeComment("", "a comment without a user")
         then:"The comment is not saved"
             savedBlog.comments.size() == 2
 
@@ -279,17 +297,6 @@ class BlogControllerSpec extends Specification {
     def removeBrackets(bracketedString){
         return bracketedString.substring(1, bracketedString.length()-1)
     }
-
-//    void "Test creating a new user"(){
-//        when: "A new user is created"
-//            params.user = "Kevin"
-//            controller.createUser()
-//        then: "That new user exists"
-//            User.count() == 1;
-//
-//        when: "A username is already taken"
-//        then: "The new username is not saved"
-//    }
 
     @Override
     protected void finalize() throws Throwable {

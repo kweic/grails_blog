@@ -8,6 +8,7 @@ class Blog implements Comparable<Blog>{
     String mood
     String postBy
     Date dateCreated
+    Date dateUpdated
     User user
     SortedSet comments
 
@@ -19,6 +20,7 @@ class Blog implements Comparable<Blog>{
         title(blank: false)
         blogEntry(maxSize: 1000, widget: 'textarea', nullable: true)
         mood(inList:["", "Rocking out", "Feeling down", "Sleepy", "Busy", "Lazy", "Excited", "Pancakes and Waffles"], nullable: true)
+        dateUpdated (nullable: true)
     }
 
     static mapping = {

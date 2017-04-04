@@ -6,17 +6,19 @@ import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import static org.springframework.http.HttpStatus.*
 import kw_blog.com.manifestcorp.User
+import kw_blog.com.manifestcorp.Pagination;
 
 
 class BlogController {
     def springSecurityService
     def query = ""
+    Pagination paginator = new Pagination();
 
 
     @Secured("permitAll")
     index(Integer max) {
-        println "index of blog controller"
         params.max = Math.min(max ?: 10, 100)
+
         def blogs = getBlogs()
         respond Blog.list(params), model: [blogsFound: blogs, blogCount: Blog.count(), query: query, filterParams: params]
     }
@@ -25,10 +27,9 @@ class BlogController {
         return springSecurityService.principal.username;
     }
 
-    def getUser() {
-        println "getting user"
-
-        return (User) User.findByIdLike(springSecurityService.principal.id, params)
+    def getLoggedInUser() {
+        println "about to try to find: "+springSecurityService.principal.id
+        return User.findById(springSecurityService.principal.id, params)
     }
 
     @Secured('ROLE_USER')
@@ -38,6 +39,8 @@ class BlogController {
 
     def getBlogs(){
         def criteria = Blog.createCriteria()
+
+        print "criteria: "+criteria
 
         def blogs = criteria.list(params) {
             if (params.query) {
@@ -66,8 +69,7 @@ class BlogController {
         }
 
         if (blog.user == null) {
-            println "blog user null, getting user from currently logged in"
-            blog.user = getUser()
+            blog.user = getLoggedInUser()
         }
 
         blog.validate()
@@ -77,19 +79,12 @@ class BlogController {
             blog.errors.allErrors.each {
                 println it
             }
-            println blog
             transactionStatus.setRollbackOnly()
             respond blog.errors, view:'create'
             return
         }
 
         blog.save flush: true
-
-        println "about to do redirect"
-        println "blog id: "+blog.id
-        println "blog title"+blog.title
-        println "blog entry"+blog.blogEntry
-        println "blog postBy "+blog.postBy
 
         request.withFormat {
             form multipartForm {
@@ -101,19 +96,25 @@ class BlogController {
         }
     }
 
+    def isDuplicateComment(comment, blog){
+        return blog.comments.size() > 0 && blog.comments.first().comment == comment.trim()
+    }
+
+    def validCommentForBlog(comment, blog){
+        if(comment.trim().isEmpty() || isDuplicateComment(comment, blog) || getLoggedInUser() == null)return false
+        return true;
+    }
+
     @Secured('ROLE_USER')
     userComments() {
-        Blog blog = (Blog) Blog.findByIdLike(Integer.parseInt(params.blogId), params)
+        Blog blog = (Blog) Blog.findById(Integer.parseInt(params.blogId), params)
 
-        if (blog.comments.size() == 0 ||
-                (!params.user.isEmpty() &&
-                        !params.comment.trim().isEmpty() &&
-                blog.comments.first().comment != params.comment)) {
+        if (validCommentForBlog(params.comment, blog)) {
 
             Comment comment = new Comment()
             comment.blog = blog
             comment.comment = params.comment.trim()
-            comment.user = params.user
+            comment.user = getLoggedInUser().username
             comment.dateCreated = new Date()
 
             blog.comments.add(comment)
@@ -177,6 +178,8 @@ class BlogController {
             return
         }
 
+        blog.dateUpdated = new Date()
+
         if (userIsPoster(blog)) {
             blog.save flush: true
         }
@@ -192,20 +195,27 @@ class BlogController {
 
     @Secured('permitAll')
     search() {
-        println "search called, id of: "+params.id
-        println "looking for: "+params.query
+        def user = findUserById(params.id)
+
         def blogs
         if(params.id != null){
-            blogs = Blog.findAllByUserAndTitleLike(User.findById(params.id), "%${params.query}%", [max: params.max, offset: params.offset])
+            blogs = Blog.findAllByUserAndTitleLike(user, "%${params.query}%")
         }else {
-            println "id null, finding all"
-            blogs = Blog.findAllByTitleLike("%${params.query}%", [max: params.max, offset: params.offset])
+            blogs = Blog.findAllByTitleLike("%${params.query}%")
         }
         flash.message = "Found "+blogs.size+" results."
 
-        println "found blogs, size: "+blogs.size
+        def resultSize = blogs.size
+        blogs = paginator.paginateResults(blogs, params)
 
-        render view: "/user/blogs", model: [id: params.id, blogsFound: blogs, blogCount: Blog.count(), query: params.query, filterParams: params]
+
+
+        render view: "/user/blogs", model: [user: user, id: params.id, blogsFound: blogs, blogCount: resultSize, query: params.query, filterParams: params]
+    }
+
+    def findUserById(id){
+        println "search test, search id is: "+id
+        return User.findById(id)
     }
 
     protected void notFound() {

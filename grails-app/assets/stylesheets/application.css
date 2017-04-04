@@ -115,3 +115,27 @@ pre {
 .main-page-titles{
     font-style: italic;
 }
+
+.title-line{
+    font-style: bold;
+    font-size: 20px;
+}
+
+.nav a.blogs{
+    background-image: url(../images/book_icon.png);
+    background-size: 18px 18px;
+    background-position: 0.7em center;
+    background-repeat: no-repeat;
+    text-indent: 25px;
+}
+
+.mouse-highlight:hover{
+    border-color: #6f747c;
+    border-width: 3px;
+    border-style: solid;
+}
+
+.sort-options{
+    margin-top: .25em;
+    margin-bottom: 4px;
+}
