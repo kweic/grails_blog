@@ -71,8 +71,8 @@
 
             <form onsubmit="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),
                                         url:'/blog/userComments',success:function(data,textStatus){
-            jQuery('.comment-area').val(''),
-            jQuery('#comments-area').html(data);
+                                        jQuery('.comment-area').val(''),
+                                        jQuery('#comments-area').html(data);
                                         },error:function(XMLHttpRequest,textStatus,errorThrown){}});return false"
                                         method="post">
 

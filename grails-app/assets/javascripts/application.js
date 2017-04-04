@@ -20,45 +20,42 @@ if (typeof jQuery !== 'undefined') {
     })(jQuery);
 }
 
-$(function() {
-    selectionChanged();
-});
+//$(function() {
+//    selectionChanged();
+//});
 
 // hook up the change event of the select box
-$('select').change(selectionChanged);
+//$('select').change(selectionChanged);
+//
+//// event handler for the change event
+//
+//function selectionChanged(e) {
+//    console.log("select changed: "+$('select').val());
+//    search($('select').val());
+//}
 
-// event handler for the change event
 
-function selectionChanged(e) {
-    console.log("select changed: "+$('select').val());
-    search($('select').val());
-}
-
-
-var ascending = true;
+var offset;
 
 var sortMethod = "name";
 
-function checkOrderChange(chosenSort, previousSort){
-    if(chosenSort === previousSort){
-        console.log("same select, changed from asc to desc")
-        ascending = !ascending;
-    }
-}
+//window.onload = function load(){
+//    search(${'params'});
+//}
 
-
-
-function search(sortMethod){
+function search(params){
+    console.log("search called in application.js");
     var key = $("#search-input").val();
-    console.log("doing sort type: "+sortMethod+" with term: "+key);
-    $("#search_results").empty();
+
     $.ajax(
         {
-            "url": "http://localhost:8080/user/sort",
-            "data": {
+            url: "http://localhost:8080/user/sort",
+            data: {
                 "query": key,
                 "sort": sortMethod,
-                "asc": ascending
+                "asc": ascending,
+                "offset": offset,
+                "max": params.max
             },
 
         "success": function(data){
@@ -83,7 +80,11 @@ var filter = {
 		$(document).on("click", "#name-heading", function(){
 
 		})
+    }
+}
 
+function searchValue(){
+    return $('#search-input').val();
 }
 
 

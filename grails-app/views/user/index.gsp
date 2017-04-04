@@ -22,12 +22,12 @@
                 <li>|</li>
                 <li>
                 <fieldset class="form">
-                    <g:form action="search" method="GET">
+
                         <div class="fieldcontain">
-                            <g:textField class="search" id="search-input" name="query" value="${params.query}" />
-                            <button class="btn btn-default" type="submit"><img src="http://localhost:8080/assets/search-icon.png" width="18"></button>
+                            <input class="search" id="search-input" name="query" value="${params.query}" />
+                            <button class="btn btn-default" onclick="search('${params}')"><img src="http://localhost:8080/assets/search-icon.png" width="18"></button>
                         </div>
-                    </g:form>
+
                 </fieldset>
                 </li>
 
@@ -66,15 +66,14 @@
                 <br>
 
                 ajax results below here
+                offset: ${params.offset}
+                passing usercount: ${params.userCount}
+                params: ${params}
 
                 <div id="user-results">
-                    <g:render template="user_results"  model="['usersFound':usersFound]"/>
+                    <g:render template="user_results" model="['usersFound':usersFound]"/>
                 </div>
 
-
-            <div class="pagination">
-                <g:paginate total="${userCount ?: 0}" params="${filterParams}"/>
-            </div>
         </div>
     </body>
 

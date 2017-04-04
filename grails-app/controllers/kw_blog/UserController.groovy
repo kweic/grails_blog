@@ -24,15 +24,28 @@ class UserController {
 
     @Secured("permitAll")
     index(Integer max) {
+        println "user index called"
+        println "user index params: "+params
+        println "sort type: "+params.sort
         params.max = Math.min(max ?: 10, 100)
-        def users = getUsers()
+        def users = findUsersWithPagination()
+
+        println "in index, users being returned: "+users.size()
 
         respond User.list(params), model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
     }
 
+    def usersTemplate(){
+        println "in user template"
+        def users = findUsersWithPagination()
+
+        println "in userTemplate, users being returned: "+users.size()
+
+        render template:"user_results", model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
+    }
+
     def matchingUserSize(query){
-        println "searching for: "+query
-        return User.findAllByUsernameLike(query).size()
+        return User.findAllByUsernameLike('%'+query+'%').size()
     }
 
     def getUsers(){
@@ -47,14 +60,39 @@ class UserController {
         return users
     }
 
+    def findUsersWithPagination(){
+        println "find with page called, max: "+params.max+" offset: "+params.offset+" query: "+params.query
+        def query = params.query;
+        if(query == null){
+            query = "";
+        }
+
+        return User.findAllByUsernameLike("%"+query+"%", [max: params.max, offset: params.offset])
+    }
+
+    def test(){
+        println "test method called"
+    }
+
     def sort(){
+        println "sort called"
+
+        params.max = 10
+        params.offset = 0
         println "SORT doing sort: "+params.sort
         println "SORT with query: "+params.query
 
-        def users = User.findAllByUsernameLike("%${params.query}%", [max: params.max, offset: params.offset])
-        flash.message = "Found "+users.size+" results."
+        println "SORT, params: "+params
 
-        render template:"user_results", model: [usersFound: users, userCount: matchingUserSize(params.query), query: params.query, filterParams: params]
+        def users = findUsersWithPagination()
+        def foundSize = matchingUserSize(params.query)
+        println "users page found size: "+users.size()
+        println "found: "+foundSize
+        flash.message = "Found "+foundSize+" results."
+        params.userCount = foundSize
+
+
+        render template:"user_results", model: [usersFound: users, query: query, filterParams: params]
     }
 
     def blogs(User user){
@@ -95,10 +133,14 @@ class UserController {
 
     @Secured('permitAll')
     search() {
-        def users = User.findAllByUsernameLike("%${params.query}%", [max: params.max, offset: params.offset])
-        flash.message = "Found "+users.size+" results."
+        println "search called"
+        params.max = 10;
+        params.offset = 0;
+        def users = findUsersWithPagination()
+        def resultSize = matchingUserSize(params.query)
+        flash.message = "Found "+resultSize+" results."
 
-        render view: "index", model: [usersFound: users, userCount: matchingUserSize(params.query), query: params.query, filterParams: params]
+        render view: "index", model: [usersFound: users, userCount: resultSize, query: params.query, filterParams: params]
     }
 
     @Transactional
