@@ -40,6 +40,8 @@ class BlogController {
     def getBlogs(){
         def criteria = Blog.createCriteria()
 
+        print "criteria: "+criteria
+
         def blogs = criteria.list(params) {
             if (params.query) {
                 ilike("title", "%${params.query}%")

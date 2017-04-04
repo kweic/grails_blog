@@ -34,6 +34,9 @@ if (typeof jQuery !== 'undefined') {
 //    search($('select').val());
 //}
 
+function paginationClick(){
+
+}
 
 var offset;
 
@@ -52,7 +55,6 @@ function search(params){
             url: "http://localhost:8080/user/sort",
             data: {
                 "query": key,
-                "sort": sortMethod,
                 "asc": ascending,
                 "offset": offset,
                 "max": params.max
@@ -60,6 +62,7 @@ function search(params){
 
         "success": function(data){
                $('#user-results').html(data);
+
         }
     });
 }

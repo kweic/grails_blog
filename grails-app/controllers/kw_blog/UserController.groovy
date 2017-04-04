@@ -9,7 +9,7 @@ import kw_blog.com.manifestcorp.User
 import kw_blog.com.manifestcorp.Role
 import kw_blog.com.manifestcorp.UserRole
 import kw_blog.com.manifestcorp.Blog
-import kw_blog.com.manifestcorp.Pagination;
+import kw_blog.com.manifestcorp.Pagination
 
 
 @Transactional(readOnly = true)
@@ -89,10 +89,9 @@ class UserController {
         println "users page found size: "+users.size()
         println "found: "+foundSize
         flash.message = "Found "+foundSize+" results."
-        params.userCount = foundSize
 
 
-        render template:"user_results", model: [usersFound: users, query: query, filterParams: params]
+        render template:"user_results", model: [usersFound: users, userCount: foundSize,query: query, filterParams: params]
     }
 
     def blogs(User user){

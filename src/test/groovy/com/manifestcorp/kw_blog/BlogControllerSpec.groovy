@@ -7,6 +7,7 @@ import kw_blog.com.manifestcorp.*
 import spock.lang.Specification
 import kw_blog.*
 
+
 @TestFor(BlogController)
 @Mock(Blog)
 class BlogControllerSpec extends Specification {
@@ -27,17 +28,24 @@ class BlogControllerSpec extends Specification {
         currUser.id = 1
         springSecurityService.principal >> currUser
         springSecurityService.principal.id >> 1
-
-
-
         controller.springSecurityService = springSecurityService
     }
 
+
+
     void "Test the index action returns the correct model"() {
+        setup:
+        GroovySpy(Blog, global: true)
+
         when:"The index action is executed"
+            //User.findById(1) >> Mock(User)
+            Blog.createCriteria() >> Mock(grails.gorm.CriteriaBuilder)
+            Blog.count() >> 0
+            Blog.list() >> Blog
             controller.index()
 
         then:"The model is correct"
+            def savedBlog = Blog.findByIdLike("1")
             !model.blogList
             model.blogCount == 0
     }

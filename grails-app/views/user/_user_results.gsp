@@ -39,6 +39,9 @@
                   </div>
                 </g:each>
 
+                usercount: ${userCount}
+                <br>
+                query: ${params.query}
                 <div class="pagination">
                     <g:paginate total="${userCount ?: 0}" action="index" params="${[query: params.query]}" />
                 </div>
