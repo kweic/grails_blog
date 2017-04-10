@@ -75,6 +75,8 @@ class BlogController {
             blog.user = getLoggedInUser()
         }
 
+        getLoggedInUser().updateLastActive();
+
         blog.validate()
 
         if (blog.hasErrors()) {

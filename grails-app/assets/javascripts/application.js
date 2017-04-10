@@ -20,38 +20,47 @@ if (typeof jQuery !== 'undefined') {
     })(jQuery);
 }
 
-//$(function() {
-//    selectionChanged();
-//});
+var order = "asc"
+var offset;
+var sortMethod = "Name";
+var previousSearch = "";
 
-// hook up the change event of the select box
 $('select').change(selectionChanged);
-//
-//// event handler for the change event
-//
+
 function selectionChanged(e) {
-    console.log("select changed: "+$('select').val());
-    sortMethod = $('select').val();
-    search();
+    console.log("select changed: "+$('select').val())
+    sortMethod = $('select').val()
+    console.log("order is: "+order)
+    search()
 }
 
-var previousSearch = "";
-   $('#search-input').on('keyup', function (e) {
-         var val = $("#search-input").val();
-
-         if(val != previousSearch){
-            previousSearch = val;
-            search();
-         }
-   });
-
-var offset;
-
-var sortMethod = "Name";
-
-//window.onload = function load(){
-//    search(${'params'});
+//function swapOrderCheck(){
+//    var selection = $('select').val()
+//    if(selection === sortMethod){
+//        flipOrder();
+//    }else if(selection === "Last Post"){
+//        order = "asc"
+//    }
+//    sortMethod = selection
 //}
+
+function flipOrder(){
+    if(order === "asc"){
+        order = "desc"
+    }else{
+        order = "asc"
+    }
+    console.log("order now: "+order)
+}
+
+$('#search-input').on('keyup', function (e) {
+     var val = $("#search-input").val();
+
+     if(val != previousSearch){
+        previousSearch = val;
+        search();
+     }
+});
 
 function search(){
     var key = $("#search-input").val();
@@ -61,7 +70,7 @@ function search(){
             url: "http://localhost:8080/user/sort",
             data: {
                 "query": key,
-                "asc": ascending,
+                "order": order,
                 "sort": sortMethod,
                 "offset": offset,
                 "max": 10
@@ -69,15 +78,9 @@ function search(){
 
         "success": function(data){
                $('#user-results').html(data);
-
         }
     });
 }
-
-
-
-var ascending = true;
-var context = "testing";
 
 var filter = {
 	init: function(){

@@ -277,7 +277,6 @@ class BlogControllerSpec extends Specification {
 
         when: "A user tries to delete a blog he didn't post"
             def blog = makePost("title", "kevin")
-            println "is blog null after creating: "+(blog == null)
             controller.delete(blog)
         then: "The action is denied"
             Blog.count() == 1
@@ -286,7 +285,6 @@ class BlogControllerSpec extends Specification {
         when: "A user tries to edit a blog he didn't post"
             injectTemporaryUser("different")
             params.title = "changed text"
-            println "is blog null "+ (blog == null)
             controller.edit(blog)
         then: "The action is denied"
             Blog.count() == 1
@@ -306,7 +304,6 @@ class BlogControllerSpec extends Specification {
     def makePost(title, user){
         populateValidParams(params)
         def blog = new Blog(params).save(flush: true)
-        println "is blog null? "+(blog==null)
         blog.comments = new TreeSet()
         blog.title = title
         blog.postBy = user
