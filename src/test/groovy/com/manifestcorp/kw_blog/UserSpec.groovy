@@ -27,12 +27,18 @@ class UserSpec extends Specification {
     }
 
     def makeUserList(){
-        User user0 = new User(username: "u0", password: "a", id:0)
-        User user1 = new User(username: "u1", password: "a", id:1)
-        User user2 = new User(username: "u2", password: "a", id:2)
-        User user3 = new User(username: "u3", password: "a", id:3)
-        User user4 = new User(username: "u4", password: "a", id:4)
-        User user5 = new User(username: "u5", password: "a", id:5)
+        User user0 = new User(username: "u0", password: "a")
+        User user1 = new User(username: "u1", password: "a")
+        User user2 = new User(username: "u2", password: "a")
+        User user3 = new User(username: "u3", password: "a")
+        User user4 = new User(username: "u4", password: "a")
+        User user5 = new User(username: "u5", password: "a")
+        user0.id = 0;
+        user1.id = 1;
+        user2.id = 2;
+        user3.id = 3;
+        user4.id = 4;
+        user5.id = 5;
 
         user0.blogs = stubEmptyBlogs();
         user1.blogs = makeStubBlogsList(new Date(10000000), "title1", "user1")
@@ -53,7 +59,7 @@ class UserSpec extends Specification {
 
 
         when:"The users are sorted by date"
-            Collections.sort(users)
+            Collections.sort(users, new UserActiveDateComparator());
 
 
         then:"The most recently active user is at the top"

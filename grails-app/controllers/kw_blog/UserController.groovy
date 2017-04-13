@@ -19,24 +19,15 @@ class UserController {
     User currentUser;
     def query = ""
     Pagination paginator = new Pagination();
-    //static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
 
     @Secured("permitAll")
     index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        println "params from index: "+params
         def users = findUsersWithPagination(params.sort)
 
         //respond User.list(params), model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
         respond users, model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
     }
-
-//    def usersTemplate(){
-//        def users = findUsersWithPagination()
-//
-//        render template:"user_results", model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
-//    }
 
     def matchingUserSize(query){
         return User.findAllByUsernameLike('%'+query+'%').size()
@@ -50,16 +41,27 @@ class UserController {
         def users;
         println "sort type: "+sort
         if(sort == "Total Posts"){
-            //users = User.findAllByUsernameLike("%"+query+"%", [max: params.max, offset: params.offset, sort: "size(User.blogs)", order: "desc"])
-            users = User.orderByBlogCount(params.max, "desc");
-            println "first user: "+users.get(0).username+" blogs: "+users.get(0).blogs.size
+            int offset = 0
+            if(params.offset == null){
+                offset = 0;
+            }else{
+                if(params.offset.getClass() == java.lang.String){
+                    offset = Integer.parseInt(params.offset)
+                }else{
+                    offset = params.offset
+                }
+            }
+            users = User.orderByBlogCount(params.max, offset);
+            for(User u: users){
+                println u.username+" "+u.blogs.size()
+            }
+            println "got users, size: "+users.size()
+            println "first user: "+users.get(0).username+" blogs: "+users.get(0).blogs.size()
         }else if(sort == "Name"){
             users = User.findAllByUsernameLike("%"+query+"%", [max: params.max, offset: params.offset, sort: "username", order: params.order])
         }else{
             users = User.findAllByUsernameLike("%"+query+"%", [max: params.max, offset: params.offset, sort: "lastActiveDate", order: flipOrder(params.order)])
         }
-
-        println "getting users";
 
         return users
     }
@@ -70,6 +72,7 @@ class UserController {
     }
 
     def sort(){
+        println "in sort()"
         params.max = 10
         params.offset = 0
 
@@ -115,17 +118,6 @@ class UserController {
         render(view: "create", model: [user: new User()])
     }
 
-//    @Secured('permitAll')
-//    search() {
-//        params.max = 10;
-//        params.offset = 0;
-//        def users = findUsersWithPagination("")
-//        def resultSize = matchingUserSize(params.query)
-//        flash.message = "Found "+resultSize+" results."
-//
-//        render view: "index", model: [usersFound: users, userCount: resultSize, query: params.query, filterParams: params]
-//    }
-
     @Transactional
     def save(User userInstance) {
         if (userInstance == null) {
@@ -165,6 +157,16 @@ class UserController {
         UserRole.withSession {
             it.flush()
             it.clear()
+        }
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
+                redirect action: "index", method: "GET"
+            }
+            '*' { render status: NOT_FOUND }
         }
     }
 
@@ -214,13 +216,4 @@ class UserController {
 //        }
     }
 
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*' { render status: NOT_FOUND }
-        }
-    }
 }

@@ -5,7 +5,7 @@ import groovy.transform.ToString
 
 @EqualsAndHashCode(includes='username')
 @ToString(includes='username', includeNames=true, includePackage=false)
-class User implements Serializable, Comparable<User> {
+class User implements Serializable{
 
 	private static final long serialVersionUID = 1
 
@@ -57,28 +57,25 @@ class User implements Serializable, Comparable<User> {
 		password column: '`password`'
 	}
 
-	static List<User> orderByBlogCount(int max, String sortOrder) {
-		println "doing order by blog count in user, list"
+	static List<User> orderByBlogCount(int max, int offset) {
 		return User.executeQuery("""
         	SELECT u
         	FROM User u
-        	ORDER BY u.username DESC
-    		""")
-	}  //${sortOrder} //[max: max])
-
-	@Override
-	int compareTo(User o) {
-
-		if(!blogs.isEmpty() && !o.blogs.isEmpty()) {
-			println "dates: "+((Blog)blogs.first()).dateCreated+" .. "+((Blog)o.blogs.first()).dateCreated
-			return ((Blog) o.blogs.first()).dateCreated.compareTo(((Blog) blogs.first()).dateCreated)
-		}else if(!blogs.isEmpty()){
-			return -1;
-		}else if(!o.blogs.isEmpty()){
-			return 1;
-		}
-		println "both blogs empty, returning id comparison: "+id+" to: "+o.id
-		return this.id - o.id;
-
+        	ORDER BY size(u.blogs) DESC
+    		""", [max: max, offset: offset])
 	}
+
+//	@Override
+//	int compareTo(User o) {
+//		if(!blogs.isEmpty() && !o.blogs.isEmpty()) {
+//			println "dates: "+((Blog)blogs.first()).dateCreated+" .. "+((Blog)o.blogs.first()).dateCreated
+//			return ((Blog) o.blogs.first()).dateCreated.compareTo(((Blog) blogs.first()).dateCreated)
+//		}else if(!blogs.isEmpty()){
+//			return -1;
+//		}else if(!o.blogs.isEmpty()){
+//			return 1;
+//		}
+//		println "both blogs empty, returning id comparison: "+id+" to: "+o.id
+//		return this.id - o.id;
+//	}
 }
