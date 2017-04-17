@@ -39,7 +39,7 @@ module PageInteractions
   end
 
   def click_favorite_blogger
-    @browser.div(:id => 'user').click
+    @browser.div(:id => 'user1').click
   end
 
   def click_sign_up

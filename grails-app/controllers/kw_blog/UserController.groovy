@@ -16,13 +16,14 @@ import kw_blog.com.manifestcorp.Pagination
 @Secured("permitAll")
 class UserController {
     def springSecurityService
-    User currentUser;
     def query = ""
     Pagination paginator = new Pagination();
 
     @Secured("permitAll")
     index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+        params.sort = "Last Post"
+        params.order = "asc"
         def users = findUsersWithPagination(params.sort)
 
         //respond User.list(params), model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
@@ -34,6 +35,7 @@ class UserController {
     }
 
     def findUsersWithPagination(sort){
+        println "finding with pagination, params: "+params
         def query = params.query;
         if(query == null){
             query = "";
@@ -173,6 +175,9 @@ class UserController {
     def edit(User userInstance) {
 //        respond userInstance
     }
+
+
+
 
     @Transactional
     def update(User userInstance) {

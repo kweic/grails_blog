@@ -8,7 +8,7 @@ include PageInteractions
 module VisitAndLogin
   include PageObject::PageFactory
   def login_to_blog
-    login('user', 'password')
+    login('user1', 'password')
   end
 
   def sign_in_as(username)

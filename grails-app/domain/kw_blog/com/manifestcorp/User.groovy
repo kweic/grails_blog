@@ -64,18 +64,4 @@ class User implements Serializable{
         	ORDER BY size(u.blogs) DESC
     		""", [max: max, offset: offset])
 	}
-
-//	@Override
-//	int compareTo(User o) {
-//		if(!blogs.isEmpty() && !o.blogs.isEmpty()) {
-//			println "dates: "+((Blog)blogs.first()).dateCreated+" .. "+((Blog)o.blogs.first()).dateCreated
-//			return ((Blog) o.blogs.first()).dateCreated.compareTo(((Blog) blogs.first()).dateCreated)
-//		}else if(!blogs.isEmpty()){
-//			return -1;
-//		}else if(!o.blogs.isEmpty()){
-//			return 1;
-//		}
-//		println "both blogs empty, returning id comparison: "+id+" to: "+o.id
-//		return this.id - o.id;
-//	}
 }
