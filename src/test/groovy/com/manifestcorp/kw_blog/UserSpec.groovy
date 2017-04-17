@@ -9,7 +9,7 @@ import org.hibernate.collection.internal.PersistentSortedSet
 import spock.lang.Specification
 
 
-class UserSpec extends Specification {
+class UserSpec extends Specification{
 
     def makeStubBlogsList(date, title, user){
         println "setting "+user+" date to: "+date

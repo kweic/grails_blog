@@ -26,7 +26,6 @@ class UserController {
         params.order = "asc"
         def users = findUsersWithPagination(params.sort)
 
-        //respond User.list(params), model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
         respond users, model: [usersFound: users, userCount: User.count(), query: query, filterParams: params]
     }
 

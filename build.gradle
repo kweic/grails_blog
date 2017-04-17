@@ -43,11 +43,39 @@ dependencies {
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.11.6"
     //runtime "com.h2database:h2"
     testCompile "org.grails:grails-plugin-testing"
-    testCompile "org.grails.plugins:geb"
-    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+//    testCompile "org.grails.plugins:geb"
+//    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
     compile 'org.grails.plugins:spring-security-core:3.1.1'
     runtime 'mysql:mysql-connector-java:5.1.29'
+    compile 'org.grails.plugins:geb:1.0.2'
+
+
+    //NEW BELOW HERE
+    // If using Spock, need to depend on geb-spock
+    testCompile "org.gebish:geb-spock:1.1.1"
+    testCompile("org.spockframework:spock-core:1.0-groovy-2.4") {
+        exclude group: "org.codehaus.groovy"
+    }
+//    testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
+
+    // If using JUnit, need to depend on geb-junit (3 or 4)
+    testCompile "org.gebish:geb-junit4:1.1.1"
+
+    // Drivers
+//    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:3.3.1"
+//    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:3.3.1"
+
+
+    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+    testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
+    testRuntime "org.seleniumhq.selenium:selenium-support:2.53.1"
+    testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
+    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:2.53.1"
+    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:2.53.1"
+    testCompile "com.codeborne:phantomjsdriver:1.3.0"
+
+    test "org.seleniumhq.selenium:selenium-firefox-driver:2.31.0"
 }
 
 bootRun {
@@ -55,8 +83,11 @@ bootRun {
     addResources = true
 }
 
-
 assets {
     minifyJs = true
     minifyCss = true
+}
+
+integrationTest {
+    systemProperties System.properties
 }
