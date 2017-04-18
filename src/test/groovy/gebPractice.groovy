@@ -15,8 +15,14 @@ import spock.lang.Specification
 import geb.spock.GebSpec
 import grails.test.mixin.integration.Integration
 
+import geb.spock.GebReportingSpec
+import spock.lang.*
+
+
 @Integration
 class GebPracticeSpec extends GebSpec {
+//@Stepwise
+//class GebPracticeSpec extends GebReportingSpec{
 
 
     def "show off the awesomeness of google"() {
